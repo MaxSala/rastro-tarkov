@@ -1,0 +1,83 @@
+# Builds rastro.exe on GitHub's Windows servers when a version tag (v1.2.3) is pushed,
+# and attaches it to a draft release together with its SHA-256 checksum.
+# The draft is not visible to anyone until you review it and press "Publish release".
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to build (for example v0.3.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Windows x64
+    runs-on: windows-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Check that the tag matches the version in Cargo.toml
+        shell: pwsh
+        run: |
+          $version = (Select-String -Path Cargo.toml -Pattern '^version = "(.+)"').Matches[0].Groups[1].Value
+          if ("v$version" -ne $env:TAG) {
+            Write-Error "Tag $env:TAG does not match Cargo.toml version $version. Bump the version first (see docs/RELEASING.md)."
+            exit 1
+          }
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build the interface
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build rastro.exe
+        run: cargo build --release --locked
+
+      - name: Prepare files
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force out | Out-Null
+          $exe = "Rastro-$env:TAG-windows-x64.exe"
+          Copy-Item target\release\rastro.exe "out\$exe"
+          $hash = (Get-FileHash "out\$exe" -Algorithm SHA256).Hash.ToLower()
+          "$hash  $exe" | Set-Content -Encoding ascii out\SHA256SUMS.txt
+          $notes = ".github\release-notes\$env:TAG.md"
+          if (Test-Path $notes) { Copy-Item $notes out\notes.md }
+          else { "Release $env:TAG. See the README for download and setup instructions." | Set-Content out\notes.md }
+          Add-Content out\notes.md "`n---`n`n**SHA-256** of ``$exe``:`n``````n$hash`n``````"
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Rastro ${{ env.TAG }}
+          body_path: out/notes.md
+          draft: true
+          files: |
+            out/Rastro-${{ env.TAG }}-windows-x64.exe
+            out/SHA256SUMS.txt
