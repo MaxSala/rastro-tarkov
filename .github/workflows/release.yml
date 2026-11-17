@@ -1,6 +1,7 @@
-# Builds rastro.exe on GitHub's Windows servers when a version tag (v1.2.3) is pushed,
-# and attaches it to a draft release together with its SHA-256 checksum.
-# The draft is not visible to anyone until you review it and press "Publish release".
+# Builds rastro.exe on GitHub's Windows servers when a version tag (v1.2.3) is pushed and
+# publishes it as the latest release, together with its SHA-256 checksum.
+# The file always has the same name, so this link always downloads the newest version:
+# https://github.com/MaxSala/rastro-tarkov/releases/latest/download/Rastro-windows-x64.exe
 name: Release
 
 on:
@@ -62,22 +63,23 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force out | Out-Null
-          $exe = "Rastro-$env:TAG-windows-x64.exe"
+          $exe = "Rastro-windows-x64.exe"
           Copy-Item target\release\rastro.exe "out\$exe"
           $hash = (Get-FileHash "out\$exe" -Algorithm SHA256).Hash.ToLower()
           "$hash  $exe" | Set-Content -Encoding ascii out\SHA256SUMS.txt
           $notes = ".github\release-notes\$env:TAG.md"
           if (Test-Path $notes) { Copy-Item $notes out\notes.md }
           else { "Release $env:TAG. See the README for download and setup instructions." | Set-Content out\notes.md }
-          Add-Content out\notes.md "`n---`n`n**SHA-256** of ``$exe``:`n``````n$hash`n``````"
+          Add-Content out\notes.md "`n---`n`n**SHA-256** of ``$exe`` ($env:TAG):`n``````n$hash`n``````"
 
-      - name: Create draft release
+      - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAG }}
           name: Rastro ${{ env.TAG }}
           body_path: out/notes.md
-          draft: true
+          draft: false
+          make_latest: true
           files: |
-            out/Rastro-${{ env.TAG }}-windows-x64.exe
+            out/Rastro-windows-x64.exe
             out/SHA256SUMS.txt

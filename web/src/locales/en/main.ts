@@ -178,7 +178,8 @@ const main: Main = {
   onboarding: {
     title: "Getting started",
     folderStep: "Screenshots folder",
-    folderBody: "Rastro only reads the names of the screenshots the game takes to know where you are.",
+    folderBody:
+      "Rastro knows where you are from the file names of the screenshots the game takes: it reads the name, never the picture.",
     folderFound: "Found",
     folderMissing: "This folder does not exist",
     folderHint:
@@ -254,7 +255,7 @@ const main: Main = {
     quitHint: "Closes the app and its local server.",
     version: "Version",
     aboutBody:
-      "Rastro only reads the names of the screenshots the game takes. It does not read memory, inject anything or touch the game process.",
+      "Rastro reads two things the game leaves on your PC: the file names of your screenshots, which contain your position, and, if you turn on raid detection, the game's log files, to know which map you're on and when a raid starts. It never reads memory, injects anything or touches the game process.",
     licenses: "Third-party licenses in NOTICE.md. tarkov.dev maps under CC BY-NC-SA 4.0.",
     folder: "Screenshots folder",
     folderHint: "Empty = the game folder in Documents. Rastro only reads file names.",

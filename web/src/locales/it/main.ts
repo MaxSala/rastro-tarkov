@@ -177,7 +177,7 @@ const main: Main = {
   onboarding: {
     title: "Primi passi",
     folderStep: "Cartella degli screenshot",
-    folderBody: "Rastro legge solo i nomi degli screenshot del gioco per sapere dove sei.",
+    folderBody: "Rastro sa dove sei dai nomi degli screenshot del gioco: legge il nome, mai l’immagine.",
     folderFound: "Trovata",
     folderMissing: "Questa cartella non esiste",
     folderHint:
@@ -252,7 +252,7 @@ const main: Main = {
     quitHint: "Chiude l’applicazione e il suo server locale.",
     version: "Versione",
     aboutBody:
-      "Rastro legge solo i nomi degli screenshot del gioco. Non legge la memoria, non inietta nulla e non tocca il processo del gioco.",
+      "Rastro legge due cose che il gioco lascia sul tuo PC: i nomi dei tuoi screenshot, che contengono la tua posizione, e, se attivi il rilevamento del raid, i log del gioco, per sapere su che mappa sei e quando inizia un raid. Non legge la memoria, non inietta nulla e non tocca il processo del gioco.",
     licenses: "Licenze di terze parti in NOTICE.md. Mappe di tarkov.dev con CC BY-NC-SA 4.0.",
     folder: "Cartella degli screenshot",
     folderHint: "Vuoto = cartella del gioco in Documenti. Rastro legge solo i nomi dei file.",

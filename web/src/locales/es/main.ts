@@ -176,7 +176,8 @@ const main = {
   onboarding: {
     title: "Primeros pasos",
     folderStep: "Carpeta de capturas",
-    folderBody: "Rastro lee solo los nombres de las capturas que hace el juego para saber dónde estás.",
+    folderBody:
+      "Rastro sabe dónde estás por los nombres de las capturas que hace el juego: lee el nombre, nunca la imagen.",
     folderFound: "Encontrada",
     folderMissing: "No se encuentra esta carpeta",
     folderHint:
@@ -251,7 +252,7 @@ const main = {
     quitHint: "Cierra la aplicación y su servidor local.",
     version: "Versión",
     aboutBody:
-      "Rastro solo lee los nombres de las capturas que hace el juego. No lee memoria, no inyecta nada y no toca el proceso del juego.",
+      "Rastro lee dos cosas que el juego deja en tu PC: los nombres de tus capturas, que llevan tu posición, y, si activas la detección de raid, los logs del juego, para saber en qué mapa estás y cuándo empieza la raid. No lee memoria, no inyecta nada y no toca el proceso del juego.",
     licenses: "Licencias de terceros en NOTICE.md. Mapas de tarkov.dev con CC BY-NC-SA 4.0.",
     folder: "Carpeta de capturas",
     folderHint: "Vacío = carpeta del juego en Documentos. Rastro solo lee los nombres de archivo.",

@@ -23,7 +23,7 @@ pub fn valid_id(id: &str) -> bool {
 fn validate(bytes: &[u8]) -> AppResult<Kind> {
     let (kind, (w, h)) = sniff(bytes).ok_or_else(|| AppError::pack("invalid icon"))?;
     if bytes.len() > MAX_ICON || w > MAX_SIDE || h > MAX_SIDE || w == 0 || h == 0 {
-        return Err(AppError::pack("icono demasiado grande"));
+        return Err(AppError::pack("icon too large"));
     }
     Ok(kind)
 }

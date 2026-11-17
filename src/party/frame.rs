@@ -19,7 +19,7 @@ pub async fn write_frame<W: AsyncWrite + Unpin>(w: &mut W, data: &[u8]) -> std::
     let len = u16::try_from(data.len())
         .ok()
         .filter(|l| usize::from(*l) <= MAX_FRAME && *l > 0)
-        .ok_or_else(|| Error::new(ErrorKind::InvalidInput, "trama demasiado grande"))?;
+        .ok_or_else(|| Error::new(ErrorKind::InvalidInput, "frame too large"))?;
     w.write_u16(len).await?;
     w.write_all(data).await?;
     w.flush().await

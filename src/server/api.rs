@@ -34,26 +34,22 @@ pub async fn list(State(ctx): State<Ctx>) -> Json<Value> {
     Json(json!({ "packs": view.packs }))
 }
 
-/// Oculta los pisos que no tocan inyectando un `<style>` tras la etiqueta raíz del SVG.
-/// Los ids vienen del manifest y ya están validados como seguros para un selector CSS.
+/// Floor variant of a layered SVG: the chosen floor at full strength, the base floor dimmed when
+/// another floor is chosen, and every other floor faintly visible, so it's obvious which one you're
+/// looking at. Done with a `<style>` inserted after the root tag; the ids come from the manifest
+/// and are already validated as safe CSS selectors.
 fn floor_variant(svg: Vec<u8>, pack: &crate::maps::pack::Pack, floor: Option<&str>) -> Vec<u8> {
     let m = &pack.manifest;
     let Some(base) = m.image.base_layer.as_deref() else { return svg };
     let shown = floor.and_then(|f| m.levels.iter().find(|l| l.id == f)).and_then(|l| l.svg_layer.as_deref());
-    let hidden: Vec<String> = m
-        .levels
-        .iter()
-        .filter_map(|l| l.svg_layer.as_deref())
-        .filter(|g| *g != base && Some(*g) != shown)
-        .map(|g| format!("#{g}"))
-        .collect();
+    let style = floor_style(m.levels.iter().filter_map(|l| l.svg_layer.as_deref()), base, shown);
     let Ok(text) = String::from_utf8(svg) else { return Vec::new() };
     let insert_at = text.find("<svg").and_then(|i| text.get(i..)?.find('>').map(|j| i + j + 1));
-    match (insert_at, hidden.is_empty()) {
-        (Some(at), false) => {
-            let mut out = String::with_capacity(text.len() + 128);
+    match insert_at {
+        Some(at) if !style.is_empty() => {
+            let mut out = String::with_capacity(text.len() + style.len() + 16);
             out.push_str(text.get(..at).unwrap_or_default());
-            out.push_str(&format!("<style>{}{{display:none}}</style>", hidden.join(",")));
+            out.push_str(&format!("<style>{style}</style>"));
             out.push_str(text.get(at..).unwrap_or_default());
             out.into_bytes()
         }
@@ -61,12 +57,28 @@ fn floor_variant(svg: Vec<u8>, pack: &crate::maps::pack::Pack, floor: Option<&st
     }
 }
 
+/// Opacity of the base floor while another floor is shown, and of the floors not shown.
+const BASE_DIMMED: &str = "0.35";
+const OTHER_FLOORS: &str = "0.12";
+
+pub(crate) fn floor_style<'a>(layers: impl Iterator<Item = &'a str>, base: &str, shown: Option<&str>) -> String {
+    let others: Vec<String> = layers.filter(|g| *g != base && Some(*g) != shown).map(|g| format!("#{g}")).collect();
+    let mut css = String::new();
+    if !others.is_empty() {
+        css.push_str(&format!("{}{{opacity:{OTHER_FLOORS}}}", others.join(",")));
+    }
+    if shown.is_some_and(|s| s != base) {
+        css.push_str(&format!("#{base}{{opacity:{BASE_DIMMED}}}"));
+    }
+    css
+}
+
 fn query_param<'a>(uri: &'a Uri, key: &str) -> Option<&'a str> {
     uri.query()?.split('&').find_map(|kv| kv.split_once('=').filter(|(k, _)| *k == key).map(|(_, v)| v))
 }
 
 /// Solo sirve la imagen declarada en el manifest de un paquete instalado (lista blanca).
-/// `?floor=<id de piso>` devuelve el SVG con ese piso visible.
+/// `?floor=<floor id>` returns the SVG with that floor highlighted.
 pub async fn image(State(ctx): State<Ctx>, Path(id): Path<String>, uri: Uri) -> AppResult<Response> {
     if !is_valid_id(&id) {
         return Err(AppError::NotFound);
@@ -187,4 +199,29 @@ pub struct CancelInput {
 pub async fn cancel(State(ctx): State<Ctx>, Json(input): Json<CancelInput>) -> Json<Value> {
     ctx.app.cancel_import(&input.staging_id);
     Json(json!({}))
+}
+
+#[cfg(test)]
+mod floor_style_tests {
+    use super::floor_style;
+
+    const LAYERS: [&str; 3] = ["Ground", "Second", "Third"];
+
+    #[test]
+    fn on_the_base_floor_the_others_are_faint() {
+        assert_eq!(floor_style(LAYERS.into_iter(), "Ground", Some("Ground")), "#Second,#Third{opacity:0.12}");
+    }
+
+    #[test]
+    fn on_an_upper_floor_the_base_is_dimmed_and_the_rest_faint() {
+        assert_eq!(
+            floor_style(LAYERS.into_iter(), "Ground", Some("Second")),
+            "#Third{opacity:0.12}#Ground{opacity:0.35}"
+        );
+    }
+
+    #[test]
+    fn without_a_choice_only_the_base_is_at_full_strength() {
+        assert_eq!(floor_style(LAYERS.into_iter(), "Ground", None), "#Second,#Third{opacity:0.12}");
+    }
 }

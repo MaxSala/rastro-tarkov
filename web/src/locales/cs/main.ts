@@ -183,7 +183,8 @@ const main: Main = {
   onboarding: {
     title: "První kroky",
     folderStep: "Složka snímků",
-    folderBody: "Rastro čte jen názvy snímků obrazovky, které pořizuje hra, aby věděl, kde jsi.",
+    folderBody:
+      "Rastro zjistí tvou pozici z názvů snímků obrazovky ze hry: čte název souboru, nikdy obrázek.",
     folderFound: "Nalezena",
     folderMissing: "Tato složka nebyla nalezena",
     folderHint:
@@ -258,7 +259,7 @@ const main: Main = {
     quitHint: "Zavře aplikaci a její místní server.",
     version: "Verze",
     aboutBody:
-      "Rastro čte jen názvy snímků obrazovky ze hry. Nečte paměť, nic nevkládá a nesahá na proces hry.",
+      "Rastro čte dvě věci, které hra nechává ve tvém PC: názvy snímků obrazovky, ve kterých je tvoje pozice, a pokud zapneš detekci raidu, logy hry, aby věděl, na jaké jsi mapě a kdy raid začíná. Nečte paměť, nic nevkládá a nesahá na proces hry.",
     licenses: "Licence třetích stran v NOTICE.md. Mapy z tarkov.dev pod CC BY-NC-SA 4.0.",
     folder: "Složka snímků",
     folderHint: "Prázdné = složka hry v Dokumentech. Rastro čte jen názvy souborů.",

@@ -157,7 +157,7 @@ fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
             .map(|()| None)
             .map_err(|e| AppError::Internal(format!("could not open the folder: {e}"))),
         ClientMsg::SetOpenInWindow { value } => app.set_open_in_window(value).map(|()| None),
-        ClientMsg::SetGameLogs { enabled, path } => app.set_game_logs(enabled, &path).map(|()| None),
+        ClientMsg::SetGameLogs { enabled, path } => app.set_game_logs(enabled, path.as_deref()).map(|()| None),
         ClientMsg::SetGameMode { mode } => app.set_game_mode(mode).map(|()| None),
         ClientMsg::MarketRefresh { flea_name } => {
             let flea: String = flea_name.chars().filter(|c| !c.is_control()).take(40).collect();

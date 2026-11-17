@@ -40,7 +40,7 @@ export function GameTab() {
         <Switch
           label={t.game.enable}
           checked={game.enabled}
-          onChange={(v) => send({ type: "setGameLogs", enabled: v, path })}
+          onChange={(v) => send({ type: "setGameLogs", enabled: v })}
         />
       </Row>
       <Field id="game-logs" label={t.game.folder} hint={t.game.folderHint}>

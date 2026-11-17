@@ -178,7 +178,8 @@ const main: Main = {
   onboarding: {
     title: "Első lépések",
     folderStep: "Képernyőképek mappája",
-    folderBody: "A Rastro csak a játék által készített képernyőképek nevét olvassa, hogy tudja, hol vagy.",
+    folderBody:
+      "A Rastro a játék képernyőképeinek fájlnevéből tudja, hol vagy: a nevet olvassa, a képet soha.",
     folderFound: "Megtalálva",
     folderMissing: "Ez a mappa nem található",
     folderHint:
@@ -253,7 +254,7 @@ const main: Main = {
     quitHint: "Bezárja az alkalmazást és a helyi szerverét.",
     version: "Verzió",
     aboutBody:
-      "A Rastro csak a játék képernyőképeinek nevét olvassa. Nem olvas memóriát, semmit nem injektál, és nem nyúl a játék folyamatához.",
+      "A Rastro két dolgot olvas, amit a játék a gépeden hagy: a képernyőképeid fájlnevét, amelyben a pozíciód van, és ha bekapcsolod a raid-felismerést, a játék naplófájljait, hogy tudja, melyik térképen vagy és mikor kezdődik a raid. Nem olvas memóriát, semmit nem injektál, és nem nyúl a játék folyamatához.",
     licenses: "Harmadik fél licencei a NOTICE.md fájlban. A tarkov.dev térképei CC BY-NC-SA 4.0 licencűek.",
     folder: "Képernyőképek mappája",
     folderHint: "Üres = a játék mappája a Dokumentumokban. A Rastro csak a fájlneveket olvassa.",

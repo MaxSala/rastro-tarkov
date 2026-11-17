@@ -186,7 +186,7 @@ const main: Main = {
   onboarding: {
     title: "Pierwsze kroki",
     folderStep: "Folder zrzutów ekranu",
-    folderBody: "Rastro czyta tylko nazwy zrzutów ekranu robionych przez grę, aby wiedzieć, gdzie jesteś.",
+    folderBody: "Rastro zna twoją pozycję z nazw zrzutów ekranu gry: czyta nazwę pliku, nigdy obraz.",
     folderFound: "Znaleziono",
     folderMissing: "Nie znaleziono tego folderu",
     folderHint:
@@ -261,7 +261,7 @@ const main: Main = {
     quitHint: "Zamyka aplikację i jej lokalny serwer.",
     version: "Wersja",
     aboutBody:
-      "Rastro czyta tylko nazwy zrzutów ekranu gry. Nie czyta pamięci, niczego nie wstrzykuje i nie dotyka procesu gry.",
+      "Rastro czyta dwie rzeczy, które gra zostawia na twoim PC: nazwy zrzutów ekranu, w których zapisana jest twoja pozycja, oraz — jeśli włączysz wykrywanie rajdu — pliki logów gry, aby wiedzieć, na jakiej jesteś mapie i kiedy zaczyna się rajd. Nie czyta pamięci, niczego nie wstrzykuje i nie dotyka procesu gry.",
     licenses: "Licencje zewnętrzne w NOTICE.md. Mapy tarkov.dev na licencji CC BY-NC-SA 4.0.",
     folder: "Folder zrzutów ekranu",
     folderHint: "Puste = folder gry w Dokumentach. Rastro czyta tylko nazwy plików.",

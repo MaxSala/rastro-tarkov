@@ -5,7 +5,6 @@ import { send } from "../lib/socket";
 import { cn } from "../lib/cn";
 import { useApp } from "../store/app";
 import { IconButton } from "../components/ui/button";
-import { FloorSelect } from "./FloorSelect";
 import { RaidChip } from "./RaidChip";
 import { WorkspaceTabs } from "./WorkspaceTabs";
 import { Brand } from "../components/brand/Logo";
@@ -68,7 +67,6 @@ function MapPicker() {
           </option>
         ))}
       </select>
-      <FloorSelect />
       {active?.level && (
         <span className="text-xs text-fg-muted">
           {t.top.level} <span className="text-fg-soft">{floorName(active.level)}</span>

@@ -75,7 +75,9 @@ pub enum ClientMsg {
     Quit,
     SetGameLogs {
         enabled: bool,
-        path: String,
+        /// Logs folder; empty means the default one. Left out, the current folder is kept.
+        #[serde(default)]
+        path: Option<String>,
     },
     SetGameMode {
         mode: crate::gamelog::GameModePref,

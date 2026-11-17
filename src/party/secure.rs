@@ -64,7 +64,7 @@ impl Channel {
     pub fn seal(&mut self, msg: &Msg) -> Result<Vec<u8>, String> {
         let plain = msg.encode()?;
         if plain.len() + TAG_LEN > MAX_FRAME {
-            return Err("mensaje demasiado grande".into());
+            return Err("message too large".into());
         }
         let mut out = vec![0u8; plain.len() + TAG_LEN];
         let n = self.transport.write_message(&plain, &mut out).map_err(|_| "cifrado".to_string())?;

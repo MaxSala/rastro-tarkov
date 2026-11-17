@@ -8,26 +8,167 @@
   outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
+/* Hover cards: what it is, its name, a few facts and what clicking does. */
 .leaflet-tooltip.rt-tip {
-  background: var(--gray-2);
+  background: color-mix(in srgb, var(--gray-2) 94%, transparent);
   color: var(--gray-12);
   border: 1px solid var(--gray-6);
-  border-radius: 4px;
-  box-shadow: none;
-  padding: 6px 8px;
+  border-radius: 8px;
+  box-shadow:
+    0 10px 28px rgb(0 0 0 / 45%),
+    0 1px 0 rgb(255 255 255 / 4%) inset;
+  backdrop-filter: blur(6px);
+  padding: 0;
   font-size: 12px;
   line-height: 16px;
-  max-width: 240px;
   white-space: normal;
 }
 .leaflet-tooltip.rt-tip::before {
   display: none;
 }
-.rt-tip-title {
-  font-weight: 500;
+.rt-card {
+  display: grid;
+  gap: 3px;
+  min-width: 150px;
+  max-width: 260px;
+  padding: 8px 10px 9px;
+  animation: rt-card-in 120ms ease-out;
 }
-.rt-tip-body {
+@keyframes rt-card-in {
+  from {
+    opacity: 0;
+    translate: 0 3px;
+  }
+}
+.rt-card-kind {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  line-height: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-10);
+}
+.rt-card-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--gray-10);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 50%);
+}
+.rt-card[data-tone="pmc"] .rt-card-dot,
+.rt-card[data-tone="shared"] .rt-card-dot {
+  background: #6fcf7c;
+}
+.rt-card[data-tone="scav"] .rt-card-dot {
+  background: #e5c84a;
+}
+.rt-card[data-tone="transit"] .rt-card-dot {
+  background: #6aa8ff;
+}
+.rt-card[data-tone="switch"] .rt-card-dot,
+.rt-card[data-tone="point"] .rt-card-dot {
+  background: var(--accent);
+}
+.rt-card[data-tone="lock"] .rt-card-dot {
+  background: #d8d8d8;
+}
+.rt-card-title {
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: 550;
+  color: var(--gray-12);
+}
+.rt-card-body {
   color: var(--gray-11);
+}
+.rt-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 3px;
+}
+.rt-chip {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--gray-4);
+  color: var(--gray-12);
+  font-size: 11px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.rt-chip[data-kind="floor"] {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+}
+.rt-card-hint {
+  margin-top: 4px;
+  padding-top: 5px;
+  border-top: 1px solid var(--gray-5);
+  font-size: 11px;
+  color: var(--gray-10);
+}
+
+/* Hover feedback on markers: a little bigger and brighter, with the label always visible. */
+.rt-marker,
+.rt-pin,
+.rt-ico,
+.rt-mk,
+.rt-arrow {
+  transition:
+    opacity 160ms ease,
+    filter 160ms ease;
+}
+.rt-ico img,
+.rt-exfil,
+.rt-mk,
+.rt-pin svg {
+  transition: scale 140ms ease;
+}
+.leaflet-marker-icon:hover .rt-ico img,
+.leaflet-marker-icon:hover .rt-exfil,
+.leaflet-marker-icon:hover .rt-pin svg {
+  scale: 1.18;
+}
+.leaflet-marker-icon:hover .rt-mk {
+  scale: 1.25;
+}
+.leaflet-marker-icon:hover .rt-ico img,
+.leaflet-marker-icon:hover .rt-pin svg {
+  filter: drop-shadow(0 0 4px rgb(255 255 255 / 35%)) drop-shadow(0 1px 1px rgb(0 0 0 / 70%));
+}
+.leaflet-marker-icon:hover .rt-label[data-hidden="true"],
+.leaflet-marker-icon:hover .rt-pin-label[data-hidden="true"] {
+  display: block;
+}
+.leaflet-marker-icon:hover .rt-label,
+.leaflet-marker-icon:hover .rt-pin-label {
+  color: #fff;
+  z-index: 1;
+}
+
+/* Things on a floor other than the one shown: faded, and back to full on hover. */
+[data-off="true"] {
+  opacity: 0.3;
+  filter: grayscale(0.6);
+}
+.leaflet-marker-icon:hover [data-off="true"] {
+  opacity: 0.9;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-card {
+    animation: none;
+  }
+  .rt-ico img,
+  .rt-exfil,
+  .rt-mk,
+  .rt-pin svg {
+    transition: none;
+  }
 }
 
 .rt-marker {

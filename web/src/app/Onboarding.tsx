@@ -1,4 +1,4 @@
-import { CircleAlert, CircleCheck } from "lucide-react";
+import { CircleAlert, CircleCheck, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { t } from "../locales";
 import { cn } from "../lib/cn";
@@ -9,6 +9,7 @@ import { TarkovDevCard } from "../components/panels/TarkovDevCard";
 import { Button } from "../components/ui/button";
 import { Dialog } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
+import { Switch } from "../components/ui/switch";
 
 type Choice = "tarkov" | "manual" | "demo";
 
@@ -70,6 +71,29 @@ function FolderStep() {
           )}
         </div>
       )}
+      <LogsChoice />
+    </div>
+  );
+}
+
+/** Raid detection is off by default: the guide says what it reads and lets you turn it on. */
+function LogsChoice() {
+  const game = useApp((s) => s.view?.game);
+  if (!game) return null;
+  return (
+    <div className="flex items-start justify-between gap-4 rounded-sm border border-line p-3">
+      <div className="grid gap-1">
+        <p className="flex items-center gap-1.5 text-sm">
+          <FileText {...iconSm} aria-hidden className="text-fg-muted" />
+          {t.game.enable}
+        </p>
+        <p className="text-xs text-fg-muted">{t.game.enableHint}</p>
+      </div>
+      <Switch
+        label={t.game.enable}
+        checked={game.enabled}
+        onChange={(v) => send({ type: "setGameLogs", enabled: v })}
+      />
     </div>
   );
 }

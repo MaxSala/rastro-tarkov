@@ -5,7 +5,7 @@ use crate::maps::manifest::Faction;
 use crate::maps::pack::Pack;
 use crate::party::lock;
 use crate::state::App;
-use crate::view_extra::{party_view, Guide, PartyView, PointView};
+use crate::view_extra::{floor_at, party_view, Guide, PartyView, PointView};
 use serde::Serialize;
 use std::sync::Arc;
 
@@ -78,10 +78,12 @@ pub struct ActiveMap {
     pub height: u32,
     pub image_url: String,
     pub level: Option<String>,
-    /// Pisos del SVG (vacío si el mapa no tiene capas).
+    /// Floors of a layered SVG, lowest first (empty if the map has no floors).
     pub floors: Vec<FloorView>,
     /// Piso que corresponde a tu última posición según las zonas del mapa.
     pub auto_floor: Option<String>,
+    /// The map's base floor: the one shown when no floor is picked and there's no position yet.
+    pub base_floor: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -101,6 +103,9 @@ pub struct Marker {
     pub game_x: f64,
     pub game_y: f64,
     pub game_z: f64,
+    /// Floor this position is on, for maps with floors.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -117,11 +122,16 @@ pub struct ExtractView {
     pub dimmed: bool,
     /// Distancia horizontal desde la última posición, si la hay.
     pub distance_m: Option<f64>,
+    /// Floor the extract is on, for maps with floors.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
 }
 
 pub(crate) fn marker(pack: &Pack, x: f64, y: f64, z: f64, dir: (f64, f64)) -> Marker {
     let (px, py) = pack.projection.project(x, z);
-    Marker { px, py, angle: pack.projection.screen_angle(dir.0, dir.1), game_x: x, game_y: y, game_z: z }
+    let angle = pack.projection.screen_angle(dir.0, dir.1);
+    let floor = floor_at(&pack.manifest, x, y, z);
+    Marker { px, py, angle, game_x: x, game_y: y, game_z: z, floor }
 }
 
 pub(crate) fn heading_dir(h: f64) -> (f64, f64) {
@@ -186,17 +196,16 @@ pub fn build(app: &App) -> View {
         let level = last.and_then(|l| {
             m.levels.iter().filter(|lv| lv.svg_layer.is_none()).find(|lv| (lv.y_min..lv.y_max).contains(&l.pos.y))
         });
-        let floors: Vec<FloorView> = m
-            .levels
-            .iter()
-            .filter(|lv| lv.svg_layer.is_some())
-            .map(|lv| FloorView { id: lv.id.clone(), name: lv.name.clone() })
-            .collect();
-        let auto_floor = last.and_then(|l| {
-            let hit = m.levels.iter().find(|lv| lv.zones.iter().any(|z| z.contains(l.pos.x, l.pos.y, l.pos.z)));
-            hit.or_else(|| m.levels.iter().find(|lv| lv.svg_layer == m.image.base_layer && lv.svg_layer.is_some()))
-                .map(|lv| lv.id.clone())
-        });
+        // Floors from the lowest to the highest: the base floor counts as height 0, the others by
+        // the bottom of their zones, so the interface can stack them like the building.
+        let height = |lv: &crate::maps::manifest::Level| {
+            lv.zones.iter().map(|z| z.y[0].min(z.y[1])).reduce(f64::min).unwrap_or(0.0)
+        };
+        let mut levels: Vec<_> = m.levels.iter().filter(|lv| lv.svg_layer.is_some()).collect();
+        levels.sort_by(|a, b| height(a).total_cmp(&height(b)));
+        let floors: Vec<FloorView> =
+            levels.iter().map(|lv| FloorView { id: lv.id.clone(), name: lv.name.clone() }).collect();
+        let auto_floor = last.and_then(|l| floor_at(m, l.pos.x, l.pos.y, l.pos.z));
         v.active_map = Some(ActiveMap {
             id: m.id.clone(),
             name: m.name.clone(),
@@ -206,6 +215,12 @@ pub fn build(app: &App) -> View {
             level: level.map(|lv| lv.name.clone()),
             floors,
             auto_floor,
+            base_floor: m
+                .image
+                .base_layer
+                .as_deref()
+                .and_then(|b| m.levels.iter().find(|lv| lv.svg_layer.as_deref() == Some(b)))
+                .map(|lv| lv.id.clone()),
         });
         v.player = last.map(|l| marker(pack, l.pos.x, l.pos.y, l.pos.z, l.dir));
         v.trail = inner.raid.trail.iter().map(|p| pack.projection.project(p.x, p.z)).map(|(a, b)| [a, b]).collect();
@@ -231,6 +246,7 @@ pub fn build(app: &App) -> View {
                     available,
                     dimmed,
                     distance_m,
+                    floor: floor_at(m, e.x, e.y, e.z),
                 }
             })
             .collect();
@@ -248,6 +264,7 @@ pub fn build(app: &App) -> View {
                     px,
                     py,
                     distance_m: last.map(|l| (p.x - l.pos.x).hypot(p.z - l.pos.z)),
+                    floor: floor_at(m, p.x, p.y, p.z),
                 }
             })
             .collect();

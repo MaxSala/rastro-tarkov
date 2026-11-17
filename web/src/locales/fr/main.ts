@@ -178,7 +178,7 @@ const main: Main = {
   onboarding: {
     title: "Premiers pas",
     folderStep: "Dossier des captures",
-    folderBody: "Rastro lit seulement les noms des captures du jeu pour savoir où tu es.",
+    folderBody: "Rastro sait où tu es grâce aux noms des captures du jeu : il lit le nom, jamais l’image.",
     folderFound: "Trouvé",
     folderMissing: "Ce dossier est introuvable",
     folderHint:
@@ -255,7 +255,7 @@ const main: Main = {
     quitHint: "Ferme l’application et son serveur local.",
     version: "Version",
     aboutBody:
-      "Rastro lit seulement les noms des captures du jeu. Il ne lit pas la mémoire, n’injecte rien et ne touche pas au processus du jeu.",
+      "Rastro lit deux choses que le jeu laisse sur ton PC : les noms de tes captures, qui contiennent ta position, et, si tu actives la détection de raid, les journaux du jeu, pour savoir sur quelle carte tu es et quand un raid commence. Il ne lit jamais la mémoire, n’injecte rien et ne touche pas au processus du jeu.",
     licenses: "Licences tierces dans NOTICE.md. Cartes de tarkov.dev sous CC BY-NC-SA 4.0.",
     folder: "Dossier des captures",
     folderHint: "Vide = dossier du jeu dans Documents. Rastro lit seulement les noms de fichiers.",

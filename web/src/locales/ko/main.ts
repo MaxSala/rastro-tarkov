@@ -176,7 +176,8 @@ const main: Main = {
   onboarding: {
     title: "시작하기",
     folderStep: "스크린샷 폴더",
-    folderBody: "Rastro는 현재 위치를 알기 위해 게임이 찍은 스크린샷의 파일 이름만 읽습니다.",
+    folderBody:
+      "Rastro는 게임 스크린샷의 파일 이름으로 위치를 알아냅니다. 이름만 읽고 이미지는 읽지 않습니다.",
     folderFound: "찾음",
     folderMissing: "이 폴더를 찾을 수 없습니다",
     folderHint:
@@ -251,7 +252,7 @@ const main: Main = {
     quitHint: "앱과 로컬 서버를 닫습니다.",
     version: "버전",
     aboutBody:
-      "Rastro는 게임 스크린샷의 파일 이름만 읽습니다. 메모리를 읽지 않고, 아무것도 주입하지 않으며, 게임 프로세스에 손대지 않습니다.",
+      "Rastro는 게임이 PC에 남기는 두 가지만 읽습니다. 위치가 담긴 스크린샷 파일 이름과, 레이드 감지를 켠 경우 어느 맵에 있는지와 레이드 시작을 알기 위한 게임 로그 파일입니다. 메모리를 읽지 않고, 아무것도 주입하지 않으며, 게임 프로세스에 손대지 않습니다.",
     licenses: "서드파티 라이선스는 NOTICE.md에 있습니다. tarkov.dev 맵은 CC BY-NC-SA 4.0입니다.",
     folder: "스크린샷 폴더",
     folderHint: "비워 두면 문서 안의 게임 폴더를 씁니다. Rastro는 파일 이름만 읽습니다.",

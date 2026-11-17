@@ -41,7 +41,7 @@ Limits: 64 KiB per incoming message and 4 sockets at a time.
 | `openDataDir` | | Opens the data folder in the system file manager. |
 | `setOpenInWindow` | `value` | Chooses the app window or the browser for the next launch. |
 | `quit` | | Closes Rastro. |
-| `setGameLogs` | `enabled`, `path` | Turns log-based detection on or off and sets the logs folder (empty means the default one). |
+| `setGameLogs` | `enabled`, `path?` | Turns log-based detection on or off. `path` sets the logs folder (empty means the default one); without it, the current folder is kept. |
 | `setGameMode` | `mode`: `auto`, `regular` or `pve` | Which game mode's tarkov.dev data to use. |
 | `marketRefresh` | `fleaName` | Downloads the price catalog for the current mode and language. `fleaName` is the flea market's name in the interface language (no control characters, at most 40). |
 | `setCheckUpdates` | `enabled` | Answers the one-time question, or changes the setting in *Settings → About*. Turning it on checks right away. |
@@ -55,7 +55,8 @@ Limits: 64 KiB per incoming message and 4 sockets at a time.
 Everything the interface draws, already projected to pixels on the active map:
 
 - **Settings** (`settings`, including `openInWindow`, `language` and `checkUpdates`: `true`, `false` or `null` when not asked yet), watcher status, installed packs and the data folder (`dataDir`).
-- **Active map** (`activeMap`): `imageUrl`, the level for the current height, `floors: [{ id, name }]` and `autoFloor`, the floor picked from your last position.
+- **Active map** (`activeMap`): `imageUrl`, the level for the current height, `floors: [{ id, name }]` (lowest first), `autoFloor`, the floor picked from your last position, and `baseFloor`, the one shown when nothing else applies.
+- **Floors.** On maps with floors, the player, extracts, points, peers' markers and `mapData` markers carry `floor`, the id of the floor they are on. The interface dims whatever isn't on the floor being shown.
 - **Player**: `px`, `py`, `angle` (screen degrees) and game coordinates.
 - **Trail**, **extracts** (with `distanceM`, `available` and `dimmed`) and **points** on the active map (with `distanceM`).
 - **Guidance**: `distanceM`, `heightDiffM` and `relativeDeg` (negative means turn left).
@@ -71,7 +72,7 @@ Everything the interface draws, already projected to pixels on the active map:
 
 | Message | Content |
 |---|---|
-| `mapData { mapId, markers, icons }` | Layers for the active map and the list of downloaded icons. Each marker is `{ kind: loot \| transit \| switch \| lock, group, icon, name, px, py }`, and locks add `key` and `power`. Sent on connect, when the map changes and when the available icons change. |
+| `mapData { mapId, markers, icons }` | Layers for the active map and the list of downloaded icons. Each marker is `{ kind: loot \| transit \| switch \| lock, group, icon, name, px, py }`, and locks add `key` and `power`. On maps with floors, each marker also has `floor`. Sent on connect, when the map changes and when the available icons change. |
 | `folderCheck { result: { path, exists, captures } }` | Reply to `checkFolder`. |
 | `logs { lines }` | Reply to `getLogs`. |
 | `interfaces { list: [{ name, ip }] }` | Reply to `listInterfaces`. |
@@ -94,7 +95,7 @@ Every request needs the `x-rastro-token` header. `POST` requests also need a mat
 | Method and path | Body | Response |
 |---|---|---|
 | `GET /api/packs` | | `{ packs }` |
-| `GET /api/packs/{id}/image` | Optional `?floor=<id>` | The pack's image (allowlisted by manifest). For layered SVGs, with only that floor visible. |
+| `GET /api/packs/{id}/image` | Optional `?floor=<id>` | The pack's image (allowlisted by manifest). For layered SVGs, that floor at full strength, the base floor dimmed and the other floors faint. |
 | `GET /api/icons/{name}` | | A marker icon (PNG) from the fixed list, if downloaded. |
 | `GET /api/market` | | The processed catalog `{ mode, lang, fetchedAt, items }` for the current mode and language, or 404 if it hasn't been downloaded. |
 | `GET /api/key-locations/{id}` | | `[{ mapId, mapName, count }]`: installed maps with locks for that key (24-hex item ID). |

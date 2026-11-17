@@ -6,6 +6,7 @@ Every idea here has to fit the project's ground rule: Rastro only reads files th
 
 ## Released
 
+- **0.5.0**: floor switcher with dimming of other floors, hover cards on the map, clearer explanation of what Rastro reads.
 - **0.4.0**: every app message in the user's language, update notifications (opt-in) and a *What's new* section.
 - **0.3.0**: keys on the map (locks layer, key cards, key ↔ map links) and the interface in 16 languages.
 - **0.2.0**: Market with offline price search, Ammo table, loading screen and the new logo.

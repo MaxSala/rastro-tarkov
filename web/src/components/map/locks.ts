@@ -5,7 +5,8 @@ import { itemById, type Catalog } from "../../lib/catalog";
 import type { MarkerView } from "../../lib/protocol";
 import { t } from "../../locales";
 import { useApp } from "../../store/app";
-import { toLatLng, tooltipContent } from "./markers";
+import { toLatLng } from "./markers";
+import { hoverCard, offFloor, otherFloor, tipOptions, type FloorCtx } from "./hover";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 export type LockType = keyof typeof t.keys.types;
@@ -36,8 +37,8 @@ export function drawLocks(
   list: MarkerView[],
   focus: string | null,
   catalog: Catalog | null,
+  floors: FloorCtx,
 ) {
-  const tip = { className: "rt-tip", direction: "top" as const, offset: [0, -10] as [number, number] };
   for (const m of list) {
     if (m.kind !== "lock" || !m.key) continue;
     const key = m.key;
@@ -46,12 +47,19 @@ export function drawLocks(
     root.className = "rt-lock";
     root.dataset.state = focus === null ? "idle" : focused ? "focus" : "dim";
     root.dataset.power = String(Boolean(m.power));
+    const off = offFloor(floors, m.floor);
+    root.dataset.off = String(off);
     root.append(glyph());
     const size = focused ? 26 : 20;
     const name = keyName(key, m.name, catalog);
-    const detail = [t.keys.types[lockType(m.group)], m.power ? t.keys.needsPower : ""]
-      .filter(Boolean)
-      .join(" · ");
+    const card = hoverCard({
+      tone: "lock",
+      kind: t.keys.types[lockType(m.group)],
+      title: name,
+      chips: m.power ? [t.keys.needsPower] : [],
+      floor: otherFloor(floors, m.floor),
+      hint: t.hover.keyCard,
+    });
     const icon = L.divIcon({
       html: root,
       className: "",
@@ -71,8 +79,13 @@ export function drawLocks(
         name: m.name,
       });
     };
-    L.marker(toLatLng(m.px, m.py), { icon, title: name, keyboard: false, zIndexOffset: focused ? 1000 : 0 })
-      .bindTooltip(tooltipContent(name, detail), tip)
+    L.marker(toLatLng(m.px, m.py), {
+      icon,
+      title: name,
+      keyboard: false,
+      zIndexOffset: focused ? 1000 : off ? -200 : 0,
+    })
+      .bindTooltip(card, tipOptions(size / 2 + 2))
       .on("click", open)
       .on("contextmenu", open)
       .addTo(group);

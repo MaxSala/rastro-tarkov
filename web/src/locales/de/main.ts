@@ -180,7 +180,8 @@ const main: Main = {
   onboarding: {
     title: "Erste Schritte",
     folderStep: "Screenshot-Ordner",
-    folderBody: "Rastro liest nur die Namen der Screenshots, die das Spiel macht, um zu wissen, wo du bist.",
+    folderBody:
+      "Rastro erkennt deine Position an den Dateinamen der Screenshots, die das Spiel macht: Es liest den Namen, nie das Bild.",
     folderFound: "Gefunden",
     folderMissing: "Dieser Ordner wurde nicht gefunden",
     folderHint:
@@ -256,7 +257,7 @@ const main: Main = {
     quitHint: "Schließt die Anwendung und ihren lokalen Server.",
     version: "Version",
     aboutBody:
-      "Rastro liest nur die Namen der Screenshots, die das Spiel macht. Es liest keinen Speicher, injiziert nichts und rührt den Spielprozess nicht an.",
+      "Rastro liest zwei Dinge, die das Spiel auf deinem PC ablegt: die Dateinamen deiner Screenshots, in denen deine Position steht, und – wenn du die Raid-Erkennung einschaltest – die Logdateien des Spiels, um zu wissen, auf welcher Karte du bist und wann ein Raid beginnt. Es liest keinen Speicher, injiziert nichts und rührt den Spielprozess nicht an.",
     licenses: "Lizenzen von Drittanbietern in NOTICE.md. Karten von tarkov.dev unter CC BY-NC-SA 4.0.",
     folder: "Screenshot-Ordner",
     folderHint: "Leer = Spielordner unter Dokumente. Rastro liest nur die Dateinamen.",

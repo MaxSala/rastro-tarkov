@@ -2,6 +2,22 @@
 
 All notable changes to Rastro. Each version lists what was added, changed and fixed; the newest is at the top.
 
+## [0.5.0] - 2026-11-17
+
+### Added
+- Floor switcher on the map. Maps with several floors show a panel at the top left, stacked like the building. The floor you're looking at is highlighted, the rest of the map is dimmed, and extracts, containers, locks, points and teammates on other floors fade out so you can tell at a glance what's on your level.
+- Hover cards. Hovering anything on the map shows what it is, its name, the distance from you, the floor it's on when that isn't the one shown, and what clicking does. Markers grow slightly on hover and hidden labels appear.
+- The setup guide now explains raid detection, which reads the game's log files, and lets you turn it on right there.
+
+### Changed
+- *Settings → About* and the README now say plainly that Rastro reads two things: screenshot file names and, if you turn on raid detection, the game's log files.
+- Every release now has the same file name, `Rastro-windows-x64.exe`, and is published as the latest release as soon as it's built. The download link in the README always gets the newest version.
+- English floor names read naturally ("2nd floor" instead of "Floor 2").
+
+### Fixed
+- Turning raid detection on or off no longer resets a custom logs folder.
+- A few internal error messages were still in Spanish.
+
 ## [0.4.0] - 2026-11-17
 
 ### Added

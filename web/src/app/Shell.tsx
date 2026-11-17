@@ -22,6 +22,7 @@ import { MapToolbar } from "./MapToolbar";
 import { EmptyMap } from "./EmptyMap";
 import { GuideReadout } from "./GuideReadout";
 import { LayerControl } from "./LayerControl";
+import { FloorRail } from "./FloorRail";
 import { Onboarding } from "./Onboarding";
 import { Rail } from "./Rail";
 import { StatusBar } from "./StatusBar";
@@ -75,6 +76,7 @@ export function Shell() {
             {view?.activeMap ? <MapView key={view.activeMap.id} active={view.activeMap} /> : <EmptyMap />}
             {view?.activeMap && <LayerControl />}
             {view?.activeMap && <MapToolbar />}
+            {view?.activeMap && <FloorRail />}
             <GuideReadout />
             <ConnectionBanner />
           </main>

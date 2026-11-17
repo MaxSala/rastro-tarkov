@@ -178,7 +178,7 @@ const main: Main = {
     title: "İlk adımlar",
     folderStep: "Ekran görüntüsü klasörü",
     folderBody:
-      "Rastro, nerede olduğunu bilmek için yalnızca oyunun aldığı ekran görüntülerinin adlarını okur.",
+      "Rastro, oyunun aldığı ekran görüntülerinin dosya adlarından nerede olduğunu bilir: adı okur, görüntüyü asla.",
     folderFound: "Bulundu",
     folderMissing: "Bu klasör bulunamadı",
     folderHint:
@@ -253,7 +253,7 @@ const main: Main = {
     quitHint: "Uygulamayı ve yerel sunucusunu kapatır.",
     version: "Sürüm",
     aboutBody:
-      "Rastro yalnızca oyunun ekran görüntülerinin adlarını okur. Belleği okumaz, hiçbir şey enjekte etmez ve oyun sürecine dokunmaz.",
+      "Rastro, oyunun bilgisayarında bıraktığı iki şeyi okur: konumunu içeren ekran görüntülerinin dosya adlarını ve raid algılamayı açarsan, hangi haritada olduğunu ve raid'in ne zaman başladığını bilmek için oyunun günlük dosyalarını. Belleği okumaz, hiçbir şey enjekte etmez ve oyun sürecine dokunmaz.",
     licenses: "Üçüncü taraf lisansları NOTICE.md içinde. tarkov.dev haritaları CC BY-NC-SA 4.0 lisanslıdır.",
     folder: "Ekran görüntüsü klasörü",
     folderHint: "Boş = Belgeler'deki oyun klasörü. Rastro yalnızca dosya adlarını okur.",

@@ -77,7 +77,7 @@ pub fn available(dir: &Path) -> Vec<String> {
 /// Valida un icono descargado: PNG real, pequeño y de lado razonable.
 pub fn validate(bytes: &[u8]) -> AppResult<()> {
     if bytes.len() > MAX_ICON_BYTES {
-        return Err(AppError::pack("icono demasiado grande"));
+        return Err(AppError::pack("icon too large"));
     }
     let png_size = |b: &[u8]| -> Option<(u32, u32)> {
         let w = u32::from_be_bytes(b.get(16..20)?.try_into().ok()?);
@@ -86,7 +86,7 @@ pub fn validate(bytes: &[u8]) -> AppResult<()> {
     };
     let (w, h) = png_size(bytes).ok_or_else(|| AppError::pack("invalid icon"))?;
     if w > MAX_ICON_SIDE || h > MAX_ICON_SIDE {
-        return Err(AppError::pack("icono demasiado grande"));
+        return Err(AppError::pack("icon too large"));
     }
     check(Kind::Png, bytes, (w, h)).map(|_| ()).map_err(AppError::InvalidPack)
 }

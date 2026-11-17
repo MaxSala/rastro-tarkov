@@ -8,7 +8,21 @@ const num = z.number().finite();
 const point = z.tuple([num, num]);
 const text = z.string().max(2000);
 
-const marker = z.object({ px: num, py: num, angle: num, gameX: num, gameY: num, gameZ: num });
+/** Floor id (maps with floors only): used to dim what isn't on the floor you're looking at. */
+const floorId = z
+  .string()
+  .regex(/^[a-z0-9-]{1,40}$/)
+  .optional();
+
+const marker = z.object({
+  px: num,
+  py: num,
+  angle: num,
+  gameX: num,
+  gameY: num,
+  gameZ: num,
+  floor: floorId,
+});
 
 export const viewSchema = z.object({
   version: text,
@@ -47,6 +61,10 @@ export const viewSchema = z.object({
         .string()
         .regex(/^[a-z0-9-]{1,40}$/)
         .nullable(),
+      baseFloor: z
+        .string()
+        .regex(/^[a-z0-9-]{1,40}$/)
+        .nullable(),
     })
     .nullable(),
   player: marker.nullable(),
@@ -64,6 +82,7 @@ export const viewSchema = z.object({
         available: z.boolean(),
         dimmed: z.boolean(),
         distanceM: num.nullable(),
+        floor: floorId,
       }),
     )
     .max(500),
@@ -78,6 +97,7 @@ export const viewSchema = z.object({
         px: num,
         py: num,
         distanceM: num.nullable(),
+        floor: floorId,
       }),
     )
     .max(500),
@@ -172,6 +192,7 @@ export const markerSchema = z.object({
   // Cerraduras: id de la llave (objeto de tarkov.dev) y si necesita corriente.
   key: itemId.optional(),
   power: z.boolean().optional(),
+  floor: floorId,
 });
 
 export const serverMsgSchema = z.discriminatedUnion("type", [
@@ -240,7 +261,7 @@ export type ClientMsg =
   | { type: "openDataDir" }
   | { type: "setOpenInWindow"; value: boolean }
   | { type: "quit" }
-  | { type: "setGameLogs"; enabled: boolean; path: string }
+  | { type: "setGameLogs"; enabled: boolean; path?: string }
   | { type: "setGameMode"; mode: "auto" | "regular" | "pve" }
   | { type: "marketRefresh"; fleaName: string }
   | { type: "setLanguage"; lang: Lang }

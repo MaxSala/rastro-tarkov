@@ -183,7 +183,8 @@ const main: Main = {
   onboarding: {
     title: "Prvé kroky",
     folderStep: "Priečinok snímok",
-    folderBody: "Rastro číta len názvy snímok obrazovky z hry, aby vedel, kde si.",
+    folderBody:
+      "Rastro zistí tvoju pozíciu z názvov snímok obrazovky z hry: číta názov súboru, nikdy obrázok.",
     folderFound: "Nájdený",
     folderMissing: "Tento priečinok sa nenašiel",
     folderHint:
@@ -258,7 +259,7 @@ const main: Main = {
     quitHint: "Zavrie aplikáciu a jej lokálny server.",
     version: "Verzia",
     aboutBody:
-      "Rastro číta len názvy snímok obrazovky z hry. Nečíta pamäť, nič nevkladá a nesiaha na proces hry.",
+      "Rastro číta dve veci, ktoré hra necháva vo tvojom PC: názvy snímok obrazovky, v ktorých je tvoja pozícia, a ak zapneš detekciu raidu, logy hry, aby vedel, na akej si mape a kedy raid začína. Nečíta pamäť, nič nevkladá a nesiaha na proces hry.",
     licenses: "Licencie tretích strán v NOTICE.md. Mapy z tarkov.dev pod CC BY-NC-SA 4.0.",
     folder: "Priečinok snímok",
     folderHint: "Prázdne = priečinok hry v Dokumentoch. Rastro číta len názvy súborov.",

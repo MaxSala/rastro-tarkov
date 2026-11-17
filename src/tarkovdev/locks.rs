@@ -86,7 +86,7 @@ mod tests {
         );
         assert!(make_lock("../../etc", "door", false, "", (0.0, 0.0, 0.0)).is_none());
         // Sin nombre (lo normal en json.tarkov.dev) el paquete debe seguir siendo válido.
-        let unnamed = make_lock("5780cf7f2459777de4559322", "door", false, "", (1.0, 1.0, 1.0)).expect("sin nombre");
+        let unnamed = make_lock("5780cf7f2459777de4559322", "door", false, "", (1.0, 1.0, 1.0)).expect("unnamed lock");
         assert_eq!(unnamed.name, "");
         assert!(make_lock("5780cf7f2459777de4559322", "door", false, "", (f64::NAN, 0.0, 0.0)).is_none());
     }

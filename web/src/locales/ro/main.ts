@@ -185,7 +185,8 @@ const main: Main = {
   onboarding: {
     title: "Primii pași",
     folderStep: "Dosarul capturilor",
-    folderBody: "Rastro citește doar numele capturilor făcute de joc ca să știe unde ești.",
+    folderBody:
+      "Rastro știe unde ești din numele capturilor făcute de joc: citește numele, niciodată imaginea.",
     folderFound: "Găsit",
     folderMissing: "Dosarul nu a fost găsit",
     folderHint:
@@ -260,7 +261,7 @@ const main: Main = {
     quitHint: "Închide aplicația și serverul ei local.",
     version: "Versiune",
     aboutBody:
-      "Rastro citește doar numele capturilor făcute de joc. Nu citește memoria, nu injectează nimic și nu atinge procesul jocului.",
+      "Rastro citește două lucruri pe care jocul le lasă pe PC-ul tău: numele capturilor, care conțin poziția ta, și, dacă activezi detectarea raidului, fișierele jurnal ale jocului, ca să știe pe ce hartă ești și când începe un raid. Nu citește memoria, nu injectează nimic și nu atinge procesul jocului.",
     licenses: "Licențe terțe în NOTICE.md. Hărțile tarkov.dev sub CC BY-NC-SA 4.0.",
     folder: "Dosarul capturilor",
     folderHint: "Gol = dosarul jocului din Documente. Rastro citește doar numele fișierelor.",

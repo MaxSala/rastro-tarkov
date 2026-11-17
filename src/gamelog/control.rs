@@ -42,12 +42,15 @@ impl App {
         g.state = GameState::default();
     }
 
-    pub fn set_game_logs(self: &Arc<Self>, enabled: bool, path: &str) -> AppResult<()> {
-        let path = path.trim();
+    /// Turns raid detection on or off. `path`: the logs folder (empty = the default one), or
+    /// `None` to keep the current one, which is what the on/off switches send.
+    pub fn set_game_logs(self: &Arc<Self>, enabled: bool, path: Option<&str>) -> AppResult<()> {
         let mut inner = lock(&self.inner);
         let mut next = inner.config.clone();
         next.read_game_logs = enabled;
-        next.logs_dir = (!path.is_empty()).then(|| PathBuf::from(path));
+        if let Some(path) = path.map(str::trim) {
+            next.logs_dir = (!path.is_empty()).then(|| PathBuf::from(path));
+        }
         next.validate()?;
         config::save(&self.paths.config_file, &next)?;
         inner.config = next;

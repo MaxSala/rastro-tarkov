@@ -1,4 +1,5 @@
-// Constructores de marcadores con nodos DOM. Nunca se usa HTML en texto: todo va por textContent.
+// Marker builders made of DOM nodes. No HTML strings: every text goes through textContent.
+// `off` marks things on a floor other than the one shown; the CSS dims them.
 import L from "leaflet";
 import type { ExtractView, PointKind } from "../../lib/protocol";
 import { kindColor } from "../../lib/pointKinds";
@@ -17,13 +18,6 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, className: string, te
   return node;
 }
 
-export function tooltipContent(title: string, body: string): HTMLElement {
-  const root = el("div", "");
-  root.append(el("div", "rt-tip-title", title));
-  if (body) root.append(el("div", "rt-tip-body", body));
-  return root;
-}
-
 function img(url: string, size: number): HTMLImageElement {
   const i = document.createElement("img");
   i.src = url;
@@ -35,17 +29,23 @@ function img(url: string, size: number): HTMLImageElement {
 }
 
 /** Icono de tarkov.dev como marcador (sin etiqueta). */
-export function imageIcon(url: string, size: number): L.DivIcon {
+export function imageIcon(url: string, size: number, off = false): L.DivIcon {
   const root = el("div", "rt-ico");
+  root.dataset.off = String(off);
   root.style.width = `${size}px`;
   root.style.height = `${size}px`;
   root.append(img(url, size));
   return L.divIcon({ html: root, className: "", iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
 }
 
-export function extractIcon(e: ExtractView, selected: boolean): { icon: L.DivIcon; label: HTMLElement } {
+export function extractIcon(
+  e: ExtractView,
+  selected: boolean,
+  off = false,
+): { icon: L.DivIcon; label: HTMLElement } {
   const url = iconUrl(`extract_${e.faction}`);
   const root = el("div", "rt-marker");
+  root.dataset.off = String(off);
   if (url) {
     const wrap = el("div", "rt-ico rt-ico-exfil");
     wrap.dataset.dimmed = String(e.dimmed);
@@ -69,9 +69,10 @@ export function extractIcon(e: ExtractView, selected: boolean): { icon: L.DivIco
 }
 
 /** Transición (triángulo) o interruptor (cuadrado hueco). */
-export function markerIcon(kind: "transit" | "switch"): L.DivIcon {
+export function markerIcon(kind: "transit" | "switch", off = false): L.DivIcon {
   const root = el("div", "rt-mk");
   root.dataset.kind = kind;
+  root.dataset.off = String(off);
   return L.divIcon({ html: root, className: "", iconSize: [12, 12], iconAnchor: [6, 6] });
 }
 
@@ -91,9 +92,10 @@ function arrowSvg(fill: string): SVGSVGElement {
   return svg;
 }
 
-/** Flecha con rumbo. `angle` ya viene calculado por el backend en grados de pantalla. */
-export function arrowIcon(angle: number, color: string): L.DivIcon {
+/** Arrow with heading. `angle` comes from the backend, in screen degrees. */
+export function arrowIcon(angle: number, color: string, off = false): L.DivIcon {
   const root = el("div", "rt-arrow");
+  root.dataset.off = String(off);
   root.style.transform = `rotate(${angle}deg)`;
   root.append(arrowSvg(color));
   return L.divIcon({ html: root, className: "", iconSize: [24, 24], iconAnchor: [12, 12] });
@@ -136,8 +138,10 @@ export function pinIcon(
   kind: PointKind,
   name: string,
   selected: boolean,
+  off = false,
 ): { icon: L.DivIcon; label: HTMLElement } {
   const root = el("div", "rt-pin");
+  root.dataset.off = String(off);
   root.dataset.selected = String(selected);
   const svg = document.createElementNS(SVG_NS, "svg");
   svg.setAttribute("viewBox", "0 0 24 24");

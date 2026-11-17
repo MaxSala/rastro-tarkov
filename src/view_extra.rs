@@ -1,6 +1,6 @@
 //! Partes de la vista que no van en cada instantánea principal: party y capas del mapa.
 
-use crate::maps::manifest::MarkerKind;
+use crate::maps::manifest::{Manifest, MarkerKind};
 use crate::maps::pack::Pack;
 use crate::party::{lock, Status, PING_TTL_SECS};
 use crate::state::App;
@@ -47,6 +47,8 @@ pub struct PointView {
     pub px: f64,
     pub py: f64,
     pub distance_m: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -76,6 +78,18 @@ pub struct MarkerView {
     pub key: Option<String>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub power: bool,
+    /// Floor the marker is on, for maps with floors.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
+}
+
+/// Floor (level id) a game position is on, for maps with selectable floors: the first level
+/// whose zones contain it, otherwise the base floor. `None` on maps without floors.
+pub fn floor_at(m: &Manifest, x: f64, y: f64, z: f64) -> Option<String> {
+    let base = m.image.base_layer.as_deref()?;
+    let hit =
+        m.levels.iter().filter(|lv| lv.svg_layer.is_some()).find(|lv| lv.zones.iter().any(|zn| zn.contains(x, y, z)));
+    hit.or_else(|| m.levels.iter().find(|lv| lv.svg_layer.as_deref() == Some(base))).map(|lv| lv.id.clone())
 }
 
 #[derive(Debug, Serialize)]
@@ -123,7 +137,8 @@ pub fn map_markers(app: &App) -> Option<(String, Vec<MarkerView>, Vec<String>)> 
             }
             .filter(|i| has(i));
             let (key, power) = (m.key.clone(), m.power);
-            MarkerView { kind: m.kind, group: m.group.clone(), icon, name: m.name.clone(), px, py, key, power }
+            let floor = floor_at(&pack.manifest, m.x, m.y, m.z);
+            MarkerView { kind: m.kind, group: m.group.clone(), icon, name: m.name.clone(), px, py, key, power, floor }
         })
         .collect();
     Some((pack.manifest.id.clone(), list, available))
@@ -162,8 +177,12 @@ pub(crate) fn party_view(app: &App, pack: Option<&Pack>) -> PartyView {
         .filter_map(|p| {
             let age = u64::try_from(p.at.elapsed().as_millis()).unwrap_or(u64::MAX);
             let (px, py) = pack?.projection.project(p.x, p.z);
-            (age < ttl_ms).then_some(PingView { color: p.color, px, py, remaining_ms: ttl_ms - age })
+            (age < ttl_ms).then(|| PingView { color: p.color, px, py, remaining_ms: ttl_ms.saturating_sub(age) })
         })
         .collect();
     PartyView { status, error, is_host: r.is_host, code: r.code.as_ref().map(|c| c.to_string()), peers, pings }
 }
+
+#[cfg(test)]
+#[path = "floor_tests.rs"]
+mod floor_tests;

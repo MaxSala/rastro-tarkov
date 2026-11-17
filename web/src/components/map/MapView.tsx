@@ -13,6 +13,7 @@ import { declutter, toLatLng } from "./markers";
 import { drawLocks, lockPoints } from "./locks";
 import { useAutoCatalog } from "../market/DataGate";
 import { useMapImage } from "./useMapImage";
+import { NO_FLOORS, type FloorCtx } from "./hover";
 
 type ActiveMap = NonNullable<View["activeMap"]>;
 const LAYERS = [
@@ -41,6 +42,21 @@ export function MapView({ active }: { active: ActiveMap }) {
       ? `${active.imageUrl}?floor=${encodeURIComponent(floor)}`
       : active.imageUrl;
   const image = useMapImage(imagePath, nonce);
+  // The floor on screen: the one picked, the one you're on, or the base floor.
+  const shownFloor = active.floors.length > 0 ? (floor ?? active.baseFloor) : null;
+  const floorNames = JSON.stringify(active.floors);
+  const floors = useMemo<FloorCtx>(
+    () =>
+      shownFloor
+        ? {
+            shown: shownFloor,
+            names: Object.fromEntries(
+              (JSON.parse(floorNames) as ActiveMap["floors"]).map((f) => [f.id, f.name]),
+            ),
+          }
+        : NO_FLOORS,
+    [shownFloor, floorNames],
+  );
   const hasShown = useRef(false);
   const hiddenGroups = useApp((s) => s.hiddenGroups);
   const iconsVersion = useApp((s) => s.iconsVersion);
@@ -140,6 +156,7 @@ export function MapView({ active }: { active: ActiveMap }) {
     view?.selectedExtract,
     layerOn.extracts,
     iconsVersion,
+    floors,
   ]);
   useEffect(() => {
     const m = map.current;
@@ -148,8 +165,8 @@ export function MapView({ active }: { active: ActiveMap }) {
     extracts.clearLayers();
     points.clearLayers();
     const items = [
-      ...(layerOn.extracts ? drawExtracts(extracts, view.extracts, view.selectedExtract) : []),
-      ...drawPoints(points, view.points, view.selectedExtract),
+      ...(layerOn.extracts ? drawExtracts(extracts, view.extracts, view.selectedExtract, floors) : []),
+      ...drawPoints(points, view.points, view.selectedExtract, floors),
     ];
     const run = () => declutter(m, items);
     requestAnimationFrame(run);
@@ -171,10 +188,11 @@ export function MapView({ active }: { active: ActiveMap }) {
         (k) => k !== "lock" && layerOn[k],
         new Set(hiddenGroups),
         canvas.current,
+        floors,
       );
-      if (layerOn.lock) drawLocks(g, mapMarkers.list, focusKey, catalog);
+      if (layerOn.lock) drawLocks(g, mapMarkers.list, focusKey, catalog, floors);
     }
-  }, [mapMarkers, layerOn, active.id, theme, hiddenGroups, iconsVersion, focusKey, catalog]);
+  }, [mapMarkers, layerOn, active.id, theme, hiddenGroups, iconsVersion, focusKey, catalog, floors]);
 
   // Al resaltar una llave (desde el Mercado o la tarjeta), encuadrar sus cerraduras una vez.
   const fitted = useRef("");
@@ -199,9 +217,10 @@ export function MapView({ active }: { active: ActiveMap }) {
     view?.guide,
     view?.party.peers,
     view?.party.pings,
+    floors,
   ]);
   useEffect(() => {
-    if (view) drawDynamic(groups.current, view, prefs.trail);
+    if (view) drawDynamic(groups.current, view, prefs.trail, floors);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- la clave serializada resume las dependencias
   }, [dynamicKey]);
 

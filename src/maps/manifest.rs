@@ -156,6 +156,8 @@ pub struct Extract {
 pub struct Credits {
     pub author: String,
     pub license: String,
+    /// Optional, as documented in MAP_PACK.md.
+    #[serde(default)]
     pub source: String,
 }
 

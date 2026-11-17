@@ -175,7 +175,7 @@ const main: Main = {
   onboarding: {
     title: "入门",
     folderStep: "截图文件夹",
-    folderBody: "Rastro 只读取游戏截图的文件名来判断你的位置。",
+    folderBody: "Rastro 通过游戏截图的文件名得知你的位置：只读取文件名，从不读取图片内容。",
     folderFound: "已找到",
     folderMissing: "找不到此文件夹",
     folderHint:
@@ -249,7 +249,8 @@ const main: Main = {
     quit: "退出 Rastro",
     quitHint: "关闭应用及其本地服务器。",
     version: "版本",
-    aboutBody: "Rastro 只读取游戏截图的文件名。它不读取内存、不注入任何东西，也不触碰游戏进程。",
+    aboutBody:
+      "Rastro 只读取游戏留在你电脑上的两样东西：包含你位置的截图文件名；以及在你开启战局检测时，用来判断当前地图和战局开始时间的游戏日志文件。它不读取内存、不注入任何东西，也不触碰游戏进程。",
     licenses: "第三方许可见 NOTICE.md。tarkov.dev 地图采用 CC BY-NC-SA 4.0。",
     folder: "截图文件夹",
     folderHint: "留空 = 文档中的游戏文件夹。Rastro 只读取文件名。",

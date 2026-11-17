@@ -177,7 +177,7 @@ const main: Main = {
   onboarding: {
     title: "Primeiros passos",
     folderStep: "Pasta de prints",
-    folderBody: "O Rastro lê só os nomes dos prints que o jogo tira para saber onde você está.",
+    folderBody: "O Rastro sabe onde estás pelos nomes dos prints que o jogo tira: lê o nome, nunca a imagem.",
     folderFound: "Encontrada",
     folderMissing: "Esta pasta não foi encontrada",
     folderHint:
@@ -252,7 +252,7 @@ const main: Main = {
     quitHint: "Fecha o aplicativo e o seu servidor local.",
     version: "Versão",
     aboutBody:
-      "O Rastro lê só os nomes dos prints que o jogo tira. Não lê memória, não injeta nada e não toca no processo do jogo.",
+      "O Rastro lê duas coisas que o jogo deixa no teu PC: os nomes dos teus prints, que contêm a tua posição, e, se ativares a deteção de raid, os logs do jogo, para saber em que mapa estás e quando começa a raid. Nunca lê memória, não injeta nada e não toca no processo do jogo.",
     licenses: "Licenças de terceiros em NOTICE.md. Mapas do tarkov.dev com CC BY-NC-SA 4.0.",
     folder: "Pasta de prints",
     folderHint: "Vazio = pasta do jogo em Documentos. O Rastro lê só os nomes dos arquivos.",
