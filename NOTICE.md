@@ -1,28 +1,74 @@
-# Avisos de terceros
+# Third-party notices
 
-Rastro (MIT, ver LICENSE) incluye o enlaza estos componentes principales. La lista completa de crates sale de `cargo deny list` y la de paquetes npm de `npm ls`.
+Rastro's own source code is released under the MIT License (see [LICENSE](LICENSE)). It includes or links to the third-party components listed below, each under its own license.
 
-## Tipografía (incluida en la web compilada)
-- Geist Sans y Geist Mono — Vercel, SIL Open Font License 1.1, vía `@fontsource-variable/geist` y `@fontsource-variable/geist-mono`.
+This list covers the main components. The complete dependency trees, with every license, can be printed with `cargo deny list` (Rust) and `npm ls --all` (web).
 
-## Web
-- React y React DOM — MIT · Leaflet — BSD-2-Clause · zod — MIT · zustand — MIT · lucide-react — ISC · @radix-ui/react-tooltip — MIT · Tailwind CSS (build) — MIT · Vite (build) — MIT.
+## Bundled with the application
 
-## Rust
-- tokio, axum, hyper, tower, tracing, bytes — MIT · serde, serde_json, regex, anyhow, thiserror, getrandom, sha2, data-encoding, zeroize, directories, rust-embed, reqwest, zip, opener — MIT o Apache-2.0 · snow — Apache-2.0 o MIT · rustls — Apache-2.0, ISC o MIT · ring — Apache-2.0 e ISC · webpki-roots — CDLA-Permissive-2.0 · notify — CC0-1.0 · subtle, curve25519-dalek — BSD-3-Clause · if-addrs — MIT o BSD-3-Clause · embed-resource (solo al compilar: icono del .exe) — MIT · tao, wry — MIT o Apache-2.0 (ventana y WebView; en Linux enlazan gtk-rs y webkit2gtk-rs, MIT; en Windows webview2-com, MIT) · option-ext — MPL-2.0 · datos ICU — Unicode-3.0.
+### Typeface
 
-## Mapas y datos de tarkov.dev (descargados por el usuario, no incluidos)
-- Mapas SVG — the-hideout/tarkov-dev-svg-maps, CC BY-NC-SA 4.0, con prohibición expresa de uso en software de trampas. Rastro guarda la autoría y la licencia en cada paquete.
-- Calibración y pisos — `src/data/maps.json` de the-hideout/tarkov-dev.
-- Iconos de marcadores — `public/maps/interactive` de the-hideout/tarkov-dev, licencia MIT, Copyright (c) 2019 Oskar Risberg. La tabla de equivalencias de contenedores (`src/tarkovdev/icons.rs`) sigue la de `src/pages/map/map-images.mjs` del mismo proyecto.
-- Extracciones, transiciones, interruptores y contenedores — API pública de tarkov.dev.
+- **Geist Sans** and **Geist Mono** by Vercel, SIL Open Font License 1.1, via `@fontsource-variable/geist` and `@fontsource-variable/geist-mono`.
 
-## Precios y munición de tarkov.dev (descargados por el usuario, no incluidos)
-- Catálogo de objetos, comerciantes y textos — `json.tarkov.dev`, el mismo origen que usa la web de tarkov.dev. El formato se tomó leyendo su cliente (the-hideout/tarkov-dev, MIT); no se ha copiado código.
-- Iconos de objetos — `assets.tarkov.dev`. Pertenecen a Battlestate Games; Rastro solo los guarda en caché para mostrarlos.
-- Nombres de calibre (`src/market/build.rs`) — tabla propia con los nombres de uso común.
+### Web interface
 
-## Paquete demo
-- `assets/demo/` — creado para este proyecto, CC0-1.0. No representa ningún mapa real de Escape from Tarkov.
+| Component | License |
+|---|---|
+| React, React DOM | MIT |
+| Leaflet | BSD-2-Clause |
+| zod | MIT |
+| zustand | MIT |
+| lucide-react | ISC |
+| @radix-ui/react-tooltip | MIT |
+| Tailwind CSS (build only) | MIT |
+| Vite (build only) | MIT |
 
-Escape from Tarkov es una marca de Battlestate Games. Rastro no está afiliado ni respaldado por Battlestate Games.
+### Rust
+
+| Component | License |
+|---|---|
+| tokio, axum, hyper, tower, tracing, bytes | MIT |
+| serde, serde_json, regex, anyhow, thiserror, getrandom, sha2, data-encoding, zeroize, directories, rust-embed, reqwest, zip, opener | MIT or Apache-2.0 |
+| snow | Apache-2.0 or MIT |
+| rustls | Apache-2.0, ISC or MIT |
+| ring | Apache-2.0 and ISC |
+| webpki-roots | CDLA-Permissive-2.0 |
+| notify | CC0-1.0 |
+| subtle, curve25519-dalek | BSD-3-Clause |
+| if-addrs | MIT or BSD-3-Clause |
+| tao, wry (window and WebView) | MIT or Apache-2.0 |
+| gtk-rs, webkit2gtk-rs (Linux only) | MIT |
+| webview2-com (Windows only) | MIT |
+| embed-resource (build only, embeds the `.exe` icon) | MIT |
+| option-ext | MPL-2.0 |
+| ICU data | Unicode-3.0 |
+
+### Demo map
+
+- `assets/demo/` was made for this project and is released under CC0-1.0. It is an invented map and does not represent any real Escape from Tarkov location.
+
+## Downloaded by the user, not bundled
+
+Rastro does not ship any of the following. They are downloaded only when the user asks for them, and each keeps its own license.
+
+### tarkov.dev
+
+[tarkov.dev](https://tarkov.dev) is maintained by [The Hideout](https://github.com/the-hideout) community. It started as [tarkov-tools](https://github.com/kokarn/tarkov-tools) by Oskar Risberg ([@kokarn](https://github.com/kokarn)).
+
+- **SVG maps** from [the-hideout/tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/), with an explicit ban on use in cheats or software that gives an unfair advantage. Rastro stores the author and license inside every installed map pack.
+- **Map calibration and floors** from `src/data/maps.json` in [the-hideout/tarkov-dev](https://github.com/the-hideout/tarkov-dev).
+- **Marker icons** from `public/maps/interactive` in [the-hideout/tarkov-dev](https://github.com/the-hideout/tarkov-dev), MIT License, Copyright (c) 2019 Oskar Risberg. Rastro's container-to-icon table (`src/tarkovdev/icons.rs`) follows the one in `src/pages/map/map-images.mjs` of the same project.
+- **Extracts, transits, switches, containers and locks** from the public tarkov.dev API and data files.
+- **Item catalog, traders and translations** from `json.tarkov.dev`, the same source the tarkov.dev website uses. The data format was learned by reading the tarkov.dev client (MIT); no code was copied.
+
+### Item icons
+
+- Served by `assets.tarkov.dev`. The images belong to Battlestate Games; Rastro only caches them locally to display them.
+
+### Other data
+
+- **Caliber names** (`src/market/build.rs`) are Rastro's own table of commonly used names.
+
+## Trademarks
+
+*Escape from Tarkov* is a trademark of Battlestate Games. Game content and materials are trademarks and copyrights of Battlestate Games and its licensors. Rastro is not affiliated with or endorsed by Battlestate Games or by tarkov.dev.

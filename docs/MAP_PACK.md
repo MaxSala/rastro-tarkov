@@ -1,22 +1,26 @@
-# Formato del paquete de mapa (schema_version 2)
+# Map pack format (schema version 2)
 
-Un paquete es un `.zip` con exactamente dos archivos en la raíz, sin carpetas:
+Most players never need this: the maps from tarkov.dev are built and installed by Rastro with one click. This document is for anyone who wants to make their own map pack, for example for a location tarkov.dev doesn't have an SVG for, such as Labs.
+
+## The package
+
+A map pack is a `.zip` with exactly two files at its root and no folders:
 
 ```
 manifest.json
-<imagen>.svg | .webp | .png | .jpg
+<image>.svg | .webp | .png | .jpg
 ```
 
-Límites: 50 MB comprimido, 100 MB descomprimido, ratio 100:1, imagen de 1 a 8192 px por lado.
+Limits: 50 MB compressed, 100 MB uncompressed, a compression ratio of at most 100:1, and an image between 1 and 8192 pixels on each side.
 
 ## manifest.json
 
 ```json
 {
   "schema_version": 2,
-  "id": "mi-mapa",
-  "name": "Mi mapa",
-  "image": { "file": "mi-mapa.webp", "width": 4096, "height": 4096 },
+  "id": "my-map",
+  "name": "My map",
+  "image": { "file": "my-map.webp", "width": 4096, "height": 4096 },
   "calibration": {
     "points": [
       { "game": [-500, 500], "pixel": [0, 0] },
@@ -26,42 +30,58 @@ Límites: 50 MB comprimido, 100 MB descomprimido, ratio 100:1, imagen de 1 a 819
     "invert_z": false,
     "rotation": 0
   },
-  "levels": [{ "id": "planta-baja", "name": "Planta baja", "y_min": -10, "y_max": 5 }],
+  "levels": [{ "id": "ground-floor", "name": "Ground floor", "y_min": -10, "y_max": 5 }],
   "extracts": [
-    { "id": "puerta-norte", "name": "Puerta norte", "faction": "pmc", "x": -80, "y": 0, "z": 470, "conditions": "Siempre abierta." }
+    { "id": "north-gate", "name": "North gate", "faction": "pmc", "x": -80, "y": 0, "z": 470, "conditions": "Always open." }
   ],
-  "credits": { "author": "Tu nombre", "license": "CC-BY-4.0", "source": "https://…" }
+  "credits": { "author": "Your name", "license": "CC-BY-4.0", "source": "https://…" }
 }
 ```
 
-| Campo | Regla |
-|-------|-------|
-| `schema_version` | `2` (se aceptan paquetes `1`, sin `markers`) |
-| `id` | `^[a-z0-9-]{1,40}$`; también es el nombre de la carpeta instalada |
-| `name` | 1-60 caracteres, sin caracteres de control |
-| `image.file` | nombre plano en minúsculas: `[a-z0-9_-]{1,40}` + `.svg/.webp/.png/.jpg/.jpeg` |
-| `image.width/height` | 1-8192; en raster deben coincidir con la cabecera de la imagen |
-| `calibration.points` | dos puntos: coordenadas del juego `[x, z]` → píxel `[x, y]` (origen arriba a la izquierda). Deben diferir en ambos ejes |
-| `invert_x`, `invert_z` | opcionales; invierten el eje antes de rotar |
-| `rotation` | 0, 90, 180 o 270 (sentido horario) |
-| `levels` | opcional, máximo 16; `y_min ≤ altura < y_max`. En SVG por capas: `svg_layer` (id del grupo `<g>`) y `zones` (hasta 64 `{ "x": [a, b], "z": [a, b], "y": [min, max] }` para la selección automática) |
-| `image.base_layer` | opcional: grupo `<g>` del SVG que siempre se ve (planta base) |
-| `extracts` | máximo 500; `faction`: `pmc`, `scav` o `shared`; `conditions` hasta 300 caracteres |
-| `markers` | opcional (v2), máximo 3000: `{ "kind": "loot" \| "transit" \| "switch", "group": "weapon-box", "name": "…", "x": 0, "y": 0, "z": 0 }`; `group` opcional (tipo de contenedor, para icono y filtro); `name` hasta 80 caracteres |
-| `game_ids` | opcional, máximo 8: nombres internos del mapa en el juego (`[A-Za-z0-9_]{1,40}`, p. ej. `bigmap`) para la detección automática por logs |
-| `raid_minutes` | opcional, 1-600: duración de la raid, para el tiempo restante |
-| `credits` | `author` y `license` obligatorios (≤100); `source` opcional (≤300) |
+### Fields
 
-No se admiten campos desconocidos. Todo texto se muestra como texto plano.
+| Field | Rules |
+|---|---|
+| `schema_version` | `2`. Version `1` packs, which have no `markers`, are still accepted. |
+| `id` | Matches `^[a-z0-9-]{1,40}$`. Also used as the name of the installed folder. |
+| `name` | 1 to 60 characters, no control characters. |
+| `image.file` | A plain lowercase file name: `[a-z0-9_-]{1,40}` followed by `.svg`, `.webp`, `.png`, `.jpg` or `.jpeg`. |
+| `image.width`, `image.height` | 1 to 8192. For raster images they must match the image header. |
+| `image.base_layer` | Optional. For layered SVGs, the id of the `<g>` group that is always visible (the base floor). |
+| `calibration.points` | Two points, each mapping game coordinates `[x, z]` to a pixel `[x, y]`, with the origin at the top-left of the image. The two points must differ on both axes. |
+| `calibration.invert_x`, `invert_z` | Optional. Flip an axis before rotating. |
+| `calibration.rotation` | `0`, `90`, `180` or `270`, clockwise. |
+| `levels` | Optional, up to 16. A level applies when `y_min ≤ height < y_max`. In layered SVGs, `svg_layer` names the `<g>` group for that floor, and `zones` (up to 64 boxes of the form `{ "x": [a, b], "z": [a, b], "y": [min, max] }`) drive automatic floor selection. |
+| `extracts` | Up to 500. `faction` is `pmc`, `scav` or `shared`; `conditions` is up to 300 characters. |
+| `markers` | Optional, version 2 only, up to 3000. See below. |
+| `game_ids` | Optional, up to 8. The game's internal names for this map (`[A-Za-z0-9_]{1,40}`, for example `bigmap` for Customs), used to switch maps automatically from the game logs. |
+| `raid_minutes` | Optional, 1 to 600. Raid length, used to show the time left. |
+| `credits` | `author` and `license` are required (up to 100 characters each); `source` is optional (up to 300). |
 
-### Calibrar
+Unknown fields are rejected. Every piece of text is displayed as plain text, never as HTML.
 
-1. Haz dos capturas en el juego en puntos fáciles de reconocer en la imagen, lejos entre sí y no alineados en ningún eje. El nombre del archivo trae `x, y, z`: usa `x` y `z`.
-2. Anota el píxel de cada punto en la imagen.
-3. Si el mapa sale girado o en espejo, ajusta `rotation` o `invert_x`/`invert_z`.
+### Markers
 
-### SVG
+```json
+{ "kind": "loot", "group": "weapon-box", "name": "Weapon box", "x": 0, "y": 0, "z": 0 }
+```
 
-Se rechazan SVG con `<script>`, `<foreignObject>`, `<iframe>`, `<embed>`, `<object>`, DOCTYPE o entidades, atributos `on*`, `javascript:`, `@import` y cualquier `href`/`src`/`url()` que no sea `#id` o una imagen raster en `data:`. Además, el SVG solo se muestra como imagen, nunca dentro de la página.
+- `kind` is `loot`, `transit`, `switch` or `lock`.
+- `group` is optional. For `loot` it's the container type, used for the icon and the container filter. For `lock` it's `door`, `container`, `trunk` or `lock`.
+- `name` is up to 80 characters. It may only be empty for locks, whose name comes from the key.
+- Locks also take `key`, the 24-character hexadecimal tarkov.dev ID of the key item, and `power`, set to `true` when the lock needs power (omit it otherwise).
 
-El paquete de ejemplo está en `assets/demo/` y se instala desde la app con «Instalar demo».
+## Calibrating
+
+1. In game, take two screenshots at spots that are easy to find on your image, far apart and not lined up on either axis. Each screenshot's file name contains `x, y, z`; use `x` and `z`.
+2. Note the pixel position of each spot on the image.
+3. Put both pairs in `calibration.points`.
+4. If the map comes out rotated or mirrored, adjust `rotation`, `invert_x` or `invert_z`.
+
+## SVG rules
+
+SVGs are rejected if they contain `<script>`, `<foreignObject>`, `<iframe>`, `<embed>` or `<object>`, a DOCTYPE or entities, `on*` event attributes, `javascript:` URLs, `@import`, or any `href`, `src` or `url()` that isn't a local `#id` or an embedded raster image (`data:`). On top of that, an SVG is only ever displayed as an image, never inserted into the page.
+
+## Example
+
+The demo pack in `assets/demo/` is a complete, working example. You can install it from the app with *Install demo*.
