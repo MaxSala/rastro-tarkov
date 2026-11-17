@@ -1,0 +1,82 @@
+/* Pantalla de carga: un único momento animado (el logotipo dibuja su rastro). */
+.rt-splash {
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+.rt-splash[data-leaving="true"] {
+  opacity: 0;
+  transform: scale(0.995);
+  pointer-events: none;
+}
+.rt-logo-anim .rt-logo-tile {
+  animation: rt-fade 360ms ease-out both;
+}
+.rt-logo-anim .rt-logo-dot2 {
+  animation: rt-dot 300ms ease-out 180ms both;
+}
+.rt-logo-anim .rt-logo-dot1 {
+  animation: rt-dot 300ms ease-out 300ms both;
+}
+.rt-logo-anim .rt-logo-arrow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rt-arrow 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 380ms both;
+}
+.rt-splash-word {
+  animation: rt-rise 420ms ease-out 560ms both;
+}
+.rt-splash-status {
+  animation: rt-fade 300ms ease-out 760ms both;
+}
+.rt-splash-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: rt-scan 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes rt-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rt-dot {
+  from {
+    opacity: 0;
+    r: 0;
+  }
+}
+@keyframes rt-arrow {
+  from {
+    opacity: 0;
+    transform: translate(-9px, 9px) scale(0.92);
+  }
+}
+@keyframes rt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes rt-scan {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rt-logo-anim *,
+  .rt-splash-word,
+  .rt-splash-status,
+  .rt-splash-bar::after {
+    animation: none !important;
+  }
+  .rt-splash {
+    transition: none;
+  }
+}

@@ -1,0 +1,32 @@
+// Recursos del ejecutable de Windows: icono y datos de versión (Propiedades → Detalles).
+// Lo compila build.rs con embed-resource. Las rutas son relativas a la raíz del proyecto.
+1 ICON "assets/brand/rastro.ico"
+
+1 VERSIONINFO
+FILEVERSION 0,3,0,0
+PRODUCTVERSION 0,3,0,0
+FILEFLAGSMASK 0x3F
+FILEFLAGS 0x0
+FILEOS 0x40004
+FILETYPE 0x1
+FILESUBTYPE 0x0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904B0"
+    BEGIN
+      VALUE "CompanyName", "Rastro"
+      VALUE "FileDescription", "Rastro"
+      VALUE "FileVersion", "0.3.0"
+      VALUE "InternalName", "rastro"
+      VALUE "LegalCopyright", "MIT License"
+      VALUE "OriginalFilename", "rastro.exe"
+      VALUE "ProductName", "Rastro"
+      VALUE "ProductVersion", "0.3.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1200
+  END
+END

@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "leaflet/dist/leaflet.css";
+
+/*
+ * Tokens. Una escala de grises por tema (no es una inversión: cada valor está ajustado),
+ * un único acento ámbar y la paleta fija de jugadores del party.
+ * Contraste: --fg-muted sobre --surface ≥ 4.5:1 en ambos temas.
+ */
+:root,
+[data-theme="dark"] {
+  --gray-1: #0b0b0b;
+  --gray-2: #121212;
+  --gray-3: #181818;
+  --gray-4: #1f1f1f;
+  --gray-5: #262626;
+  --gray-6: #303030;
+  --gray-8: #4d4d4d;
+  --gray-10: #8f8f8f;
+  --gray-11: #b4b4b4;
+  --gray-12: #ededed;
+  --accent: #f0a43a;
+  --accent-fg: #1c1206;
+  --accent-soft: rgb(240 164 58 / 14%);
+  --danger: #f27b6b;
+  --ok: #4cc38a;
+  --map-bg: #161616;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --gray-1: #ffffff;
+  --gray-2: #fafafa;
+  --gray-3: #f3f3f3;
+  --gray-4: #ebebeb;
+  --gray-5: #e3e3e3;
+  --gray-6: #d6d6d6;
+  --gray-8: #a3a3a3;
+  --gray-10: #666666;
+  --gray-11: #474747;
+  --gray-12: #141414;
+  --accent: #9a5a00;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(154 90 0 / 10%);
+  --danger: #c2321f;
+  --ok: #1d7a4c;
+  --map-bg: #e9e9e9;
+  color-scheme: light;
+}
+
+:root {
+  --player-0: #4fa3f7;
+  --player-1: #3dd68c;
+  --player-2: #f76b6b;
+  --player-3: #c084fc;
+  --player-4: #f2c94c;
+  --player-5: #2dd4bf;
+  --player-6: #fb923c;
+  --player-7: #f472b6;
+}
+
+@theme inline {
+  --color-app: var(--gray-1);
+  --color-surface: var(--gray-2);
+  --color-raised: var(--gray-3);
+  --color-hover: var(--gray-4);
+  --color-active: var(--gray-5);
+  --color-line: var(--gray-5);
+  --color-line-strong: var(--gray-6);
+  --color-placeholder: var(--gray-8);
+  --color-fg-muted: var(--gray-10);
+  --color-fg-soft: var(--gray-11);
+  --color-fg: var(--gray-12);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-ok: var(--ok);
+}
+
+/* Valores fijos: @theme normal para que existan también como variables CSS. */
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Escala tipográfica corta, pensada para una herramienta densa. */
+  --text-2xs: 11px;
+  --text-2xs--line-height: 16px;
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 13px;
+  --text-sm--line-height: 20px;
+  --text-base: 14px;
+  --text-base--line-height: 20px;
+  --text-lg: 16px;
+  --text-lg--line-height: 24px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-app text-fg font-sans text-sm antialiased;
+    font-feature-settings: "ss01";
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  ::selection {
+    background: var(--accent-soft);
+  }
+  /* Barras de desplazamiento finas y discretas, coherentes con el tema. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-6) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--gray-6);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--gray-8);
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  html,
+  body {
+    overflow: hidden;
+  }
+  dialog::backdrop {
+    background: rgb(0 0 0 / 55%);
+  }
+}
+
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

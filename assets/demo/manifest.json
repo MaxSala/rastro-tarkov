@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "demo",
+  "name": "Demo (cuadrícula)",
+  "image": {
+    "file": "demo.svg",
+    "width": 1000,
+    "height": 1000
+  },
+  "calibration": {
+    "points": [
+      {
+        "game": [
+          -500,
+          500
+        ],
+        "pixel": [
+          0,
+          0
+        ]
+      },
+      {
+        "game": [
+          500,
+          -500
+        ],
+        "pixel": [
+          1000,
+          1000
+        ]
+      }
+    ],
+    "invert_x": false,
+    "invert_z": false,
+    "rotation": 0
+  },
+  "levels": [
+    {
+      "id": "suelo",
+      "name": "Planta baja",
+      "y_min": -10,
+      "y_max": 5
+    },
+    {
+      "id": "alto",
+      "name": "Planta alta",
+      "y_min": 5,
+      "y_max": 40
+    }
+  ],
+  "extracts": [
+    {
+      "id": "puerta-norte",
+      "name": "Puerta norte",
+      "faction": "pmc",
+      "x": -80,
+      "y": 0,
+      "z": 470,
+      "conditions": "Siempre abierta."
+    },
+    {
+      "id": "tunel-este",
+      "name": "Túnel este",
+      "faction": "pmc",
+      "x": 470,
+      "y": -4,
+      "z": 60,
+      "conditions": "Requiere linterna. Abierta al 50 %."
+    },
+    {
+      "id": "muelle",
+      "name": "Muelle",
+      "faction": "scav",
+      "x": -430,
+      "y": 0,
+      "z": -380,
+      "conditions": "Solo scav."
+    },
+    {
+      "id": "tejado",
+      "name": "Tejado del bloque C",
+      "faction": "scav",
+      "x": 120,
+      "y": 22,
+      "z": -120,
+      "conditions": "Subir por la escalera exterior."
+    },
+    {
+      "id": "puente",
+      "name": "Puente viejo",
+      "faction": "shared",
+      "x": 300,
+      "y": 2,
+      "z": -430,
+      "conditions": "Pagar 5.000 ₽."
+    },
+    {
+      "id": "garaje",
+      "name": "Garaje sur",
+      "faction": "shared",
+      "x": -250,
+      "y": -2,
+      "z": -90,
+      "conditions": "Activar el interruptor del bloque A."
+    }
+  ],
+  "credits": {
+    "author": "Rastro",
+    "license": "CC0-1.0",
+    "source": "Generado para pruebas; no representa ningún mapa real."
+  }
+}

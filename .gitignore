@@ -1,0 +1,31 @@
+# Compilación (se regenera con build.bat / build.sh)
+/target
+/web/node_modules
+/web/dist
+/web/.vite
+*.tsbuildinfo
+
+# Restos de aplicar parches (git apply --reject, patch)
+*.orig
+*.rej
+
+# Logs y datos personales: los logs del juego llevan ids de cuenta y de perfil
+*.log
+Logs/
+log_*.zip
+
+# Paquetes, parches y zips sueltos en la raíz (mapas importados, entregas)
+/*.zip
+/*.patch
+
+# Variables locales
+.env
+.env.*
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,82 @@
+[package]
+name = "rastro"
+version = "0.3.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Segundo monitor pasivo para Escape from Tarkov: posición, extracciones y party."
+license = "MIT"
+publish = false
+
+[dependencies]
+# Runtime asíncrono para servidor, vigilante de capturas y party.
+tokio = { version = "=1.54.1", features = ["rt-multi-thread", "macros", "net", "sync", "time", "fs", "io-util", "signal"] }
+# Servidor HTTP local con WebSocket; sin features por defecto para reducir superficie.
+axum = { version = "=0.8.9", default-features = false, features = ["http1", "json", "tokio", "ws"] }
+# Vigila la carpeta de capturas sin sondeo.
+notify = "=8.2.2"
+# Serialización de config, manifest y protocolos.
+serde = { version = "=1.0.229", features = ["derive"] }
+# Formato JSON para todo lo anterior.
+serde_json = "=1.0.154"
+# Parser del nombre de las capturas y validación de ids.
+regex = "=1.13.1"
+# Rutas estándar de datos y Documentos del usuario en cada SO.
+directories = "=6.0.0"
+# Embebe la web compilada en el binario.
+rust-embed = "=8.14.0"
+# Descarga de paquetes de mapa por URL (solo rustls, sin cookies ni proxies).
+reqwest = { version = "=0.12.28", default-features = false, features = ["rustls-tls"] }
+# Lectura de paquetes .zip (solo deflate).
+zip = { version = "=9.6.0", default-features = false, features = ["deflate"] }
+# Protocolo Noise auditado para el party; evita criptografía propia.
+snow = "=0.10.0"
+# SHA-256 para verificar paquetes.
+sha2 = "=0.10.9"
+# Aleatoriedad del SO para token de sesión y secreto del party.
+getrandom = "=0.3.4"
+# Base32 del código de invitación y hex del hash.
+data-encoding = "=2.11.1"
+# Registro estructurado.
+tracing = "=0.1.44"
+# Salida de los logs a consola.
+tracing-subscriber = { version = "=0.3.23", default-features = false, features = ["fmt", "std", "ansi"] }
+# Errores tipados con mensajes en español.
+thiserror = "=2.0.21"
+# Errores de arranque en main.
+anyhow = "=1.0.104"
+# Abre el navegador por defecto al arrancar.
+opener = "=0.9.0"
+# Borra el secreto del party de memoria al cerrar la sala.
+zeroize = "=1.9.1"
+# Comparación en tiempo constante del token de sesión.
+subtle = "=2.6.1"
+# Lista las interfaces locales para elegir dónde escucha el party.
+if-addrs = "=0.15.0"
+# Ventana nativa de escritorio (la misma base que Tauri).
+tao = "=0.37.2"
+# WebView del sistema (WebView2 en Windows) para mostrar la interfaz dentro de la ventana.
+wry = "=0.57.1"
+
+[build-dependencies]
+# Icono y datos de versión del .exe en Windows (en otros sistemas no hace nada).
+embed-resource = "=3.0.12"
+
+[dev-dependencies]
+# Reloj virtual en los tests de latido y timeout.
+tokio = { version = "=1.54.1", features = ["test-util"] }
+# Construye zips maliciosos en los tests (mismo crate, con escritura).
+zip = { version = "=9.6.0", default-features = false, features = ["deflate"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

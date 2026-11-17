@@ -1,0 +1,146 @@
+//! Partes de la vista que no van en cada instantánea principal: party y capas del mapa.
+
+use crate::maps::manifest::MarkerKind;
+use crate::maps::pack::Pack;
+use crate::party::{lock, Status, PING_TTL_SECS};
+use crate::state::App;
+use crate::view::{heading_dir, marker, Marker};
+use serde::Serialize;
+
+#[derive(Debug, Default, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PartyView {
+    pub status: &'static str,
+    pub error: Option<String>,
+    pub is_host: bool,
+    pub code: Option<String>,
+    pub peers: Vec<PeerView>,
+    pub pings: Vec<PingView>,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PeerView {
+    pub id: u8,
+    pub name: String,
+    pub color: u8,
+    pub on_this_map: bool,
+    pub marker: Option<Marker>,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PingView {
+    pub color: u8,
+    pub px: f64,
+    pub py: f64,
+    pub remaining_ms: u64,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MarkerView {
+    pub kind: MarkerKind,
+    /// Tipo de contenedor (para filtrar).
+    pub group: Option<String>,
+    /// Icono de tarkov.dev, si está descargado.
+    pub icon: Option<&'static str>,
+    pub name: String,
+    pub px: f64,
+    pub py: f64,
+    /// Cerraduras: id de la llave y si necesita corriente.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub power: bool,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct KeyLocation {
+    pub map_id: String,
+    pub map_name: String,
+    pub count: usize,
+}
+
+/// Mapas instalados con cerraduras que abre esta llave (para «Ver en el mapa» desde el Mercado).
+pub fn key_locations(app: &App, key: &str) -> Vec<KeyLocation> {
+    let inner = lock(&app.inner);
+    let mut out: Vec<KeyLocation> = inner
+        .store
+        .all()
+        .filter_map(|p| {
+            let count = p.manifest.markers.iter().filter(|m| m.key.as_deref() == Some(key)).count();
+            (count > 0).then(|| KeyLocation { map_id: p.manifest.id.clone(), map_name: p.manifest.name.clone(), count })
+        })
+        .collect();
+    out.sort_by(|a, b| a.map_name.cmp(&b.map_name));
+    out
+}
+
+/// Capas del mapa activo, ya proyectadas, y los iconos disponibles. Se envían al cambiar de mapa.
+pub fn map_markers(app: &App) -> Option<(String, Vec<MarkerView>, Vec<String>)> {
+    use crate::tarkovdev::icons;
+    let available = icons::available(&app.paths.icons_dir);
+    let has = |n: &str| available.iter().any(|a| a == n);
+    let inner = lock(&app.inner);
+    let pack = App::active_pack(&inner)?;
+    drop(inner);
+    let list = pack
+        .manifest
+        .markers
+        .iter()
+        .map(|m| {
+            let (px, py) = pack.projection.project(m.x, m.z);
+            let icon = match m.kind {
+                MarkerKind::Loot => m.group.as_deref().and_then(icons::container_icon),
+                MarkerKind::Transit => Some("extract_transit"),
+                MarkerKind::Switch => Some("switch"),
+                MarkerKind::Lock => Some("lock"),
+            }
+            .filter(|i| has(i));
+            let (key, power) = (m.key.clone(), m.power);
+            MarkerView { kind: m.kind, group: m.group.clone(), icon, name: m.name.clone(), px, py, key, power }
+        })
+        .collect();
+    Some((pack.manifest.id.clone(), list, available))
+}
+
+pub(crate) fn party_view(app: &App, pack: Option<&Pack>) -> PartyView {
+    let party = lock(&app.party);
+    let r = lock(&party.roster);
+    let (status, error) = match &r.status {
+        Status::Idle => ("idle", None),
+        Status::Hosting => ("hosting", None),
+        Status::Connecting => ("connecting", None),
+        Status::Connected => ("connected", None),
+        Status::Error(e) => ("error", Some(e.clone())),
+    };
+    let map_id = pack.map(|p| p.manifest.id.as_str());
+    let peers = r
+        .peers
+        .iter()
+        .map(|(id, p)| {
+            let here = p.pos.as_ref().filter(|q| Some(q.map.as_str()) == map_id);
+            PeerView {
+                id: *id,
+                name: p.name.clone(),
+                color: p.color,
+                on_this_map: here.is_some(),
+                marker: here.zip(pack).map(|(q, pk)| marker(pk, q.x, q.y, q.z, heading_dir(q.heading))),
+            }
+        })
+        .collect();
+    let ttl_ms = PING_TTL_SECS * 1000;
+    let pings = r
+        .pings
+        .iter()
+        .filter(|p| Some(p.map.as_str()) == map_id)
+        .filter_map(|p| {
+            let age = u64::try_from(p.at.elapsed().as_millis()).unwrap_or(u64::MAX);
+            let (px, py) = pack?.projection.project(p.x, p.z);
+            (age < ttl_ms).then_some(PingView { color: p.color, px, py, remaining_ms: ttl_ms - age })
+        })
+        .collect();
+    PartyView { status, error, is_host: r.is_host, code: r.code.as_ref().map(|c| c.to_string()), peers, pings }
+}

@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+<rect width="1000" height="1000" fill="#1c1c1c"/>
+<line x1="0" y1="0" x2="0" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="0" x2="1000" y2="0" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="25" y1="0" x2="25" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="25" x2="1000" y2="25" stroke="#262626" stroke-width="1"/>
+<line x1="50" y1="0" x2="50" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="50" x2="1000" y2="50" stroke="#262626" stroke-width="1"/>
+<line x1="75" y1="0" x2="75" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="75" x2="1000" y2="75" stroke="#262626" stroke-width="1"/>
+<line x1="100" y1="0" x2="100" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="100" x2="1000" y2="100" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="125" y1="0" x2="125" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="125" x2="1000" y2="125" stroke="#262626" stroke-width="1"/>
+<line x1="150" y1="0" x2="150" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="150" x2="1000" y2="150" stroke="#262626" stroke-width="1"/>
+<line x1="175" y1="0" x2="175" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="175" x2="1000" y2="175" stroke="#262626" stroke-width="1"/>
+<line x1="200" y1="0" x2="200" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="200" x2="1000" y2="200" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="225" y1="0" x2="225" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="225" x2="1000" y2="225" stroke="#262626" stroke-width="1"/>
+<line x1="250" y1="0" x2="250" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="250" x2="1000" y2="250" stroke="#262626" stroke-width="1"/>
+<line x1="275" y1="0" x2="275" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="275" x2="1000" y2="275" stroke="#262626" stroke-width="1"/>
+<line x1="300" y1="0" x2="300" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="300" x2="1000" y2="300" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="325" y1="0" x2="325" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="325" x2="1000" y2="325" stroke="#262626" stroke-width="1"/>
+<line x1="350" y1="0" x2="350" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="350" x2="1000" y2="350" stroke="#262626" stroke-width="1"/>
+<line x1="375" y1="0" x2="375" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="375" x2="1000" y2="375" stroke="#262626" stroke-width="1"/>
+<line x1="400" y1="0" x2="400" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="400" x2="1000" y2="400" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="425" y1="0" x2="425" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="425" x2="1000" y2="425" stroke="#262626" stroke-width="1"/>
+<line x1="450" y1="0" x2="450" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="450" x2="1000" y2="450" stroke="#262626" stroke-width="1"/>
+<line x1="475" y1="0" x2="475" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="475" x2="1000" y2="475" stroke="#262626" stroke-width="1"/>
+<line x1="500" y1="0" x2="500" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="500" x2="1000" y2="500" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="525" y1="0" x2="525" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="525" x2="1000" y2="525" stroke="#262626" stroke-width="1"/>
+<line x1="550" y1="0" x2="550" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="550" x2="1000" y2="550" stroke="#262626" stroke-width="1"/>
+<line x1="575" y1="0" x2="575" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="575" x2="1000" y2="575" stroke="#262626" stroke-width="1"/>
+<line x1="600" y1="0" x2="600" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="600" x2="1000" y2="600" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="625" y1="0" x2="625" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="625" x2="1000" y2="625" stroke="#262626" stroke-width="1"/>
+<line x1="650" y1="0" x2="650" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="650" x2="1000" y2="650" stroke="#262626" stroke-width="1"/>
+<line x1="675" y1="0" x2="675" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="675" x2="1000" y2="675" stroke="#262626" stroke-width="1"/>
+<line x1="700" y1="0" x2="700" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="700" x2="1000" y2="700" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="725" y1="0" x2="725" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="725" x2="1000" y2="725" stroke="#262626" stroke-width="1"/>
+<line x1="750" y1="0" x2="750" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="750" x2="1000" y2="750" stroke="#262626" stroke-width="1"/>
+<line x1="775" y1="0" x2="775" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="775" x2="1000" y2="775" stroke="#262626" stroke-width="1"/>
+<line x1="800" y1="0" x2="800" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="800" x2="1000" y2="800" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="825" y1="0" x2="825" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="825" x2="1000" y2="825" stroke="#262626" stroke-width="1"/>
+<line x1="850" y1="0" x2="850" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="850" x2="1000" y2="850" stroke="#262626" stroke-width="1"/>
+<line x1="875" y1="0" x2="875" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="875" x2="1000" y2="875" stroke="#262626" stroke-width="1"/>
+<line x1="900" y1="0" x2="900" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="900" x2="1000" y2="900" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="925" y1="0" x2="925" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="925" x2="1000" y2="925" stroke="#262626" stroke-width="1"/>
+<line x1="950" y1="0" x2="950" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="950" x2="1000" y2="950" stroke="#262626" stroke-width="1"/>
+<line x1="975" y1="0" x2="975" y2="1000" stroke="#262626" stroke-width="1"/>
+<line x1="0" y1="975" x2="1000" y2="975" stroke="#262626" stroke-width="1"/>
+<line x1="1000" y1="0" x2="1000" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<line x1="0" y1="1000" x2="1000" y2="1000" stroke="#3a3a3a" stroke-width="1.5"/>
+<rect x="140" y="160" width="180" height="90" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<rect x="420" y="120" width="120" height="160" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<rect x="680" y="220" width="170" height="110" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<rect x="180" y="520" width="110" height="200" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<rect x="470" y="470" width="200" height="140" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<rect x="720" y="600" width="150" height="190" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<rect x="300" y="800" width="240" height="80" fill="#2b2b2b" stroke="#4a4a4a" stroke-width="1.5"/>
+<path d="M0 420 C 250 400, 400 460, 600 430 S 900 380, 1000 400" fill="none" stroke="#3f3f3f" stroke-width="14"/>
+<text x="6" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">A1</text>
+<text x="6" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">A2</text>
+<text x="6" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">A3</text>
+<text x="6" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">A4</text>
+<text x="6" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">A5</text>
+<text x="6" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">A6</text>
+<text x="6" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">A7</text>
+<text x="6" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">A8</text>
+<text x="6" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">A9</text>
+<text x="6" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">A10</text>
+<text x="106" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">B1</text>
+<text x="106" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">B2</text>
+<text x="106" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">B3</text>
+<text x="106" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">B4</text>
+<text x="106" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">B5</text>
+<text x="106" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">B6</text>
+<text x="106" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">B7</text>
+<text x="106" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">B8</text>
+<text x="106" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">B9</text>
+<text x="106" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">B10</text>
+<text x="206" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">C1</text>
+<text x="206" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">C2</text>
+<text x="206" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">C3</text>
+<text x="206" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">C4</text>
+<text x="206" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">C5</text>
+<text x="206" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">C6</text>
+<text x="206" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">C7</text>
+<text x="206" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">C8</text>
+<text x="206" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">C9</text>
+<text x="206" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">C10</text>
+<text x="306" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">D1</text>
+<text x="306" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">D2</text>
+<text x="306" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">D3</text>
+<text x="306" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">D4</text>
+<text x="306" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">D5</text>
+<text x="306" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">D6</text>
+<text x="306" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">D7</text>
+<text x="306" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">D8</text>
+<text x="306" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">D9</text>
+<text x="306" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">D10</text>
+<text x="406" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">E1</text>
+<text x="406" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">E2</text>
+<text x="406" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">E3</text>
+<text x="406" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">E4</text>
+<text x="406" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">E5</text>
+<text x="406" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">E6</text>
+<text x="406" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">E7</text>
+<text x="406" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">E8</text>
+<text x="406" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">E9</text>
+<text x="406" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">E10</text>
+<text x="506" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">F1</text>
+<text x="506" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">F2</text>
+<text x="506" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">F3</text>
+<text x="506" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">F4</text>
+<text x="506" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">F5</text>
+<text x="506" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">F6</text>
+<text x="506" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">F7</text>
+<text x="506" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">F8</text>
+<text x="506" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">F9</text>
+<text x="506" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">F10</text>
+<text x="606" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">G1</text>
+<text x="606" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">G2</text>
+<text x="606" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">G3</text>
+<text x="606" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">G4</text>
+<text x="606" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">G5</text>
+<text x="606" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">G6</text>
+<text x="606" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">G7</text>
+<text x="606" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">G8</text>
+<text x="606" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">G9</text>
+<text x="606" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">G10</text>
+<text x="706" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">H1</text>
+<text x="706" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">H2</text>
+<text x="706" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">H3</text>
+<text x="706" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">H4</text>
+<text x="706" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">H5</text>
+<text x="706" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">H6</text>
+<text x="706" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">H7</text>
+<text x="706" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">H8</text>
+<text x="706" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">H9</text>
+<text x="706" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">H10</text>
+<text x="806" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">I1</text>
+<text x="806" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">I2</text>
+<text x="806" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">I3</text>
+<text x="806" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">I4</text>
+<text x="806" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">I5</text>
+<text x="806" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">I6</text>
+<text x="806" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">I7</text>
+<text x="806" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">I8</text>
+<text x="806" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">I9</text>
+<text x="806" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">I10</text>
+<text x="906" y="16" font-family="monospace" font-size="11" fill="#5c5c5c">J1</text>
+<text x="906" y="116" font-family="monospace" font-size="11" fill="#5c5c5c">J2</text>
+<text x="906" y="216" font-family="monospace" font-size="11" fill="#5c5c5c">J3</text>
+<text x="906" y="316" font-family="monospace" font-size="11" fill="#5c5c5c">J4</text>
+<text x="906" y="416" font-family="monospace" font-size="11" fill="#5c5c5c">J5</text>
+<text x="906" y="516" font-family="monospace" font-size="11" fill="#5c5c5c">J6</text>
+<text x="906" y="616" font-family="monospace" font-size="11" fill="#5c5c5c">J7</text>
+<text x="906" y="716" font-family="monospace" font-size="11" fill="#5c5c5c">J8</text>
+<text x="906" y="816" font-family="monospace" font-size="11" fill="#5c5c5c">J9</text>
+<text x="906" y="916" font-family="monospace" font-size="11" fill="#5c5c5c">J10</text>
+<text x="500" y="985" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6b6b6b">Mapa de demostración — datos inventados</text>
+</svg>
