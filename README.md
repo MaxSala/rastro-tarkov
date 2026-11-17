@@ -200,7 +200,7 @@ assets/       Logo, app icon and the demo map
 docs/         Security model, protocol, map pack format and roadmap
 ```
 
-The documents in `docs/` are in Spanish for now.
+[docs/SECURITY.md](docs/SECURITY.md) is in English. The protocol, map pack format and roadmap documents in `docs/` are still in Spanish.
 
 ### Translations
 
