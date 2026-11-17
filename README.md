@@ -1,17 +1,19 @@
 <p align="center">
-  <img src="assets/brand/rastro.svg" width="72" height="72" alt="Rastro logo">
-</p>
-
-<h1 align="center">Rastro</h1>
-
-<p align="center">
-  A second-monitor map companion for <i>Escape from Tarkov</i>.<br>
-  Free, open source and non-commercial. It never touches the game.
+  <img src="docs/images/banner.png" alt="Rastro: a second-monitor map for Escape from Tarkov" width="100%">
 </p>
 
 <p align="center">
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest"><img src="https://img.shields.io/github/v/release/MaxSala/rastro-tarkov?label=Download&color=f0a43a" alt="Download the latest version"></a>
   <a href="https://discord.gg/H4pRxGBGDb"><img src="https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?logo=discord&logoColor=white" alt="Join the Discord"></a>
+  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows&logoColor=white" alt="Windows 10 and 11">
+  <img src="https://img.shields.io/github/license/MaxSala/rastro-tarkov?color=4c4c4c" alt="MIT License">
+</p>
+
+<p align="center">
+  <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest"><b>Download for Windows</b></a> ·
+  <a href="#download">How to install</a> ·
+  <a href="#features">Features</a> ·
+  <a href="https://discord.gg/H4pRxGBGDb">Discord</a>
 </p>
 
 ---
@@ -22,6 +24,29 @@ It works from the screenshots you take in game. Every screenshot Tarkov saves ha
 
 > [!IMPORTANT]
 > Rastro is an unofficial fan project. It is not affiliated with or endorsed by Battlestate Games, nor by the tarkov.dev team. Using third-party tools with Escape from Tarkov is your own responsibility under BSG's terms of service.
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/map.png" alt="Customs with your position, trail and guidance to an extract"></td>
+    <td width="50%"><img src="docs/images/keys.png" alt="The locks layer with a key card open"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Map.</b> Your position and trail, extracts, and live distance and direction to the one you pick.</td>
+    <td align="center"><b>Keys.</b> Every locked door on the map, which key opens it and what it costs.</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/images/market.png" alt="Market search with an item's offers"></td>
+    <td width="50%"><img src="docs/images/ammo.png" alt="Ammo table for one caliber"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Market.</b> Instant offline search with flea and trader prices, sorted by value per slot.</td>
+    <td align="center"><b>Ammo.</b> Damage, penetration and armor damage for every round, with the cheapest place to buy it.</td>
+  </tr>
+</table>
+
+<sub>Map imagery by the <a href="https://github.com/the-hideout/tarkov-dev-svg-maps">tarkov.dev contributors</a>, CC BY-NC-SA 4.0. Prices and item data from <a href="https://tarkov.dev">tarkov.dev</a>.</sub>
 
 ## Features
 
