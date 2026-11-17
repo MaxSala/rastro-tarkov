@@ -1,6 +1,7 @@
 //! Vigila la carpeta de capturas. Solo mira nombres de archivo: no lee, mueve ni borra nada.
 
 use super::parser::{self, Capture};
+use crate::msg::UserMsg;
 use notify::{EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 use std::path::Path;
 use tokio::sync::mpsc;
@@ -16,19 +17,23 @@ pub struct WatchGuard {
     _watcher: RecommendedWatcher,
 }
 
-pub fn spawn(dir: &Path, tx: mpsc::Sender<CaptureEvent>) -> Result<WatchGuard, String> {
+pub fn spawn(dir: &Path, tx: mpsc::Sender<CaptureEvent>) -> Result<WatchGuard, UserMsg> {
     if !dir.is_dir() {
-        return Err(format!("La carpeta {} no existe.", dir.display()));
+        return Err(UserMsg::with(
+            "folderMissing",
+            dir.display(),
+            format!("The folder {} does not exist.", dir.display()),
+        ));
     }
     let handler = move |res: notify::Result<notify::Event>| match res {
         Ok(event) => handle(event, &tx),
-        Err(e) => tracing::warn!("error del vigilante de capturas: {e}"),
+        Err(e) => tracing::warn!("screenshot watcher error: {e}"),
     };
-    let mut watcher =
-        notify::recommended_watcher(handler).map_err(|e| format!("No se pudo crear el vigilante: {e}"))?;
+    let mut watcher = notify::recommended_watcher(handler)
+        .map_err(|e| UserMsg::with("watchFailed", &e, format!("Could not start watching: {e}")))?;
     watcher
         .watch(dir, RecursiveMode::NonRecursive)
-        .map_err(|e| format!("No se pudo vigilar {}: {e}", dir.display()))?;
+        .map_err(|e| UserMsg::with("watchFailed", &e, format!("Could not watch {}: {e}", dir.display())))?;
     Ok(WatchGuard { _watcher: watcher })
 }
 
@@ -41,7 +46,7 @@ fn handle(event: notify::Event, tx: &mpsc::Sender<CaptureEvent>) {
         if let Some(ev) = to_event(&path) {
             // Si la cola está llena se descarta: llegará otra captura.
             if tx.try_send(ev).is_err() {
-                tracing::warn!("cola de capturas llena; se descarta una");
+                tracing::warn!("screenshot queue full; dropping one");
             }
         }
     }
@@ -52,7 +57,7 @@ fn to_event(path: &Path) -> Option<CaptureEvent> {
     match parser::parse(&file_name) {
         Some(capture) => Some(CaptureEvent { file_name, capture }),
         None => {
-            tracing::debug!("archivo ignorado (no es una captura con coordenadas)");
+            tracing::debug!("file ignored (not a screenshot with coordinates)");
             None
         }
     }

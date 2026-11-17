@@ -23,7 +23,7 @@ pub fn check_folder(raw: &str) -> AppResult<FolderCheck> {
     let path = PathBuf::from(raw.trim());
     if raw.len() > 1024 || !path.is_absolute() {
         return Err(AppError::bad(
-            "escribe una ruta absoluta, por ejemplo C:\\Users\\tu\\Documents\\Escape from Tarkov\\Screenshots",
+            "enter a full path, for example C:\\Users\\you\\Documents\\Escape from Tarkov\\Screenshots",
         ));
     }
     let mut captures = 0;
@@ -42,7 +42,11 @@ impl App {
     pub fn set_screenshots_dir(&self, raw: &str) -> AppResult<()> {
         let check = check_folder(raw)?;
         if !check.exists {
-            return Err(AppError::bad(format!("la carpeta {} no existe", check.path)));
+            return Err(AppError::user_with(
+                "folderMissing",
+                &check.path,
+                format!("The folder {} does not exist.", check.path),
+            ));
         }
         let mut inner = lock(&self.inner);
         let mut next = inner.config.clone();

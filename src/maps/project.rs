@@ -18,7 +18,7 @@ impl Projection {
     /// Ajusta escala y desplazamiento por eje con los dos puntos de referencia.
     pub fn new(cal: &Calibration) -> Result<Self, String> {
         if ![0, 90, 180, 270].contains(&cal.rotation) {
-            return Err("la rotación debe ser 0, 90, 180 o 270".into());
+            return Err("rotation must be 0, 90, 180 or 270".into());
         }
         let mut p = Self {
             sign_x: if cal.invert_x { -1.0 } else { 1.0 },
@@ -34,12 +34,12 @@ impl Projection {
         let (ub, vb) = p.orient(b.game[0], b.game[1]);
         let (du, dv) = (ub - ua, vb - va);
         if du.abs() < 1e-6 || dv.abs() < 1e-6 {
-            return Err("los dos puntos de calibración deben diferir en ambos ejes".into());
+            return Err("the two calibration points must differ on both axes".into());
         }
         p.ku = (b.pixel[0] - a.pixel[0]) / du;
         p.kv = (b.pixel[1] - a.pixel[1]) / dv;
         if !p.ku.is_finite() || !p.kv.is_finite() || p.ku.abs() < 1e-9 || p.kv.abs() < 1e-9 {
-            return Err("la calibración produce una escala nula o infinita".into());
+            return Err("the calibration produces a zero or infinite scale".into());
         }
         p.cu = a.pixel[0] - p.ku * ua;
         p.cv = a.pixel[1] - p.kv * va;

@@ -30,7 +30,7 @@ impl App {
         let stop = Arc::new(AtomicBool::new(false));
         g.stop = Some(stop.clone());
         drop(g);
-        tracing::info!("Detección por logs del juego activada");
+        tracing::info!("Game log detection enabled");
         watcher::spawn(self.clone(), dir, stop);
     }
 
@@ -92,7 +92,7 @@ impl App {
             d
         };
         if let Some((loc, fresh)) = enter {
-            tracing::info!("Juego: cargando mapa {loc}");
+            tracing::info!("Game: loading map {loc}");
             if let Some(pack) = self.pack_for_location(&loc) {
                 let active = lock(&self.inner).config.last_map.clone();
                 if active.as_deref() != Some(pack.manifest.id.as_str()) {

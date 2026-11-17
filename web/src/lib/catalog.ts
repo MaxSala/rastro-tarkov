@@ -76,7 +76,7 @@ export const useCatalog = create<CatalogState>((set, get) => ({
     try {
       const raw: unknown = await api.json("/api/market");
       const parsed = catalogSchema.safeParse(raw);
-      if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "catálogo no válido");
+      if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "invalid catalog");
       set({ catalog: parsed.data, loadedAt: parsed.data.fetchedAt, loading: false });
     } catch (e) {
       set({ loading: false, error: e instanceof Error ? e.message : String(e) });

@@ -244,22 +244,3 @@ export function LogsTab() {
     </div>
   );
 }
-
-export function AboutTab() {
-  const version = useApp((s) => s.view?.version ?? "");
-  return (
-    <div className="grid max-w-prose gap-3">
-      <p className="flex items-center gap-2 text-sm">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-          <path d="M12 2 20 21 12 16.5 4 21Z" className="fill-accent" />
-        </svg>
-        <span className="font-medium">{t.app.name}</span>
-        <span className="num text-xs text-fg-muted">
-          {t.settings.version} {version}
-        </span>
-      </p>
-      <p className="text-sm text-fg-soft">{t.settings.aboutBody}</p>
-      <p className="text-xs text-fg-muted">{t.settings.licenses}</p>
-    </div>
-  );
-}

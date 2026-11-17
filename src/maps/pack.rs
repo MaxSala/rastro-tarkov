@@ -29,22 +29,21 @@ impl Pack {
 /// Valida por completo una carpeta de paquete: manifest, imagen y que no haya nada más.
 pub fn validate_dir(dir: &Path) -> AppResult<Pack> {
     let bytes = read_limited(&dir.join("manifest.json"), MAX_MANIFEST_BYTES)?
-        .ok_or_else(|| AppError::pack("falta manifest.json"))?;
+        .ok_or_else(|| AppError::pack("manifest.json is missing"))?;
     let manifest: Manifest =
         serde_json::from_slice(&bytes).map_err(|e| AppError::pack(format!("manifest.json: {e}")))?;
     let projection = manifest.validate().map_err(AppError::InvalidPack)?;
-    let kind =
-        Kind::from_file_name(&manifest.image.file).ok_or_else(|| AppError::pack("nombre de imagen no válido"))?;
+    let kind = Kind::from_file_name(&manifest.image.file).ok_or_else(|| AppError::pack("invalid image name"))?;
     for entry in std::fs::read_dir(dir)? {
         let entry = entry?;
         let name = entry.file_name();
         let ok = name == "manifest.json" || name.to_str() == Some(manifest.image.file.as_str());
         if !ok || !entry.file_type()?.is_file() {
-            return Err(AppError::pack("la carpeta del paquete contiene archivos inesperados"));
+            return Err(AppError::pack("the pack folder contains unexpected files"));
         }
     }
     let img = read_limited(&dir.join(&manifest.image.file), MAX_UNPACKED_BYTES)?
-        .ok_or_else(|| AppError::pack(format!("falta la imagen {}", manifest.image.file)))?;
+        .ok_or_else(|| AppError::pack(format!("the image {} is missing", manifest.image.file)))?;
     image::check(kind, &img, (manifest.image.width, manifest.image.height)).map_err(AppError::InvalidPack)?;
     Ok(Pack { manifest, projection, kind, dir: dir.to_path_buf() })
 }
@@ -70,9 +69,9 @@ impl PackStore {
                         packs.insert(id, Arc::new(p));
                     }
                     Ok(_) => {
-                        tracing::warn!("paquete {id}: el id del manifest no coincide; se ignora")
+                        tracing::warn!("pack {id}: the manifest id does not match; ignored")
                     }
-                    Err(e) => tracing::warn!("paquete {id} ignorado: {e}"),
+                    Err(e) => tracing::warn!("pack {id} ignored: {e}"),
                 }
             }
         }

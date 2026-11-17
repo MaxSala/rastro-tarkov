@@ -7,7 +7,8 @@ import { send } from "../../../lib/socket";
 import { useApp } from "../../../store/app";
 import { Button } from "../../ui/button";
 import { Tabs } from "../../ui/tabs";
-import { AboutTab, GeneralTab, LogsTab, MapTab, PartyTab } from "./tabs";
+import { AboutTab } from "./AboutTab";
+import { GeneralTab, LogsTab, MapTab, PartyTab } from "./tabs";
 import { GameTab } from "./GameTab";
 
 type Tab = "general" | "map" | "game" | "party" | "logs" | "about";

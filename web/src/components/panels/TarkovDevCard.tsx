@@ -5,6 +5,7 @@ import { icon, iconSm } from "../../lib/icons";
 import { send } from "../../lib/socket";
 import { useApp } from "../../store/app";
 import { Button } from "../ui/button";
+import { syncText } from "../../lib/syncText";
 
 /** Descarga de mapas desde tarkov.dev: licencia, consentimiento y progreso. */
 export function TarkovDevCard({ compact = false }: { compact?: boolean }) {
@@ -65,7 +66,7 @@ export function TarkovDevCard({ compact = false }: { compact?: boolean }) {
             {status.state === "done" && <CircleCheck {...iconSm} className="mt-0.5 shrink-0 text-ok" />}
             {status.state === "error" && <CircleAlert {...iconSm} className="mt-0.5 shrink-0 text-danger" />}
             <span>
-              {status.message}
+              {syncText(status)}
               {running && status.total > 0 && (
                 <span className="num text-fg-muted">
                   {" "}

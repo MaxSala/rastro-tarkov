@@ -54,6 +54,7 @@ const main: Main = {
     right: "dreapta",
     ahead: "înainte",
     noPosition: "Fă o captură în joc pentru a calcula distanța.",
+    requires: (list: string) => `Necesită: ${list}`,
   },
   party: {
     idleTitle: "Nicio cameră",
@@ -146,10 +147,6 @@ const main: Main = {
     fit: "Toată harta",
     follow: "Urmărește-mi poziția",
     center: "Centrează pe poziția mea",
-  },
-  floors: {
-    label: "Etaj",
-    auto: (name: string | null) => (name ? `Automat (${name})` : "Automat"),
   },
   filter: {
     button: "Filtrează containerele",

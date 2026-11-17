@@ -1,4 +1,5 @@
 import { t } from "../locales";
+import { userMsgSchema, say } from "./msg";
 import { previewSchema, type Preview } from "./protocol";
 import { readToken } from "./token";
 
@@ -7,9 +8,10 @@ const TOKEN_HEADER = "x-rastro-token";
 async function errorText(res: Response): Promise<string> {
   try {
     const body: unknown = await res.json();
-    if (body && typeof body === "object" && "error" in body && typeof body.error === "string") {
-      return body.error.slice(0, 300);
-    }
+    const parsed = userMsgSchema.safeParse(
+      body && typeof body === "object" && "error" in body ? { ...body, text: body.error } : null,
+    );
+    if (parsed.success) return say(parsed.data).slice(0, 300);
   } catch {
     /* respuesta sin JSON */
   }
@@ -72,6 +74,15 @@ export const api = {
     return (await request(path)).json();
   },
   /** La imagen se pide con la cabecera del token y se muestra como blob: nunca como SVG inline. */
+  async text(path: string): Promise<string> {
+    return (await request(path)).text();
+  },
+  /** Like imageBlobUrl, but 204 (nothing to show) gives null instead of an empty image. */
+  async optionalBlobUrl(path: string): Promise<string | null> {
+    const res = await request(path);
+    if (res.status === 204) return null;
+    return URL.createObjectURL(await res.blob());
+  },
   async imageBlobUrl(path: string): Promise<string> {
     const blob = await (await request(path)).blob();
     return URL.createObjectURL(blob);

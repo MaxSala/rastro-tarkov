@@ -31,6 +31,8 @@ pub struct Config {
     pub game_mode: crate::gamelog::GameModePref,
     /// Idioma de la interfaz y de los datos descargados.
     pub language: Language,
+    /// Check GitHub for a newer release on startup. None = the player hasn't been asked yet.
+    pub check_updates: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -85,7 +87,7 @@ impl Default for Config {
             screenshots_dir: None,
             trail_length: 200,
             server_port: 47821,
-            player_name: "Jugador".into(),
+            player_name: "Player".into(),
             player_color: 0,
             party_port: 47822,
             share_warning_ack: false,
@@ -96,6 +98,7 @@ impl Default for Config {
             logs_dir: None,
             game_mode: crate::gamelog::GameModePref::Auto,
             language: Language::Es,
+            check_updates: None,
         }
     }
 }
@@ -103,18 +106,22 @@ impl Default for Config {
 impl Config {
     pub fn validate(&self) -> AppResult<()> {
         if !(1..=2000).contains(&self.trail_length) {
-            return Err(AppError::bad("el rastro debe tener entre 1 y 2000 puntos"));
+            return Err(AppError::bad("the trail must have between 1 and 2000 points"));
         }
         if self.server_port < 1024 || self.party_port < 1024 {
-            return Err(AppError::bad("los puertos deben ser 1024 o superiores"));
+            return Err(AppError::user("portTooLow", "Ports must be 1024 or higher."));
         }
         crate::party::proto::validate_name(&self.player_name).map_err(AppError::bad)?;
         if self.player_color >= PALETTE_SIZE {
-            return Err(AppError::bad("color fuera de la paleta"));
+            return Err(AppError::bad("colour outside the palette"));
         }
-        for (dir, what) in [(&self.screenshots_dir, "de capturas"), (&self.logs_dir, "de logs")] {
+        for (dir, what) in [(&self.screenshots_dir, "screenshots"), (&self.logs_dir, "logs")] {
             if dir.as_ref().is_some_and(|d| d.as_os_str().len() > 1024 || !d.is_absolute()) {
-                return Err(AppError::bad(format!("la carpeta {what} debe ser una ruta absoluta")));
+                return Err(AppError::user_with(
+                    "pathNotAbsolute",
+                    what,
+                    format!("The {what} folder must be a full path."),
+                ));
             }
         }
         Ok(())
@@ -166,7 +173,7 @@ pub struct Paths {
 impl Paths {
     pub fn discover() -> AppResult<Self> {
         let proj = directories::ProjectDirs::from("", "", "Rastro")
-            .ok_or_else(|| AppError::Internal("no se encontró el directorio de datos".into()))?;
+            .ok_or_else(|| AppError::Internal("the data folder was not found".into()))?;
         Ok(Self::at(proj.data_dir()))
     }
 
@@ -199,13 +206,13 @@ pub fn load(path: &Path) -> Config {
         Ok(Some(bytes)) => match serde_json::from_slice::<Config>(&bytes) {
             Ok(cfg) if cfg.validate().is_ok() => cfg,
             _ => {
-                tracing::warn!("config.json no es válido; se usan valores por defecto");
+                tracing::warn!("config.json is not valid; using defaults");
                 Config::default()
             }
         },
         Ok(None) => Config::default(),
         Err(e) => {
-            tracing::warn!("no se pudo leer config.json: {e}");
+            tracing::warn!("could not read config.json: {e}");
             Config::default()
         }
     }

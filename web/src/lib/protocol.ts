@@ -2,6 +2,7 @@
 // y src/view.rs (View) en el backend. Todo lo que llega se valida con zod antes de usarse.
 import { z } from "zod";
 import { LANGS, type Lang } from "../locales";
+import { userMsgSchema } from "./msg";
 
 const num = z.number().finite();
 const point = z.tuple([num, num]);
@@ -21,10 +22,11 @@ export const viewSchema = z.object({
     shareWarningAck: z.boolean(),
     openInWindow: z.boolean(),
     language: z.enum(LANGS),
+    checkUpdates: z.boolean().nullable(),
   }),
   watcher: z.object({
     folder: text.nullable(),
-    error: text.nullable(),
+    error: userMsgSchema.nullable(),
     lastFile: text.nullable(),
     lastTakenAt: text.nullable(),
     raidHours: num.nullable(),
@@ -56,6 +58,7 @@ export const viewSchema = z.object({
         name: text,
         faction: z.enum(["pmc", "scav", "shared"]),
         conditions: text,
+        switches: z.array(text).max(8).optional(),
         px: num,
         py: num,
         available: z.boolean(),
@@ -82,7 +85,7 @@ export const viewSchema = z.object({
   guide: z.object({ from: point, to: point, distanceM: num, heightDiffM: num, relativeDeg: num }).nullable(),
   party: z.object({
     status: z.enum(["idle", "hosting", "connecting", "connected", "error"]),
-    error: text.nullable(),
+    error: userMsgSchema.nullable(),
     isHost: z.boolean(),
     code: text.nullable(),
     peers: z
@@ -122,13 +125,32 @@ export const viewSchema = z.object({
     count: z.number().int(),
     mode: text.nullable(),
     lang: text.nullable(),
-    error: text.nullable(),
+    error: userMsgSchema.nullable(),
+  }),
+  update: z.object({
+    state: z.enum(["idle", "checking", "upToDate", "available", "error"]),
+    latest: z
+      .string()
+      .regex(/^v\d{1,4}\.\d{1,4}\.\d{1,4}$/)
+      .nullable(),
+    url: z
+      .string()
+      .max(200)
+      .regex(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/releases\//)
+      .nullable(),
+    error: userMsgSchema.nullable(),
   }),
   tarkovdev: z.object({
     state: z.enum(["idle", "running", "done", "error"]),
-    message: text,
+    step: z.enum(["maps", "data", "install", "icons"]).nullable(),
+    current: text.nullable(),
     done: z.number().int(),
     total: z.number().int(),
+    installed: z.number().int(),
+    failed: z.array(text).max(64),
+    iconsMissing: z.number().int(),
+    noData: z.boolean(),
+    error: userMsgSchema.nullable(),
   }),
 });
 
@@ -158,7 +180,7 @@ export const serverMsgSchema = z.discriminatedUnion("type", [
     type: z.literal("interfaces"),
     list: z.array(z.object({ name: text, ip: text })).max(64),
   }),
-  z.object({ type: z.literal("notice"), level: z.enum(["info", "error"]), text }),
+  z.object({ type: z.literal("notice"), level: z.enum(["info", "error"]) }).extend(userMsgSchema.shape),
   z.object({
     type: z.literal("folderCheck"),
     result: z.object({ path: text, exists: z.boolean(), captures: z.number().int() }),
@@ -221,7 +243,9 @@ export type ClientMsg =
   | { type: "setGameLogs"; enabled: boolean; path: string }
   | { type: "setGameMode"; mode: "auto" | "regular" | "pve" }
   | { type: "marketRefresh"; fleaName: string }
-  | { type: "setLanguage"; lang: Lang };
+  | { type: "setLanguage"; lang: Lang }
+  | { type: "setCheckUpdates"; enabled: boolean }
+  | { type: "checkUpdates" };
 
 /** Respuesta de vista previa de importación (src/maps/import.rs, Preview). */
 export const previewSchema = z.object({

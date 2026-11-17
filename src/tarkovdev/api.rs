@@ -84,8 +84,8 @@ struct Response {
 }
 
 pub fn parse(bytes: &[u8]) -> Result<Vec<ApiMap>, String> {
-    let r: Response = serde_json::from_slice(bytes).map_err(|e| format!("respuesta de la API no válida: {e}"))?;
-    r.data.map(|d| d.maps).ok_or_else(|| "la API no devolvió mapas".to_string())
+    let r: Response = serde_json::from_slice(bytes).map_err(|e| format!("invalid API response: {e}"))?;
+    r.data.map(|d| d.maps).ok_or_else(|| "the API returned no maps".to_string())
 }
 
 /// Texto visible saneado: sin caracteres de control/bidi, recortado a `max` caracteres.
@@ -167,17 +167,21 @@ pub fn make_extract(
         "scav" => Faction::Scav,
         _ => Faction::Shared,
     };
-    let conditions =
-        if switches.is_empty() { String::new() } else { format!("Requiere activar: {}", switches.join(", ")) };
     Some(Extract {
         id: unique_id(id, used),
-        name: clean(Some(name), 60, "Extracción"),
+        name: clean(Some(name), 60, "Extract"),
         faction,
         x,
         y,
         z,
-        conditions: clean(Some(&conditions), 300, ""),
+        conditions: String::new(),
+        switches: clean_switches(switches),
     })
+}
+
+/// Switch names for "Requires: …", cleaned and bounded like the manifest expects.
+pub fn clean_switches(names: &[String]) -> Vec<String> {
+    names.iter().map(|n| clean(Some(n), 60, "")).filter(|n| !n.is_empty()).take(8).collect()
 }
 
 /// normalizedName al estilo de tarkov.dev: minúsculas, sin apóstrofos, el resto de símbolos a guiones.
@@ -223,7 +227,7 @@ pub fn make_marker_in(
 
 impl ApiMap {
     pub fn display_name(&self) -> Option<String> {
-        self.name.as_deref().map(|n| clean(Some(n), 60, "Mapa"))
+        self.name.as_deref().map(|n| clean(Some(n), 60, "Map"))
     }
 
     pub fn extracts(&self) -> Vec<Extract> {
@@ -239,19 +243,15 @@ impl ApiMap {
                 };
                 let switches: Vec<String> =
                     e.switches.as_deref().unwrap_or_default().iter().filter_map(|s| s.name.clone()).collect();
-                let conditions = if switches.is_empty() {
-                    String::new()
-                } else {
-                    format!("Requiere activar: {}", switches.join(", "))
-                };
                 Some(Extract {
                     id: unique_id(e.id.as_deref().unwrap_or("ex"), &mut used),
-                    name: clean(e.name.as_deref(), 60, "Extracción"),
+                    name: clean(e.name.as_deref(), 60, "Extract"),
                     faction,
                     x: p.x,
                     y: p.y,
                     z: p.z,
-                    conditions: clean(Some(&conditions), 300, ""),
+                    conditions: String::new(),
+                    switches: clean_switches(&switches),
                 })
             })
             .take(MAX_EXTRACTS)
@@ -267,15 +267,15 @@ impl ApiMap {
         let switches = self.switches.as_deref().unwrap_or_default().iter();
         let loot = self.loot_containers.as_deref().unwrap_or_default().iter();
         transits
-            .filter_map(|t| mk(MarkerKind::Transit, t.description.as_deref(), "Transición", t.position))
-            .chain(switches.filter_map(|s| mk(MarkerKind::Switch, s.name.as_deref(), "Interruptor", s.position)))
+            .filter_map(|t| mk(MarkerKind::Transit, t.description.as_deref(), "Transit", t.position))
+            .chain(switches.filter_map(|s| mk(MarkerKind::Switch, s.name.as_deref(), "Switch", s.position)))
             .chain(self.locks.as_deref().unwrap_or_default().iter().filter_map(super::locks::ApiLock::marker))
             .chain(loot.filter_map(|l| {
                 let c = l.loot_container.as_ref();
                 let name = c.and_then(|c| c.name.as_deref()).unwrap_or("");
                 let group = c.and_then(|c| c.normalized_name.as_deref().or(c.name.as_deref()));
                 let p = ok_pos(l.position)?;
-                make_marker_in(MarkerKind::Loot, group, name, "Contenedor", (p.x, p.y, p.z))
+                make_marker_in(MarkerKind::Loot, group, name, "Container", (p.x, p.y, p.z))
             }))
             .take(MAX_MARKERS)
             .collect()

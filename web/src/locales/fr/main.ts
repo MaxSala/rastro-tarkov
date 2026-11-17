@@ -47,6 +47,7 @@ const main: Main = {
     right: "droite",
     ahead: "tout droit",
     noPosition: "Fais une capture en jeu pour calculer la distance.",
+    requires: (list: string) => `Nécessite : ${list}`,
   },
   party: {
     idleTitle: "Pas de salon",
@@ -139,10 +140,6 @@ const main: Main = {
     fit: "Voir toute la carte",
     follow: "Suivre ma position",
     center: "Centrer sur ma position",
-  },
-  floors: {
-    label: "Étage",
-    auto: (name: string | null) => (name ? `Automatique (${name})` : "Automatique"),
   },
   filter: {
     button: "Filtrer les conteneurs",

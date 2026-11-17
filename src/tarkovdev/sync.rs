@@ -32,9 +32,26 @@ pub enum SyncState {
 #[serde(rename_all = "camelCase")]
 pub struct SyncStatus {
     pub state: SyncState,
-    pub message: String,
+    /// Current stage while running: `maps`, `data`, `install` (with `current`) or `icons`.
+    pub step: Option<&'static str>,
+    pub current: Option<String>,
     pub done: usize,
     pub total: usize,
+    /// Summary when finished; the interface writes the sentence in its own language.
+    pub installed: usize,
+    pub failed: Vec<String>,
+    pub icons_missing: usize,
+    /// The maps installed, but without extracts or loot (the data download failed).
+    pub no_data: bool,
+    pub error: Option<crate::msg::UserMsg>,
+}
+
+/// Result of a successful sync.
+struct Summary {
+    installed: usize,
+    failed: Vec<String>,
+    icons_missing: usize,
+    no_data: bool,
 }
 
 fn set(app: &App, f: impl FnOnce(&mut SyncStatus)) {
@@ -47,20 +64,31 @@ pub fn start(app: &Arc<App>) -> AppResult<()> {
     {
         let mut st = lock(&app.tarkovdev);
         if st.state == SyncState::Running {
-            return Err(AppError::bad("ya hay una descarga de tarkov.dev en curso"));
+            return Err(AppError::user("syncBusy", "A tarkov.dev download is already running."));
         }
-        *st =
-            SyncStatus { state: SyncState::Running, message: "Leyendo la lista de mapas…".into(), done: 0, total: 0 };
+        *st = SyncStatus { state: SyncState::Running, step: Some("maps"), ..SyncStatus::default() };
     }
     app.notify();
     let app = app.clone();
     tokio::spawn(async move {
         let result = run(&app).await;
         set(&app, |st| match result {
-            Ok(msg) => *st = SyncStatus { state: SyncState::Done, message: msg, done: st.total, total: st.total },
+            Ok(sum) => {
+                *st = SyncStatus {
+                    state: SyncState::Done,
+                    done: st.total,
+                    total: st.total,
+                    installed: sum.installed,
+                    failed: sum.failed,
+                    icons_missing: sum.icons_missing,
+                    no_data: sum.no_data,
+                    ..SyncStatus::default()
+                }
+            }
             Err(e) => {
                 st.state = SyncState::Error;
-                st.message = e.to_string();
+                st.step = None;
+                st.error = Some(e.user_msg());
             }
         });
     });
@@ -72,48 +100,44 @@ async fn get(url: &str, max: usize, body: Option<&str>) -> AppResult<Vec<u8>> {
     fetch_with(u, max, Options { json_body: body, allowed_hosts: Some(HOSTS) }).await
 }
 
-async fn run(app: &Arc<App>) -> AppResult<String> {
+async fn run(app: &Arc<App>) -> AppResult<Summary> {
     let maps = calib::parse_maps(&get(MAPS_JSON, 4 << 20, None).await?).map_err(AppError::Download)?;
-    set(app, |st| st.message = "Descargando extracciones y loot…".into());
+    set(app, |st| st.step = Some("data"));
     // Sin datos los mapas siguen siendo útiles (posición, party): se instalan sin capas.
     let mode = app.effective_mode();
     let lang = lock(&app.inner).config.language.code();
     let (data, api_error) = match fetch_data(mode, lang).await {
         Ok(d) => (d, None),
         Err(e) => {
-            tracing::warn!("tarkov.dev: sin datos de mapa: {e}");
+            tracing::warn!("tarkov.dev: no map data: {e}");
             (Vec::new(), Some(e))
         }
     };
     set(app, |st| st.total = maps.len());
     let (mut installed, mut failed) = (Vec::new(), Vec::new());
     for m in &maps {
-        set(app, |st| st.message = format!("Instalando {}…", m.id));
+        set(app, |st| {
+            st.step = Some("install");
+            st.current = Some(m.id.clone());
+        });
         match install_one(app, m, data.iter().find(|d| d.normalized_name == m.id)).await {
             Ok(name) => installed.push(name),
             Err(e) => {
-                tracing::warn!("tarkov.dev: {} no se instaló: {e}", m.id);
+                tracing::warn!("tarkov.dev: {} was not installed: {e}", m.id);
                 failed.push(m.id.clone());
             }
         }
         set(app, |st| st.done += 1);
     }
     if installed.is_empty() {
-        return Err(AppError::Download("no se pudo instalar ningún mapa".into()));
+        return Err(AppError::Download("no map could be installed".into()));
     }
-    let mut msg = format!("Instalados {} mapas.", installed.len());
-    if !failed.is_empty() {
-        msg.push_str(&format!(" Fallaron: {}.", failed.join(", ")));
-    }
-    set(app, |st| st.message = "Descargando iconos…".into());
-    let missing = download_icons(app).await;
-    if missing > 0 {
-        msg.push_str(&format!(" {missing} iconos no se pudieron descargar (se usan formas simples)."));
-    }
-    if let Some(e) = api_error {
-        msg.push_str(&format!(" Sin extracciones ni loot ({e}); vuelve a intentarlo más tarde."));
-    }
-    Ok(msg)
+    set(app, |st| {
+        st.step = Some("icons");
+        st.current = None;
+    });
+    let icons_missing = download_icons(app).await;
+    Ok(Summary { installed: installed.len(), failed, icons_missing, no_data: api_error.is_some() })
 }
 
 /// Descarga los iconos de marcadores. Devuelve cuántos fallaron (no es un error fatal).
@@ -156,7 +180,7 @@ fn levels_for(m: &calib::SvgMap, svg: &str) -> (Option<String>, Vec<Level>) {
         svg_layer: Some(svg_layer),
         zones,
     };
-    let mut levels = vec![full(base.clone(), "planta-base".into(), "Planta baja".into(), Vec::new())];
+    let mut levels = vec![full(base.clone(), "planta-base".into(), "Ground floor".into(), Vec::new())];
     let mut used = std::collections::HashSet::from(["planta-base".to_owned()]);
     for l in m.layers.iter().filter(|l| has(&l.svg_layer) && l.svg_layer != base) {
         let mut id = api::normalize_name(&l.svg_layer);
@@ -183,7 +207,7 @@ async fn fetch_data(mode: crate::gamelog::GameMode, lang: &str) -> Result<Vec<ap
         Ok(d) => return Ok(d),
         Err(e) => e.to_string(),
     };
-    tracing::warn!("tarkov.dev: json.tarkov.dev falló ({json_err}); se prueba GraphQL");
+    tracing::warn!("tarkov.dev: json.tarkov.dev failed ({json_err}); trying GraphQL");
     let query = serde_json::json!({ "query": api::QUERY.replace("{mode}", m).replace("{lang}", lang) }).to_string();
     match get(API, 32 << 20, Some(&query)).await.and_then(|b| api::parse(&b).map_err(AppError::Download)) {
         Ok(maps) => Ok(api::to_map_data(maps)),
@@ -203,13 +227,13 @@ async fn install_one(app: &Arc<App>, m: &calib::SvgMap, data: Option<&api::MapDa
 
 /// Construye el manifest de un mapa (sin red). Devuelve nombre, archivo de imagen y manifest.
 pub fn build_pack(m: &calib::SvgMap, svg: &[u8], data: Option<&api::MapData>) -> AppResult<(String, String, Vec<u8>)> {
-    let text = std::str::from_utf8(svg).map_err(|_| AppError::pack("SVG no UTF-8"))?;
+    let text = std::str::from_utf8(svg).map_err(|_| AppError::pack("the SVG is not UTF-8"))?;
     check_svg(svg).map_err(AppError::InvalidPack)?;
-    let (w, h) = calib::svg_size(text).ok_or_else(|| AppError::pack("el SVG no tiene un viewBox utilizable"))?;
+    let (w, h) = calib::svg_size(text).ok_or_else(|| AppError::pack("the SVG has no usable viewBox"))?;
     let file = format!("{}.svg", m.id);
     let (base_layer, levels) = levels_for(m, text);
     let name = data.and_then(|d| d.name.clone()).unwrap_or_else(|| m.id.clone());
-    let author = api::clean(Some(&format!("{} y colaboradores de tarkov.dev", m.author)), 100, "tarkov.dev");
+    let author = api::clean(Some(&format!("{} and tarkov.dev contributors", m.author)), 100, "tarkov.dev");
     let manifest = Manifest {
         schema_version: SCHEMA_VERSION,
         id: m.id.clone(),
@@ -223,7 +247,7 @@ pub fn build_pack(m: &calib::SvgMap, svg: &[u8], data: Option<&api::MapData>) ->
         raid_minutes: data.and_then(|d| d.raid_minutes),
         credits: Credits {
             author,
-            license: "Mapa CC BY-NC-SA 4.0 (sin uso en trampas); datos: API de tarkov.dev".into(),
+            license: "Map CC BY-NC-SA 4.0 (no use in cheats); data: tarkov.dev API".into(),
             source: SVG_SOURCE.into(),
         },
     };

@@ -47,6 +47,7 @@ const main: Main = {
     right: "right",
     ahead: "ahead",
     noPosition: "Take an in-game screenshot to measure the distance.",
+    requires: (list: string) => `Requires: ${list}`,
   },
   party: {
     idleTitle: "No room",
@@ -139,10 +140,6 @@ const main: Main = {
     fit: "Fit map",
     follow: "Follow my position",
     center: "Center on my position",
-  },
-  floors: {
-    label: "Floor",
-    auto: (name: string | null) => (name ? `Automatic (${name})` : "Automatic"),
   },
   filter: {
     button: "Filter containers",

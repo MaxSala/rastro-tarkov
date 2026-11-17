@@ -1,5 +1,6 @@
 import { t } from "../locales";
 import { useApp } from "../store/app";
+import { floorName } from "../lib/mapText";
 
 /** Selector de piso para mapas SVG por capas; «Automático» sigue tu altura y posición. */
 export function FloorSelect() {
@@ -7,7 +8,8 @@ export function FloorSelect() {
   const choice = useApp((s) => (active ? (s.floors[active.id] ?? "auto") : "auto"));
   const setFloor = useApp((s) => s.setFloor);
   if (!active || active.floors.length < 2) return null;
-  const autoName = active.floors.find((f) => f.id === active.autoFloor)?.name ?? null;
+  const auto = active.floors.find((f) => f.id === active.autoFloor)?.name;
+  const autoName = auto ? floorName(auto) : null;
   return (
     <>
       <label htmlFor="floor-select" className="sr-only">
@@ -22,7 +24,7 @@ export function FloorSelect() {
         <option value="auto">{t.floors.auto(autoName)}</option>
         {active.floors.map((f) => (
           <option key={f.id} value={f.id}>
-            {f.name}
+            {floorName(f.name)}
           </option>
         ))}
       </select>

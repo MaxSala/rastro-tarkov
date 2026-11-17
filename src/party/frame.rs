@@ -8,7 +8,7 @@ pub const MAX_FRAME: usize = 16 * 1024;
 pub async fn read_frame<R: AsyncRead + Unpin>(r: &mut R) -> std::io::Result<Vec<u8>> {
     let len = usize::from(r.read_u16().await?);
     if len == 0 || len > MAX_FRAME {
-        return Err(Error::new(ErrorKind::InvalidData, "trama vacía o demasiado grande"));
+        return Err(Error::new(ErrorKind::InvalidData, "empty or oversized frame"));
     }
     let mut buf = vec![0u8; len];
     r.read_exact(&mut buf).await?;

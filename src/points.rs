@@ -40,7 +40,7 @@ pub struct UserPoint {
 fn check_text(v: &str, max: usize, field: &str, allow_empty: bool) -> AppResult<String> {
     let t = v.trim();
     if (!allow_empty && t.is_empty()) || t.chars().count() > max || t.chars().any(is_unsafe_char) {
-        return Err(AppError::bad(format!("{field}: hasta {max} caracteres, sin caracteres de control")));
+        return Err(AppError::bad(format!("{field}: up to {max} characters, no control characters")));
     }
     Ok(t.to_owned())
 }
@@ -66,7 +66,7 @@ impl PointStore {
     pub fn load(path: &Path) -> Self {
         let mut by_map: BTreeMap<String, Vec<UserPoint>> = match read_limited(path, MAX_FILE) {
             Ok(Some(b)) => serde_json::from_slice(&b).unwrap_or_else(|_| {
-                tracing::warn!("points.json no es válido; se empieza sin puntos");
+                tracing::warn!("points.json is not valid; starting with no points");
                 BTreeMap::new()
             }),
             _ => BTreeMap::new(),
@@ -95,22 +95,26 @@ impl PointStore {
 impl App {
     pub fn add_point(&self, px: f64, py: f64, name: &str, kind: PointKind, note: &str) -> AppResult<()> {
         if !px.is_finite() || !py.is_finite() {
-            return Err(AppError::bad("coordenadas no válidas"));
+            return Err(AppError::bad("invalid coordinates"));
         }
         let (name, note) = (check_text(name, 40, "nombre", false)?, check_text(note, 200, "nota", true)?);
         let inner = lock(&self.inner);
-        let pack = App::active_pack(&inner).ok_or_else(|| AppError::bad("no hay mapa activo"))?;
+        let pack = App::active_pack(&inner).ok_or_else(|| AppError::user("noActiveMap", "No map is active."))?;
         let y = inner.raid.last.as_ref().map_or(0.0, |l| l.pos.y);
         drop(inner);
         let (x, z) = pack.projection.unproject(px, py);
         let id = format!("pt-{}", crate::maps::import::random_hex(6)?);
         let mut store = lock(&self.points);
         if !store.by_map.contains_key(&pack.manifest.id) && store.by_map.len() >= MAX_MAPS {
-            return Err(AppError::bad("demasiados mapas con puntos"));
+            return Err(AppError::bad("too many maps with points"));
         }
         let list = store.by_map.entry(pack.manifest.id.clone()).or_default();
         if list.len() >= MAX_PER_MAP {
-            return Err(AppError::bad(format!("máximo {MAX_PER_MAP} puntos por mapa")));
+            return Err(AppError::user_with(
+                "pointsLimit",
+                MAX_PER_MAP,
+                format!("At most {MAX_PER_MAP} points per map."),
+            ));
         }
         list.push(UserPoint { id, name, kind, note, x, y, z });
         store.save()?;

@@ -14,17 +14,17 @@ const MAX_MANIFEST_BYTES: u64 = 1024 * 1024;
 
 /// Nombre de entrada aceptable: UTF-8, plano (en la raíz), sin control ni rutas.
 fn check_entry_name(raw: &[u8]) -> AppResult<String> {
-    let name = std::str::from_utf8(raw).map_err(|_| AppError::pack("nombre de archivo no UTF-8"))?;
+    let name = std::str::from_utf8(raw).map_err(|_| AppError::pack("file name is not UTF-8"))?;
     if name.is_empty() || name.len() > 64 || name.chars().any(char::is_control) {
-        return Err(AppError::pack("nombre de archivo no válido en el zip"));
+        return Err(AppError::pack("invalid file name in the zip"));
     }
     if name.contains(['/', '\\', ':']) || name.contains("..") {
         return Err(AppError::pack(
-            "el zip solo puede contener manifest.json y la imagen en la raíz (sin carpetas ni rutas)",
+            "the zip may only contain manifest.json and the image at its root (no folders or paths)",
         ));
     }
     if name != "manifest.json" && Kind::from_file_name(name).is_none() {
-        return Err(AppError::pack(format!("archivo no permitido en el zip: {name}")));
+        return Err(AppError::pack(format!("file not allowed in the zip: {name}")));
     }
     Ok(name.to_owned())
 }
@@ -32,12 +32,12 @@ fn check_entry_name(raw: &[u8]) -> AppResult<String> {
 /// Extrae `bytes` en `dest` (que debe existir y estar vacío). Valida estructura, no contenido.
 pub fn extract(bytes: &[u8], dest: &Path) -> AppResult<()> {
     if bytes.len() > MAX_ZIP_BYTES {
-        return Err(AppError::pack("el zip supera 50 MB"));
+        return Err(AppError::user("zipTooBig", "The zip is larger than 50 MB."));
     }
     let mut archive =
-        zip::ZipArchive::new(Cursor::new(bytes)).map_err(|e| AppError::pack(format!("no es un zip válido ({e})")))?;
+        zip::ZipArchive::new(Cursor::new(bytes)).map_err(|e| AppError::pack(format!("not a valid zip ({e})")))?;
     if archive.len() > MAX_ENTRIES {
-        return Err(AppError::pack(format!("el zip tiene más de {MAX_ENTRIES} entradas")));
+        return Err(AppError::pack(format!("the zip has more than {MAX_ENTRIES} entries")));
     }
     // Ratio sobre el tamaño real del zip, no sobre lo que declaran las cabeceras.
     let total_cap = MAX_UNPACKED_BYTES.min((bytes.len() as u64).saturating_mul(MAX_RATIO));
@@ -48,7 +48,7 @@ pub fn extract(bytes: &[u8], dest: &Path) -> AppResult<()> {
     for i in 0..archive.len() {
         let mut entry = archive.by_index(i).map_err(|e| AppError::pack(format!("entrada ilegible ({e})")))?;
         if entry.is_symlink() || entry.is_dir() || !entry.is_file() {
-            return Err(AppError::pack("el zip contiene carpetas o enlaces simbólicos"));
+            return Err(AppError::pack("the zip contains folders or symbolic links"));
         }
         let name = check_entry_name(entry.name_raw())?;
         if !seen.insert(name.to_ascii_lowercase()) {
@@ -72,14 +72,14 @@ pub fn extract(bytes: &[u8], dest: &Path) -> AppResult<()> {
             }
             written += n as u64;
             if written > remaining {
-                return Err(AppError::pack("el contenido descomprimido es demasiado grande (posible bomba zip)"));
+                return Err(AppError::pack("the uncompressed content is too large (possible zip bomb)"));
             }
             out.write_all(buf.get(..n).unwrap_or_default())?;
         }
         total += written;
     }
     if manifests != 1 || images != 1 {
-        return Err(AppError::pack("el zip debe contener exactamente manifest.json y una imagen"));
+        return Err(AppError::pack("the zip must contain exactly manifest.json and one image"));
     }
     Ok(())
 }

@@ -5,7 +5,7 @@ use crate::maps::manifest::Faction;
 use crate::maps::pack::Pack;
 use crate::party::lock;
 use crate::state::App;
-use crate::view_extra::{party_view, PartyView};
+use crate::view_extra::{party_view, Guide, PartyView, PointView};
 use serde::Serialize;
 use std::sync::Arc;
 
@@ -31,6 +31,7 @@ pub struct View {
     /// Detección por logs del juego (mapa, raid, modo).
     pub game: crate::gamelog::GameView,
     pub market: crate::market::MarketStatus,
+    pub update: crate::update::UpdateStatus,
 }
 
 #[derive(Debug, Serialize)]
@@ -45,13 +46,14 @@ pub struct Settings {
     pub share_warning_ack: bool,
     pub open_in_window: bool,
     pub language: crate::config::Language,
+    pub check_updates: Option<bool>,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Watcher {
     pub folder: Option<String>,
-    pub error: Option<String>,
+    pub error: Option<crate::msg::UserMsg>,
     pub last_file: Option<String>,
     pub last_taken_at: Option<String>,
     pub raid_hours: Option<f64>,
@@ -108,35 +110,13 @@ pub struct ExtractView {
     pub name: String,
     pub faction: Faction,
     pub conditions: String,
+    pub switches: Vec<String>,
     pub px: f64,
     pub py: f64,
     pub available: bool,
     pub dimmed: bool,
     /// Distancia horizontal desde la última posición, si la hay.
     pub distance_m: Option<f64>,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct PointView {
-    pub id: String,
-    pub name: String,
-    pub kind: crate::points::PointKind,
-    pub note: String,
-    pub px: f64,
-    pub py: f64,
-    pub distance_m: Option<f64>,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Guide {
-    pub from: [f64; 2],
-    pub to: [f64; 2],
-    pub distance_m: f64,
-    pub height_diff_m: f64,
-    /// Rumbo relativo a hacia donde miras: negativo = izquierda, positivo = derecha.
-    pub relative_deg: f64,
 }
 
 pub(crate) fn marker(pack: &Pack, x: f64, y: f64, z: f64, dir: (f64, f64)) -> Marker {
@@ -166,6 +146,7 @@ pub fn build(app: &App) -> View {
             share_warning_ack: cfg.share_warning_ack,
             open_in_window: cfg.open_in_window,
             language: cfg.language,
+            check_updates: cfg.check_updates,
         },
         watcher: Watcher {
             folder: inner.watch_folder.as_ref().map(|p| p.display().to_string()),
@@ -198,6 +179,7 @@ pub fn build(app: &App) -> View {
         tarkovdev: lock(&app.tarkovdev).clone(),
         game: Default::default(),
         market: Default::default(),
+        update: lock(&app.update).clone(),
     };
     if let Some(pack) = &pack {
         let m = &pack.manifest;
@@ -243,6 +225,7 @@ pub fn build(app: &App) -> View {
                     name: e.name.clone(),
                     faction: e.faction,
                     conditions: e.conditions.clone(),
+                    switches: e.switches.clone(),
                     px,
                     py,
                     available,

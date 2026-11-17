@@ -46,7 +46,7 @@ async fn join_exchange_positions_and_kick() {
 
     let id = *lock(&host.roster).peers.keys().next().expect("id");
     host.kick(id);
-    assert!(wait_for(|| matches!(&lock(&guest.roster).status, Status::Error(e) if e.contains("expulsado"))).await);
+    assert!(wait_for(|| matches!(&lock(&guest.roster).status, Status::Error(e) if e.code == "kicked")).await);
     assert!(lock(&host.roster).peers.is_empty());
 }
 
@@ -58,9 +58,7 @@ async fn wrong_secret_is_rejected() {
     assert_ne!(code, *forged);
     let mut guest = new_party();
     guest.join(&forged, me("Intruso")).expect("join");
-    assert!(
-        wait_for(|| matches!(&lock(&guest.roster).status, Status::Error(e) if e.contains("Código incorrecto"))).await
-    );
+    assert!(wait_for(|| matches!(&lock(&guest.roster).status, Status::Error(e) if e.code == "wrongCode")).await);
 }
 
 #[tokio::test]
@@ -89,13 +87,13 @@ async fn room_is_capped_at_eight_and_closing_frees_port() {
     }
     let mut late = new_party();
     late.join(&code, me("Tarde")).expect("join");
-    assert!(wait_for(|| matches!(&lock(&late.roster).status, Status::Error(e) if e.contains("llena"))).await);
+    assert!(wait_for(|| matches!(&lock(&late.roster).status, Status::Error(e) if e.code == "roomFull")).await);
 
     host.leave();
     assert!(
         wait_for(|| guests
             .iter()
-            .all(|g| matches!(&lock(&g.roster).status, Status::Error(e) if e.contains("cerrado"))))
+            .all(|g| matches!(&lock(&g.roster).status, Status::Error(e) if e.code == "roomClosed")))
         .await
     );
     assert!(wait_for(|| std::net::TcpListener::bind(("127.0.0.1", port)).is_ok()).await, "puerto liberado");

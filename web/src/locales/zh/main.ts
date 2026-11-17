@@ -46,6 +46,7 @@ const main: Main = {
     right: "右",
     ahead: "正前方",
     noPosition: "在游戏中截一张图来计算距离。",
+    requires: (list: string) => `需要：${list}`,
   },
   party: {
     idleTitle: "没有房间",
@@ -137,10 +138,6 @@ const main: Main = {
     fit: "查看整张地图",
     follow: "跟随我的位置",
     center: "居中到我的位置",
-  },
-  floors: {
-    label: "楼层",
-    auto: (name: string | null) => (name ? `自动（${name}）` : "自动"),
   },
   filter: {
     button: "筛选容器",

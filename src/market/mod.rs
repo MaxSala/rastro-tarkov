@@ -88,5 +88,5 @@ pub struct MarketStatus {
     pub count: usize,
     pub mode: Option<String>,
     pub lang: Option<String>,
-    pub error: Option<String>,
+    pub error: Option<crate::msg::UserMsg>,
 }

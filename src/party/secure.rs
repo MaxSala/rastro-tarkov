@@ -16,16 +16,33 @@ const TAG_LEN: usize = 16;
 
 #[derive(Debug, thiserror::Error)]
 pub enum HsError {
-    #[error("El anfitrión usa la versión {theirs} del protocolo y tú la {ours}. Actualizad los dos a la misma versión de Rastro.")]
+    #[error(
+        "The host uses protocol version {theirs} and you use {ours}. Both of you need the same version of Rastro."
+    )]
     Version { ours: u16, theirs: u16 },
-    #[error("Código incorrecto o la sala ya no existe.")]
+    #[error("Wrong code, or the room no longer exists.")]
     BadKey,
-    #[error("El otro extremo no habla el protocolo de Rastro.")]
+    #[error("The other side is not speaking Rastro's protocol.")]
     NotRastro,
-    #[error("Error de conexión: {0}")]
+    #[error("Connection error: {0}")]
     Io(#[from] std::io::Error),
-    #[error("Error criptográfico interno.")]
+    #[error("Internal cryptographic error.")]
     Crypto,
+}
+
+impl HsError {
+    /// Translatable version for the party panel.
+    pub fn msg(&self) -> crate::msg::UserMsg {
+        use crate::msg::UserMsg;
+        let text = self.to_string();
+        match self {
+            Self::Version { theirs, .. } => UserMsg { code: "versionMismatch", arg: Some(theirs.to_string()), text },
+            Self::BadKey => UserMsg::new("wrongCode", text),
+            Self::NotRastro => UserMsg::new("notRastro", text),
+            Self::Io(e) => UserMsg { code: "connectionError", arg: Some(e.to_string()), text },
+            Self::Crypto => UserMsg { code: "connectionError", arg: None, text },
+        }
+    }
 }
 
 fn prologue() -> Vec<u8> {
@@ -57,8 +74,10 @@ impl Channel {
 
     pub fn open(&mut self, frame: &[u8]) -> Result<Msg, String> {
         let mut plain = vec![0u8; frame.len()];
-        let n =
-            self.transport.read_message(frame, &mut plain).map_err(|_| "trama no auténtica o repetida".to_string())?;
+        let n = self
+            .transport
+            .read_message(frame, &mut plain)
+            .map_err(|_| "frame not authentic or replayed".to_string())?;
         Msg::decode(plain.get(..n).ok_or("longitud")?)
     }
 }

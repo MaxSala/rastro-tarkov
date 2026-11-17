@@ -7,6 +7,7 @@ use crate::config::{self, Config, Paths};
 use crate::error::{AppError, AppResult};
 use crate::maps::import::Importer;
 use crate::maps::pack::{Pack, PackStore};
+use crate::msg::UserMsg;
 use crate::party::{lock, proto::Msg, Me, Party};
 use crate::protocol::SettingsInput;
 use std::collections::{HashMap, HashSet, VecDeque};
@@ -40,7 +41,7 @@ pub struct Inner {
     pub importer: Importer,
     pub raid: Raid,
     pub watch_folder: Option<PathBuf>,
-    pub watch_error: Option<String>,
+    pub watch_error: Option<UserMsg>,
 }
 
 pub struct App {
@@ -56,6 +57,7 @@ pub struct App {
     pub game: Mutex<crate::gamelog::GameStatus>,
     /// Estado del mercado y catálogo cargado (si lo hay).
     pub market: Mutex<(crate::market::MarketStatus, Option<Arc<crate::market::Catalog>>)>,
+    pub update: Mutex<crate::update::UpdateStatus>,
     capture_tx: mpsc::Sender<CaptureEvent>,
     watch_guard: Mutex<Option<WatchGuard>>,
 }
@@ -78,6 +80,7 @@ impl App {
             points: Mutex::new(crate::points::PointStore::load(&paths.points_file)),
             game: Mutex::new(crate::gamelog::GameStatus::default()),
             market: Mutex::new(Default::default()),
+            update: Mutex::new(Default::default()),
             paths,
             token,
             port,
@@ -107,7 +110,13 @@ impl App {
         let mut guard = lock(&self.watch_guard);
         *guard = None;
         let (folder, error) = match &dir {
-            None => (None, Some("No se encontró la carpeta Documentos; elige la carpeta de capturas.".into())),
+            None => (
+                None,
+                Some(UserMsg::new(
+                    "documentsNotFound",
+                    "The Documents folder was not found; choose your screenshots folder.",
+                )),
+            ),
             Some(d) => match watcher::spawn(d, self.capture_tx.clone()) {
                 Ok(g) => {
                     *guard = Some(g);
@@ -185,7 +194,7 @@ impl App {
 
     pub fn toggle_extract(&self, id: String) -> AppResult<()> {
         let mut inner = lock(&self.inner);
-        let map = inner.config.last_map.clone().ok_or_else(|| AppError::bad("no hay mapa activo"))?;
+        let map = inner.config.last_map.clone().ok_or_else(|| AppError::user("noActiveMap", "No map is active."))?;
         let set = inner.raid.available.entry(map).or_default();
         if !set.remove(&id) {
             set.insert(id);
@@ -231,7 +240,8 @@ impl App {
     }
 
     pub fn party_host(&self, bind_ip: &str, advertise: &str) -> AppResult<()> {
-        let ip = bind_ip.trim().parse().map_err(|_| AppError::bad("la interfaz de escucha no es una IP válida"))?;
+        let ip =
+            bind_ip.trim().parse().map_err(|_| AppError::bad("the listening interface is not a valid IP address"))?;
         let (me, port) = self.me();
         lock(&self.party).host(ip, advertise, port, me)
     }
@@ -244,10 +254,10 @@ impl App {
     /// Ping propio (Shift+clic): se pasa a coordenadas del juego para compartirlo.
     pub fn map_ping(&self, px: f64, py: f64) -> AppResult<()> {
         if !px.is_finite() || !py.is_finite() {
-            return Err(AppError::bad("coordenadas no válidas"));
+            return Err(AppError::bad("invalid coordinates"));
         }
         let inner = lock(&self.inner);
-        let pack = Self::active_pack(&inner).ok_or_else(|| AppError::bad("no hay mapa activo"))?;
+        let pack = Self::active_pack(&inner).ok_or_else(|| AppError::user("noActiveMap", "No map is active."))?;
         let (x, z) = pack.projection.unproject(px, py);
         let color = inner.config.player_color;
         drop(inner);

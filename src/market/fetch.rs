@@ -83,7 +83,7 @@ impl App {
         {
             let mut m = lock(&self.market);
             if m.0.state == MarketState::Loading {
-                return Err(AppError::bad("ya hay una descarga del mercado en curso"));
+                return Err(AppError::user("marketBusy", "A price download is already running."));
             }
             m.0.state = MarketState::Loading;
             m.0.error = None;
@@ -95,7 +95,7 @@ impl App {
             let result = download(&mode, &lang, &flea_name).await;
             match result {
                 Ok(cat) => {
-                    tracing::info!("Mercado: {} objetos ({mode}, {lang})", cat.items.len());
+                    tracing::info!("Market: {} items ({mode}, {lang})", cat.items.len());
                     let path = app.market_cache(&mode, &lang);
                     let saved = path.parent().map(std::fs::create_dir_all).transpose().and_then(|_| {
                         let json = serde_json::to_vec(&cat).map_err(std::io::Error::other)?;
@@ -103,7 +103,7 @@ impl App {
                         std::fs::rename(path.with_extension("tmp"), &path)
                     });
                     if let Err(e) = saved {
-                        tracing::warn!("Mercado: no se pudo guardar la caché: {e}");
+                        tracing::warn!("Market: could not save the cache: {e}");
                     }
                     let mut m = lock(&app.market);
                     m.0 = MarketStatus {
@@ -117,13 +117,13 @@ impl App {
                     m.1 = Some(Arc::new(cat));
                 }
                 Err(e) => {
-                    tracing::warn!("Mercado: {e}");
+                    tracing::warn!("Market: {e}");
                     let mut m = lock(&app.market);
                     let have = m.1.as_ref().is_some_and(|c| c.mode == mode && c.lang == lang);
                     m.0.state = if have { MarketState::Ready } else { MarketState::Error };
                     m.0.mode = Some(mode);
                     m.0.lang = Some(lang);
-                    m.0.error = Some(e.to_string());
+                    m.0.error = Some(e.user_msg());
                 }
             }
             app.notify();
@@ -151,9 +151,9 @@ async fn download(mode: &str, lang: &str, flea_name: &str) -> AppResult<Catalog>
     // El análisis de decenas de MB va fuera del runtime asíncrono.
     tokio::task::spawn_blocking(move || -> AppResult<Catalog> {
         let doc: ItemsDoc =
-            serde_json::from_slice(&items).map_err(|e| AppError::Download(format!("items no válido: {e}")))?;
+            serde_json::from_slice(&items).map_err(|e| AppError::Download(format!("invalid items: {e}")))?;
         let tdoc: TradersDoc =
-            serde_json::from_slice(&traders).map_err(|e| AppError::Download(format!("traders no válido: {e}")))?;
+            serde_json::from_slice(&traders).map_err(|e| AppError::Download(format!("invalid traders: {e}")))?;
         let mut primary_loc = parse_locale(&primary);
         primary_loc.extend(parse_locale(&traders_loc));
         let mut fallback_loc = parse_locale(&fallback);
@@ -162,7 +162,7 @@ async fn download(mode: &str, lang: &str, flea_name: &str) -> AppResult<Catalog>
         let traders = build::traders(&tdoc, &locales);
         let items = build::items(doc, &traders, &locales, &flea_name);
         if items.is_empty() {
-            return Err(AppError::Download("el catálogo está vacío".into()));
+            return Err(AppError::Download("the catalog is empty".into()));
         }
         Ok(Catalog { mode, lang, fetched_at: now(), items })
     })

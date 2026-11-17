@@ -1,5 +1,6 @@
 //! Código de invitación: host, puerto y secreto de 256 bits en base32 con guiones.
 
+use crate::msg::UserMsg;
 use data_encoding::BASE32_NOPAD;
 use zeroize::Zeroizing;
 
@@ -28,18 +29,18 @@ fn valid_host(host: &str) -> bool {
 
 pub fn new_secret() -> Result<Zeroizing<[u8; 32]>, String> {
     let mut s = Zeroizing::new([0u8; 32]);
-    getrandom::fill(s.as_mut_slice()).map_err(|e| format!("aleatoriedad del sistema: {e}"))?;
+    getrandom::fill(s.as_mut_slice()).map_err(|e| format!("system randomness: {e}"))?;
     Ok(s)
 }
 
 pub fn encode(invite: &Invite) -> Result<Zeroizing<String>, String> {
     if !valid_host(&invite.host) {
-        return Err("la dirección del anfitrión no es válida".into());
+        return Err("the host address is not valid".into());
     }
     let host = invite.host.as_bytes();
     let mut raw = Zeroizing::new(Vec::with_capacity(4 + host.len() + 32));
     raw.push(CODE_VERSION);
-    raw.push(u8::try_from(host.len()).map_err(|_| "dirección demasiado larga")?);
+    raw.push(u8::try_from(host.len()).map_err(|_| "address too long")?);
     raw.extend_from_slice(host);
     raw.extend_from_slice(&invite.port.to_be_bytes());
     raw.extend_from_slice(invite.secret.as_slice());
@@ -55,8 +56,8 @@ pub fn encode(invite: &Invite) -> Result<Zeroizing<String>, String> {
 }
 
 /// Mensajes de error genéricos: nunca incluyen el código ni partes del secreto.
-pub fn decode(code: &str) -> Result<Invite, String> {
-    let bad = || "El código de invitación no es válido. Cópialo de nuevo completo.".to_string();
+pub fn decode(code: &str) -> Result<Invite, UserMsg> {
+    let bad = || UserMsg::new("inviteInvalid", "The invite code is not valid. Copy it again in full.");
     if code.len() > 600 {
         return Err(bad());
     }
@@ -71,7 +72,7 @@ pub fn decode(code: &str) -> Result<Invite, String> {
     let raw = Zeroizing::new(BASE32_NOPAD.decode(cleaned.as_bytes()).map_err(|_| bad())?);
     let (&ver, rest) = raw.split_first().ok_or_else(bad)?;
     if ver != CODE_VERSION {
-        return Err("Este código es de otra versión de Rastro.".into());
+        return Err(UserMsg::new("inviteOtherVersion", "This code is from another version of Rastro."));
     }
     let (&hlen, rest) = rest.split_first().ok_or_else(bad)?;
     let hlen = usize::from(hlen);

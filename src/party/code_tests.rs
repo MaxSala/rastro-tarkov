@@ -16,6 +16,7 @@ fn round_trip_ipv4_ipv6_and_names() {
 #[test]
 fn rejects_bad_input_without_echoing_it() {
     let err = decode("RST-AAAA-SECRETO").err().expect("error");
-    assert!(!err.contains("SECRETO"));
+    assert!(!err.text.contains("SECRETO") && err.arg.is_none());
+    assert_eq!(err.code, "inviteInvalid");
     assert!(encode(&Invite { host: "bad host!".into(), port: 1, secret: Zeroizing::new([0; 32]) }).is_err());
 }

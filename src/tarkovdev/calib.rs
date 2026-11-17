@@ -55,18 +55,18 @@ pub struct SvgMap {
 pub fn floor_name(en: &str) -> String {
     let lower = en.to_lowercase();
     let known = [
-        ("underground", "Subterráneo"),
-        ("basement", "Sótano"),
-        ("tunnel", "Túneles"),
-        ("bunker", "Búnkeres"),
-        ("roof", "Tejado"),
-        ("garage", "Garaje"),
-        ("1st", "1.ª planta"),
-        ("2nd", "2.ª planta"),
-        ("3rd", "3.ª planta"),
-        ("4th", "4.ª planta"),
-        ("5th", "5.ª planta"),
-        ("ground", "Planta baja"),
+        ("underground", "Underground"),
+        ("basement", "Basement"),
+        ("tunnel", "Tunnels"),
+        ("bunker", "Bunkers"),
+        ("roof", "Roof"),
+        ("garage", "Garage"),
+        ("1st", "1st floor"),
+        ("2nd", "2nd floor"),
+        ("3rd", "3rd floor"),
+        ("4th", "4th floor"),
+        ("5th", "5th floor"),
+        ("ground", "Ground floor"),
     ];
     known
         .iter()
@@ -110,7 +110,7 @@ fn valid_file(f: &str) -> bool {
 
 /// Mapas con SVG. Datos externos: se filtra todo lo que no encaje.
 pub fn parse_maps(bytes: &[u8]) -> Result<Vec<SvgMap>, String> {
-    let groups: Vec<Group> = serde_json::from_slice(bytes).map_err(|e| format!("maps.json no válido: {e}"))?;
+    let groups: Vec<Group> = serde_json::from_slice(bytes).map_err(|e| format!("invalid maps.json: {e}"))?;
     let mut out = Vec::new();
     for g in groups {
         if !is_valid_id(&g.normalized_name) {

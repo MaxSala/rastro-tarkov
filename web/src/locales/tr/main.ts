@@ -46,6 +46,7 @@ const main: Main = {
     right: "sağ",
     ahead: "ileri",
     noPosition: "Mesafeyi hesaplamak için oyunda ekran görüntüsü al.",
+    requires: (list: string) => `Gerekli: ${list}`,
   },
   party: {
     idleTitle: "Oda yok",
@@ -138,10 +139,6 @@ const main: Main = {
     fit: "Tüm harita",
     follow: "Konumumu takip et",
     center: "Konumuma ortala",
-  },
-  floors: {
-    label: "Kat",
-    auto: (name: string | null) => (name ? `Otomatik (${name})` : "Otomatik"),
   },
   filter: {
     button: "Kapları filtrele",

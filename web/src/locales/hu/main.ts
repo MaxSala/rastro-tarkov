@@ -47,6 +47,7 @@ const main: Main = {
     right: "jobb",
     ahead: "egyenesen",
     noPosition: "Készíts képernyőképet a játékban a távolság kiszámításához.",
+    requires: (list: string) => `Szükséges: ${list}`,
   },
   party: {
     idleTitle: "Nincs szoba",
@@ -139,10 +140,6 @@ const main: Main = {
     fit: "Teljes térkép",
     follow: "Pozícióm követése",
     center: "Középre a pozíciómra",
-  },
-  floors: {
-    label: "Emelet",
-    auto: (name: string | null) => (name ? `Automatikus (${name})` : "Automatikus"),
   },
   filter: {
     button: "Konténerek szűrése",

@@ -9,6 +9,7 @@ import { useApp } from "../../store/app";
 import { Button, IconButton } from "../ui/button";
 import { Textarea } from "../ui/input";
 import { PanelFrame } from "./PanelFrame";
+import { say } from "../../lib/msg";
 
 export async function copyPartyCode(code: string | null | undefined) {
   if (!code) return;
@@ -97,7 +98,7 @@ export function PartyPanel() {
   if (party.status === "idle" || party.status === "error") {
     return (
       <PanelFrame title={t.panels.party}>
-        <Idle error={party.error} />
+        <Idle error={party.error ? say(party.error) : null} />
       </PanelFrame>
     );
   }

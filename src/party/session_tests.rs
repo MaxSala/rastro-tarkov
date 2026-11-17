@@ -33,7 +33,7 @@ async fn heartbeat_timeout_cuts_silent_peer() {
     let (_tx, mut rx) = spawn(b, cb);
     let started = Instant::now();
     match rx.recv().await {
-        Some(Event::Ended(why)) => assert!(why.contains("21 s"), "{why}"),
+        Some(Event::Ended(why)) => assert_eq!(why.code, "connectionLost", "{why}"),
         other => panic!("se esperaba corte, llegó {other:?}"),
     }
     assert!(started.elapsed() >= IDLE_TIMEOUT);
@@ -55,5 +55,5 @@ async fn message_flood_gets_cut() {
             break;
         }
     }
-    assert!(ended.expect("debe cortar").contains("demasiados"));
+    assert_eq!(ended.expect("debe cortar").code, "rateLimited");
 }

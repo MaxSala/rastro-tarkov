@@ -16,16 +16,16 @@ const MAX_URL_LEN: usize = 2048;
 pub fn inspect(raw: &str) -> AppResult<(Url, String)> {
     let raw = raw.trim();
     if raw.len() > MAX_URL_LEN {
-        return Err(AppError::bad("la URL es demasiado larga"));
+        return Err(AppError::bad("the URL is too long"));
     }
-    let url = Url::parse(raw).map_err(|_| AppError::bad("la URL no es válida"))?;
+    let url = Url::parse(raw).map_err(|_| AppError::bad("the URL is not valid"))?;
     if url.scheme() != "https" {
-        return Err(AppError::bad("solo se admiten URLs https"));
+        return Err(AppError::user("httpsOnly", "Only https URLs are allowed."));
     }
     if !url.username().is_empty() || url.password().is_some() {
-        return Err(AppError::bad("la URL no puede llevar usuario ni contraseña"));
+        return Err(AppError::bad("the URL cannot contain a user name or password"));
     }
-    let host = url.host_str().ok_or_else(|| AppError::bad("la URL no tiene dominio"))?.to_owned();
+    let host = url.host_str().ok_or_else(|| AppError::bad("the URL has no domain"))?.to_owned();
     Ok((url, host))
 }
 
@@ -72,26 +72,26 @@ pub fn is_forbidden_ip(ip: IpAddr) -> bool {
 
 /// Resuelve el dominio y exige que TODAS sus IPs sean públicas.
 pub async fn resolve_public(url: &Url) -> AppResult<SocketAddr> {
-    let host = url.host_str().ok_or_else(|| AppError::bad("la URL no tiene dominio"))?;
+    let host = url.host_str().ok_or_else(|| AppError::bad("the URL has no domain"))?;
     let port = url.port_or_known_default().unwrap_or(443);
     let bare = host.trim_start_matches('[').trim_end_matches(']');
     let addrs: Vec<SocketAddr> = match bare.parse::<IpAddr>() {
         Ok(ip) => vec![SocketAddr::new(ip, port)],
         Err(_) => tokio::time::timeout(Duration::from_secs(10), tokio::net::lookup_host((bare, port)))
             .await
-            .map_err(|_| AppError::Download("el DNS no respondió a tiempo".into()))?
-            .map_err(|_| AppError::Download(format!("no se pudo resolver {bare}")))?
+            .map_err(|_| AppError::Download("DNS did not answer in time".into()))?
+            .map_err(|_| AppError::Download(format!("could not resolve {bare}")))?
             .collect(),
     };
     if addrs.is_empty() {
-        return Err(AppError::Download(format!("{bare} no tiene direcciones")));
+        return Err(AppError::Download(format!("{bare} has no addresses")));
     }
     if addrs.iter().any(|a| is_forbidden_ip(a.ip())) {
         return Err(AppError::Download(format!(
-            "{bare} apunta a una red local o privada; no se permite descargar desde ahí"
+            "{bare} points to a local or private network; downloading from there is not allowed"
         )));
     }
-    addrs.first().copied().ok_or_else(|| AppError::Download("sin direcciones".into()))
+    addrs.first().copied().ok_or_else(|| AppError::Download("no addresses".into()))
 }
 
 fn client_for(host: &str, addr: SocketAddr) -> AppResult<reqwest::Client> {
@@ -106,12 +106,12 @@ fn client_for(host: &str, addr: SocketAddr) -> AppResult<reqwest::Client> {
         .user_agent("Rastro")
         .resolve(host, addr)
         .build()
-        .map_err(|e| AppError::Internal(format!("cliente HTTP: {e}")))
+        .map_err(|e| AppError::Internal(format!("HTTP client: {e}")))
 }
 
 /// Siguiente salto de una redirección, validado como una URL nueva.
 pub fn next_hop(current: &Url, location: &str) -> AppResult<Url> {
-    let joined = current.join(location).map_err(|_| AppError::Download("redirección no válida".into()))?;
+    let joined = current.join(location).map_err(|_| AppError::Download("invalid redirect".into()))?;
     Ok(inspect(joined.as_str())?.0)
 }
 
@@ -133,7 +133,7 @@ pub async fn fetch_with(start: Url, max_bytes: usize, opts: Options<'_>) -> AppR
         let (_, host) = inspect(url.as_str())?;
         if let Some(allowed) = opts.allowed_hosts {
             if !allowed.contains(&host.as_str()) {
-                return Err(AppError::Download(format!("{host} no está en la lista de dominios permitidos")));
+                return Err(AppError::Download(format!("{host} is not on the list of allowed domains")));
             }
         }
         let addr = resolve_public(&url).await?;
@@ -144,15 +144,14 @@ pub async fn fetch_with(start: Url, max_bytes: usize, opts: Options<'_>) -> AppR
             }
             None => client.get(url.clone()),
         };
-        let mut resp =
-            req.send().await.map_err(|e| AppError::Download(format!("no se pudo conectar con {host}: {e}")))?;
+        let mut resp = req.send().await.map_err(|e| AppError::Download(format!("could not connect to {host}: {e}")))?;
         let status = resp.status();
         if status.is_redirection() && status != StatusCode::NOT_MODIFIED {
             let loc = resp
                 .headers()
                 .get(reqwest::header::LOCATION)
                 .and_then(|v| v.to_str().ok())
-                .ok_or_else(|| AppError::Download("redirección sin destino".into()))?;
+                .ok_or_else(|| AppError::Download("redirect without a destination".into()))?;
             url = next_hop(&url, loc)?;
             continue;
         }
@@ -164,23 +163,23 @@ pub async fn fetch_with(start: Url, max_bytes: usize, opts: Options<'_>) -> AppR
                 detail = text.chars().filter(|c| !c.is_control()).collect();
             }
             let sep = if detail.is_empty() { "" } else { ": " };
-            return Err(AppError::Download(format!("{host} respondió {status}{sep}{detail}")));
+            return Err(AppError::Download(format!("{host} answered {status}{sep}{detail}")));
         }
         if resp.content_length().is_some_and(|n| n > max_bytes as u64) {
-            return Err(AppError::Download("el archivo supera el tamaño máximo".into()));
+            return Err(AppError::Download("the file is larger than the maximum size".into()));
         }
         let mut out = Vec::new();
         while let Some(chunk) =
-            resp.chunk().await.map_err(|e| AppError::Download(format!("descarga interrumpida: {e}")))?
+            resp.chunk().await.map_err(|e| AppError::Download(format!("download interrupted: {e}")))?
         {
             if out.len() + chunk.len() > max_bytes {
-                return Err(AppError::Download("el archivo supera el tamaño máximo".into()));
+                return Err(AppError::Download("the file is larger than the maximum size".into()));
             }
             out.extend_from_slice(&chunk);
         }
         return Ok(out);
     }
-    Err(AppError::Download(format!("demasiadas redirecciones (máximo {MAX_REDIRECTS})")))
+    Err(AppError::Download(format!("too many redirects (maximum {MAX_REDIRECTS})")))
 }
 
 #[cfg(test)]

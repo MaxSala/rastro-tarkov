@@ -44,6 +44,8 @@ Limits: 64 KiB per incoming message and 4 sockets at a time.
 | `setGameLogs` | `enabled`, `path` | Turns log-based detection on or off and sets the logs folder (empty means the default one). |
 | `setGameMode` | `mode`: `auto`, `regular` or `pve` | Which game mode's tarkov.dev data to use. |
 | `marketRefresh` | `fleaName` | Downloads the price catalog for the current mode and language. `fleaName` is the flea market's name in the interface language (no control characters, at most 40). |
+| `setCheckUpdates` | `enabled` | Answers the one-time question, or changes the setting in *Settings → About*. Turning it on checks right away. |
+| `checkUpdates` | | Checks for a new release now. The result arrives in `snapshot.view.update`. |
 | `setLanguage` | `lang`: `cs`, `de`, `en`, `es`, `fr`, `hu`, `it`, `ja`, `ko`, `pl`, `pt`, `ro`, `ru`, `sk`, `tr` or `zh` | Language for tarkov.dev data. The interface sends it on connect and whenever the user changes it. |
 
 ## Backend → interface (`ServerMsg`)
@@ -52,16 +54,18 @@ Limits: 64 KiB per incoming message and 4 sockets at a time.
 
 Everything the interface draws, already projected to pixels on the active map:
 
-- **Settings** (`settings`, including `openInWindow` and `language`), watcher status, installed packs and the data folder (`dataDir`).
+- **Settings** (`settings`, including `openInWindow`, `language` and `checkUpdates`: `true`, `false` or `null` when not asked yet), watcher status, installed packs and the data folder (`dataDir`).
 - **Active map** (`activeMap`): `imageUrl`, the level for the current height, `floors: [{ id, name }]` and `autoFloor`, the floor picked from your last position.
 - **Player**: `px`, `py`, `angle` (screen degrees) and game coordinates.
 - **Trail**, **extracts** (with `distanceM`, `available` and `dimmed`) and **points** on the active map (with `distanceM`).
 - **Guidance**: `distanceM`, `heightDiffM` and `relativeDeg` (negative means turn left).
 - **Party**: status, the invite code when hosting, peers (with a marker only when they are on your map) and pings (with `remainingMs`).
 - `onboarding`: whether to show the first-run guide.
-- `tarkovdev`: `{ state: idle | running | done | error, message, done, total }`.
+- **Extracts** may carry `switches`: the names of switches to activate first. The interface shows them as a translated note.
+- `tarkovdev`: `{ state: idle | running | done | error, step: maps | data | install | icons | null, current, done, total, installed, failed, iconsMissing, noData, error }`. The interface composes the progress and summary text from these fields.
+- `update`: `{ state: idle | checking | upToDate | available | error, latest, url, error }`. `url` is always a release page of this repository.
 - `game`: `{ enabled, folder, folderFound, mode, modePref, phase: menu | loading | raid | null, mapName, mapInstalled, startedAt, raidMinutes }`. `startedAt` is the local time from the log (`YYYY-MM-DDTHH:MM:SS.mmm`, no time zone); the interface computes the raid clock from it.
-- `market`: `{ state: empty | loading | ready | error, fetchedAt, count, mode, lang, error }`. The interface fetches `/api/market` again whenever `fetchedAt` changes.
+- `market`: `{ state: empty | loading | ready | error, fetchedAt, count, mode, lang, error }`. Every `error` field in the view (watcher, party, market, tarkovdev) is a user message, described below. The interface fetches `/api/market` again whenever `fetchedAt` changes.
 
 ### Other messages
 
@@ -71,7 +75,17 @@ Everything the interface draws, already projected to pixels on the active map:
 | `folderCheck { result: { path, exists, captures } }` | Reply to `checkFolder`. |
 | `logs { lines }` | Reply to `getLogs`. |
 | `interfaces { list: [{ name, ip }] }` | Reply to `listInterfaces`. |
-| `notice { level: "info" \| "error", text }` | A message to show as is. The text is currently always in Spanish. |
+| `notice { level: "info" \| "error", code, arg?, text }` | A user message to show as a toast. |
+
+## User messages
+
+Anything the backend wants the user to read is a *user message*: `{ code, arg?, text }`.
+
+- `code` identifies the message (`[a-zA-Z]{1,40}`, for example `portInUse` or `wrongCode`). The interface translates it with `t.msg[code]` in the user's language.
+- `arg` is an optional detail inserted into the translation: a port, a path, a version or a technical error in English.
+- `text` is the same message in English. The interface shows it when it doesn't know the code, and it's what goes to the log.
+
+The list of codes lives in `web/src/locales/es/tools.ts` (`msg`); the backend side is spread across the modules that raise them.
 
 ## HTTP endpoints
 
@@ -84,7 +98,8 @@ Every request needs the `x-rastro-token` header. `POST` requests also need a mat
 | `GET /api/icons/{name}` | | A marker icon (PNG) from the fixed list, if downloaded. |
 | `GET /api/market` | | The processed catalog `{ mode, lang, fetchedAt, items }` for the current mode and language, or 404 if it hasn't been downloaded. |
 | `GET /api/key-locations/{id}` | | `[{ mapId, mapName, count }]`: installed maps with locks for that key (24-hex item ID). |
-| `GET /api/item-icon/{id}` | | An item icon (24-hex item ID), from the cache or from `assets.tarkov.dev`. |
+| `GET /api/item-icon/{id}` | | An item icon (24-hex item ID), from the cache or from `assets.tarkov.dev`. `204 No Content` when there isn't one (offline or unknown item). |
+| `GET /api/changelog` | | `CHANGELOG.md` as embedded in this build, as `text/plain`. |
 | `POST /api/import/upload` | Raw zip, optional `x-expected-sha256` header | `Preview` |
 | `POST /api/import/demo` | `{}` | `Preview` |
 | `POST /api/import/inspect-url` | `{ url }` | `{ host }`, without touching the network |
@@ -92,7 +107,7 @@ Every request needs the `x-rastro-token` header. `POST` requests also need a mat
 | `POST /api/import/commit` | `{ stagingId, overwrite, acceptLicense: true }` | `{ id }` |
 | `POST /api/import/cancel` | `{ stagingId }` | `{}` |
 
-Errors come back as `{ "error": "<message>" }` with status 400, 403, 404, 409 (already exists) or 500. Error messages are currently in Spanish.
+Errors come back as `{ "error": "<English text>", "code": "<code>", "arg": <detail or null> }` with status 400, 403, 404, 409 (already exists) or 500. `code` and `arg` work like a user message.
 
 ## Party protocol (TCP)
 

@@ -64,7 +64,7 @@ pub fn run(page: Page, origin: String) -> anyhow::Result<()> {
     let _webview = {
         use tao::platform::unix::WindowExtUnix;
         use wry::WebViewBuilderExtUnix;
-        let vbox = window.default_vbox().ok_or_else(|| anyhow::anyhow!("sin contenedor GTK"))?;
+        let vbox = window.default_vbox().ok_or_else(|| anyhow::anyhow!("no GTK container"))?;
         builder.build_gtk(vbox)?
     };
     event_loop.run(move |event, _, flow| {
@@ -90,6 +90,6 @@ pub fn error_page(message: &str) -> String {
     format!(
         "<!doctype html><meta charset=utf-8><body style=\"margin:0;display:grid;place-items:center;height:100vh;\
 background:#0b0b0b;color:#ededed;font:14px system-ui\"><div style=\"max-width:420px\"><h1 style=\"font-size:16px\">\
-Rastro no ha podido arrancar</h1><p style=\"color:#b4b4b4\">{safe}</p></div></body>"
+Rastro could not start</h1><p style=\"color:#b4b4b4\">{safe}</p></div></body>"
     )
 }

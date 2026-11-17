@@ -9,7 +9,7 @@ use crate::maps::zipx::{MAX_UNPACKED_BYTES, MAX_ZIP_BYTES};
 use crate::maps::{download, image::Kind};
 use axum::body::Bytes;
 use axum::extract::{Path, State};
-use axum::http::{header, HeaderMap, Uri};
+use axum::http::{header, HeaderMap, StatusCode, Uri};
 use axum::response::{IntoResponse, Response};
 use axum::Json;
 use serde::Deserialize;
@@ -20,7 +20,9 @@ use std::sync::Arc;
 static IMPORT_SLOT: tokio::sync::Semaphore = tokio::sync::Semaphore::const_new(1);
 
 async fn import_slot() -> AppResult<tokio::sync::SemaphorePermit<'static>> {
-    IMPORT_SLOT.try_acquire().map_err(|_| AppError::bad("ya hay una importación en curso; espera a que termine"))
+    IMPORT_SLOT
+        .try_acquire()
+        .map_err(|_| AppError::user("importBusy", "Another import is in progress; wait for it to finish."))
 }
 
 async fn blocking<T: Send + 'static>(f: impl FnOnce() -> AppResult<T> + Send + 'static) -> AppResult<T> {
@@ -91,6 +93,12 @@ pub async fn market(State(ctx): State<Ctx>) -> AppResult<Response> {
     Ok(([(header::CONTENT_TYPE, "application/json"), (header::CACHE_CONTROL, "no-store")], json).into_response())
 }
 
+/// Version history (CHANGELOG.md, embedded at build time) for "What's new".
+pub async fn changelog() -> Response {
+    const TEXT: &str = include_str!("../../CHANGELOG.md");
+    ([(header::CONTENT_TYPE, "text/plain; charset=utf-8"), (header::CACHE_CONTROL, "no-store")], TEXT).into_response()
+}
+
 /// Mapas instalados donde se usa una llave.
 pub async fn key_locations(State(ctx): State<Ctx>, Path(id): Path<String>) -> AppResult<Response> {
     if !crate::market::icons::valid_id(&id) {
@@ -102,7 +110,10 @@ pub async fn key_locations(State(ctx): State<Ctx>, Path(id): Path<String>) -> Ap
 
 /// Icono de un objeto (id de 24 hex): de la caché o de assets.tarkov.dev.
 pub async fn item_icon(State(ctx): State<Ctx>, Path(id): Path<String>) -> AppResult<Response> {
-    let (bytes, kind) = ctx.app.item_icon(&id).await?;
+    // No icon (offline, or tarkov.dev has none) is a normal case: 204 keeps the console quiet.
+    let Ok((bytes, kind)) = ctx.app.item_icon(&id).await else {
+        return Ok(StatusCode::NO_CONTENT.into_response());
+    };
     Ok(([(header::CONTENT_TYPE, kind.mime()), (header::CACHE_CONTROL, "private, max-age=86400")], bytes)
         .into_response())
 }
@@ -117,7 +128,7 @@ pub async fn icon(State(ctx): State<Ctx>, Path(name): Path<String>) -> AppResult
 
 pub async fn upload(State(ctx): State<Ctx>, headers: HeaderMap, body: Bytes) -> AppResult<Json<Preview>> {
     if body.len() > MAX_ZIP_BYTES {
-        return Err(AppError::pack("el zip supera 50 MB"));
+        return Err(AppError::user("zipTooBig", "The zip is larger than 50 MB."));
     }
     let sha = headers.get("x-expected-sha256").and_then(|v| v.to_str().ok()).map(str::to_owned);
     let app = ctx.app.clone();
@@ -160,7 +171,7 @@ pub struct CommitInput {
 
 pub async fn commit(State(ctx): State<Ctx>, Json(input): Json<CommitInput>) -> AppResult<Json<Value>> {
     if !input.accept_license {
-        return Err(AppError::bad("hay que aceptar los créditos y la licencia del paquete"));
+        return Err(AppError::user("licenseRequired", "You need to accept the pack's credits and license."));
     }
     let app = ctx.app.clone();
     let id = blocking(move || app.commit_import(&input.staging_id, input.overwrite)).await?;

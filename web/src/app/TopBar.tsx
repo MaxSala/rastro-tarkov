@@ -9,6 +9,8 @@ import { FloorSelect } from "./FloorSelect";
 import { RaidChip } from "./RaidChip";
 import { WorkspaceTabs } from "./WorkspaceTabs";
 import { Brand } from "../components/brand/Logo";
+import { floorName } from "../lib/mapText";
+import { UpdateButton } from "./UpdateButton";
 
 /** Solo aparece si estás en un party: Rastro no se conecta a ningún servidor por sí mismo. */
 function PartyPill() {
@@ -69,7 +71,7 @@ function MapPicker() {
       <FloorSelect />
       {active?.level && (
         <span className="text-xs text-fg-muted">
-          {t.top.level} <span className="text-fg-soft">{active.level}</span>
+          {t.top.level} <span className="text-fg-soft">{floorName(active.level)}</span>
         </span>
       )}
     </>
@@ -85,6 +87,7 @@ export function TopBar() {
       <WorkspaceTabs />
       {workspace === "map" && <MapPicker />}
       <div className="flex-1" />
+      <UpdateButton />
       {workspace === "map" && <RaidChip />}
       <PartyPill />
       <div className="flex items-center gap-0.5">

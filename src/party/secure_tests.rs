@@ -53,5 +53,5 @@ async fn different_protocol_version_is_rejected_before_any_data() {
     assert_eq!(answer, [1, 0, PROTOCOL_VERSION as u8]);
     let err = host.await.expect("join").err().expect("rechazo");
     assert!(matches!(err, HsError::Version { theirs: 99, .. }));
-    assert!(err.to_string().contains("versión"));
+    assert!(err.to_string().contains("version") && err.msg().code == "versionMismatch");
 }

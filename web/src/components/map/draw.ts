@@ -15,6 +15,7 @@ import {
   tooltipContent,
 } from "./markers";
 import { iconUrl } from "../../lib/iconCache";
+import { extractNote } from "../../lib/mapText";
 
 const TRAIL_CHUNKS = 8;
 const tip = { className: "rt-tip", direction: "top" as const, offset: [0, -8] as [number, number] };
@@ -36,7 +37,7 @@ export function drawExtracts(group: L.LayerGroup, list: ExtractView[], selected:
     const { icon, label } = extractIcon(e, isSel);
     const latlng = toLatLng(e.px, e.py);
     L.marker(latlng, { icon, title: e.name, keyboard: true, riseOnHover: true })
-      .bindTooltip(tooltipContent(e.name, e.conditions), tip)
+      .bindTooltip(tooltipContent(e.name, extractNote(e)), tip)
       .on("click", () => send({ type: "selectExtract", extractId: isSel ? null : e.id }))
       .on("contextmenu", (ev: L.LeafletMouseEvent) => openMenu(ev, { kind: "extract", id: e.id }))
       .addTo(group);

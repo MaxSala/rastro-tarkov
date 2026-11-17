@@ -21,7 +21,7 @@ function pump() {
     if (!id) break;
     active += 1;
     api
-      .imageBlobUrl(`/api/item-icon/${id}`)
+      .optionalBlobUrl(`/api/item-icon/${id}`)
       .then(
         (u) => urls.set(id, u),
         () => urls.set(id, null),

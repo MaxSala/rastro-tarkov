@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "demo",
-  "name": "Demo (cuadrícula)",
+  "name": "Demo (grid)",
   "image": {
     "file": "demo.svg",
     "width": 1000,
@@ -37,13 +37,13 @@
   "levels": [
     {
       "id": "suelo",
-      "name": "Planta baja",
+      "name": "Ground floor",
       "y_min": -10,
       "y_max": 5
     },
     {
       "id": "alto",
-      "name": "Planta alta",
+      "name": "Upper floor",
       "y_min": 5,
       "y_max": 40
     }
@@ -51,62 +51,62 @@
   "extracts": [
     {
       "id": "puerta-norte",
-      "name": "Puerta norte",
+      "name": "North gate",
       "faction": "pmc",
       "x": -80,
       "y": 0,
       "z": 470,
-      "conditions": "Siempre abierta."
+      "conditions": "Always open."
     },
     {
       "id": "tunel-este",
-      "name": "Túnel este",
+      "name": "East tunnel",
       "faction": "pmc",
       "x": 470,
       "y": -4,
       "z": 60,
-      "conditions": "Requiere linterna. Abierta al 50 %."
+      "conditions": "Needs a flashlight. Open 50% of the time."
     },
     {
       "id": "muelle",
-      "name": "Muelle",
+      "name": "Pier",
       "faction": "scav",
       "x": -430,
       "y": 0,
       "z": -380,
-      "conditions": "Solo scav."
+      "conditions": "Scav only."
     },
     {
       "id": "tejado",
-      "name": "Tejado del bloque C",
+      "name": "Block C rooftop",
       "faction": "scav",
       "x": 120,
       "y": 22,
       "z": -120,
-      "conditions": "Subir por la escalera exterior."
+      "conditions": "Climb the outside stairs."
     },
     {
       "id": "puente",
-      "name": "Puente viejo",
+      "name": "Old bridge",
       "faction": "shared",
       "x": 300,
       "y": 2,
       "z": -430,
-      "conditions": "Pagar 5.000 ₽."
+      "conditions": "Pay 5,000 ₽."
     },
     {
       "id": "garaje",
-      "name": "Garaje sur",
+      "name": "South garage",
       "faction": "shared",
       "x": -250,
       "y": -2,
       "z": -90,
-      "conditions": "Activar el interruptor del bloque A."
+      "conditions": "Flip the switch in block A."
     }
   ],
   "credits": {
     "author": "Rastro",
     "license": "CC0-1.0",
-    "source": "Generado para pruebas; no representa ningún mapa real."
+    "source": "Made for testing; does not represent any real map."
   }
 }

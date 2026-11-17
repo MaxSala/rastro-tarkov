@@ -101,6 +101,6 @@ mod tests {
         if let Some(l) = m.markers.last_mut() {
             l.key = Some("no-hex".into());
         }
-        assert!(m.validate().is_err(), "llave no válida en un paquete importado");
+        assert!(m.validate().is_err(), "invalid key in an imported pack");
     }
 }

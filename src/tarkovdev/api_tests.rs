@@ -23,10 +23,10 @@ fn parses_and_sanitizes() {
     assert!(ids.iter().all(|id| crate::maps::manifest::is_valid_id(id)));
     let dup = ex.get(1).expect("2");
     assert_eq!(dup.name, "Duplicado");
-    assert_eq!(dup.conditions, "Requiere activar: Generador");
+    assert_eq!(dup.switches, vec!["Generador".to_string()]);
     let mk = m.markers();
     assert_eq!(mk.len(), 2, "coordenada infinita descartada");
-    assert!(mk.iter().any(|k| k.kind == MarkerKind::Loot && k.name == "Contenedor"));
+    assert!(mk.iter().any(|k| k.kind == MarkerKind::Loot && k.name == "Container"));
 }
 
 #[test]

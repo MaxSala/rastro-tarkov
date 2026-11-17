@@ -48,7 +48,7 @@ fn list<'a>(v: &'a Value, k: &str) -> impl Iterator<Item = &'a Value> {
 
 /// `locale_en` sirve para deducir el tipo de contenedor (normalizedName) a partir del nombre inglés.
 pub fn parse(maps_doc: &[u8], locale_doc: &[u8], locale_en: &[u8]) -> Result<Vec<MapData>, String> {
-    let data: Value = serde_json::from_slice(maps_doc).map_err(|e| format!("maps no válido: {e}"))?;
+    let data: Value = serde_json::from_slice(maps_doc).map_err(|e| format!("invalid maps document: {e}"))?;
     let loc: Value = serde_json::from_slice(locale_doc).unwrap_or(Value::Null);
     let locale = Locale(loc.get("data").unwrap_or(&loc).as_object());
     let loc_en: Value = serde_json::from_slice(locale_en).unwrap_or(Value::Null);
@@ -58,7 +58,7 @@ pub fn parse(maps_doc: &[u8], locale_doc: &[u8], locale_en: &[u8]) -> Result<Vec
     let entries: Vec<&Value> = match maps {
         Value::Object(o) => o.values().collect(),
         Value::Array(a) => a.iter().collect(),
-        _ => return Err("maps sin mapas".into()),
+        _ => return Err("the maps document has no maps".into()),
     };
     let mut out = Vec::new();
     for m in entries {
@@ -88,11 +88,11 @@ pub fn parse(maps_doc: &[u8], locale_doc: &[u8], locale_en: &[u8]) -> Result<Vec
             .collect();
         let transits = list(m, "transits").filter_map(|t| {
             let (x, y, z) = pos(t)?;
-            make_marker(MarkerKind::Transit, &locale.resolve(s(t, "description")), "Transición", x, y, z)
+            make_marker(MarkerKind::Transit, &locale.resolve(s(t, "description")), "Transit", x, y, z)
         });
         let switches = list(m, "switches").filter_map(|sw| {
             let (x, y, z) = pos(sw)?;
-            make_marker(MarkerKind::Switch, &locale.resolve(s(sw, "name")), "Interruptor", x, y, z)
+            make_marker(MarkerKind::Switch, &locale.resolve(s(sw, "name")), "Switch", x, y, z)
         });
         let loot = list(m, "lootContainers").filter_map(|l| {
             let (x, y, z) = pos(l)?;
@@ -104,7 +104,7 @@ pub fn parse(maps_doc: &[u8], locale_doc: &[u8], locale_en: &[u8]) -> Result<Vec
                 .unwrap_or("");
             let normalized = c.and_then(|c| c.get("normalizedName")).and_then(Value::as_str).map(str::to_owned);
             let group = normalized.or_else(|| english.text(key)).or_else(|| locale.text(key));
-            make_marker_in(MarkerKind::Loot, group.as_deref(), &locale.resolve(key), "Contenedor", (x, y, z))
+            make_marker_in(MarkerKind::Loot, group.as_deref(), &locale.resolve(key), "Container", (x, y, z))
         });
         // `key` es el id del objeto (o un objeto con `id` en otras versiones del documento).
         let locks = list(m, "locks").filter_map(|l| {
@@ -122,7 +122,7 @@ pub fn parse(maps_doc: &[u8], locale_doc: &[u8], locale_en: &[u8]) -> Result<Vec
             .or_else(|| Some(s(m, "name").to_owned()).filter(|n| !n.is_empty()));
         out.push(MapData {
             normalized_name: normalized,
-            name: name.map(|n| super::api::clean(Some(&n), 60, "Mapa")),
+            name: name.map(|n| super::api::clean(Some(&n), 60, "Map")),
             extracts,
             markers,
             name_id: super::api::name_id(m.get("nameId").and_then(Value::as_str)),
@@ -130,7 +130,7 @@ pub fn parse(maps_doc: &[u8], locale_doc: &[u8], locale_en: &[u8]) -> Result<Vec
         });
     }
     if out.is_empty() {
-        return Err("el documento no contiene mapas reconocibles".into());
+        return Err("the document contains no recognisable maps".into());
     }
     Ok(out)
 }

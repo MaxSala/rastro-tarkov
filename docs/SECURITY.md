@@ -69,7 +69,8 @@ Generated with `getrandom` in `src/main.rs`. It travels in the URL fragment (`#t
 - **tarkov.dev maps** (`src/tarkovdev/sync.rs`): fixed hosts `raw.githubusercontent.com`, `json.tarkov.dev` and `api.tarkov.dev`, with 4/20/32 MB limits. One failing map doesn't stop the others. The user sees the licence and the hosts and must agree before anything is downloaded.
 - **Map data** (`src/tarkovdev/calib.rs`, `api.rs`, `jsondoc.rs`, `locks.rs`): every field is optional, text is stripped of control and bidirectional characters and truncated, IDs must be unique and valid, coordinates must be finite and bounded. Lock types are normalised to a closed list.
 - **Market** (`src/market/fetch.rs`, `build.rs`): fixed hosts `json.tarkov.dev` and `assets.tarkov.dev`, one download at a time, 160 MB limit for items and 64 MB per translation file, JSON parsed off the async runtime. Item IDs and slugs are validated, prices must be finite and bounded, offers from unknown traders are dropped, and the catalog is capped at 20,000 items. The cache is written atomically and read back with a 64 MB limit. The interface receives the processed catalog, never the raw download, and searches never leave the PC.
-- **Icons** (`src/tarkovdev/icons.rs`, `src/market/icons.rs`): marker icons come from a closed list of names; item icons are addressed by a 24-hex ID only. Both are checked by magic bytes, size (64 or 96 KB) and dimensions (256 px), cached on disk and used by the interface as `blob:` URLs.
+- **Update check** (`src/update.rs`): off until the user answers a one-time question; *Check now* is an explicit action. A single GET to `api.github.com` (fixed host, 512 KB limit) through the same hardened fetch. Nothing but the request itself is sent. The reply is only trusted for two fields: the tag must be a plain `vX.Y.Z` version, and the release URL must start with this repository's `/releases/` address, or it is discarded. The interface checks both again before showing a link, and nothing is downloaded or installed automatically.
+- **Icons** (`src/tarkovdev/icons.rs`, `src/market/icons.rs`): marker icons come from a closed list of names; item icons are addressed by a 24-hex ID only. After a connection or DNS failure, item icons stop trying the network for 60 seconds. Both are checked by magic bytes, size (64 or 96 KB) and dimensions (256 px), cached on disk and used by the interface as `blob:` URLs.
 
 ### Game logs
 
@@ -113,6 +114,7 @@ Security-relevant tests live next to the code they cover:
 | `src/party/code_tests.rs` | Error messages never include the code or the secret |
 | `src/tarkovdev/locks.rs`, `jsondoc_tests.rs` | Invalid key IDs, unknown lock types, unnamed locks |
 | `src/market/build_tests.rs` | Invalid IDs, untranslated items, control and bidi characters in names |
+| `src/update.rs` | Malformed versions, release URLs outside this repository |
 
 The interface has also been checked in Chromium for CSP violations (none) and for the session key being removed from the URL after loading.
 
@@ -129,6 +131,7 @@ These are limits of the design, stated plainly.
 - **The SVG filter is pattern-based,** not a full XML parser. The real protection is that SVGs are only displayed as images, where browsers don't run scripts, under a `sandbox` CSP.
 - **DNS.** Internal addresses are rejected at resolution time, but if a legitimate domain later serves malicious content, only the optional SHA-256 check will catch it.
 - **Dependencies.** Rastro trusts `snow`, `rustls`, `ring` and the rest of its dependencies. `cargo deny`, `cargo audit` and `npm audit` reduce that risk; they don't remove it.
+- **Update check.** If GitHub or this repository were compromised, the check could point to a malicious release. Rastro only ever opens the release page in the browser; it never downloads or runs anything by itself. Release builds publish `SHA256SUMS` alongside the `.exe`.
 - **tarkov.dev.** If its repository or API were compromised, it could serve misleading maps, names or prices. It could not serve code: SVGs are filtered and shown as images, and text is shown as text. Rastro relies on the TLS certificates of GitHub and tarkov.dev; the data itself is not signed.
 - **The system WebView.** The window uses WebView2 on Windows and WebKitGTK on Linux. Their security depends on the system being up to date. The window only ever shows Rastro's own local interface.
 - **The local log.** `rastro.log` can contain folder paths and map names.

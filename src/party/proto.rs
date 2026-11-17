@@ -2,6 +2,7 @@
 
 use crate::config::PALETTE_SIZE;
 use crate::maps::manifest::{is_unsafe_char, is_valid_id};
+use crate::msg::UserMsg;
 use serde::{Deserialize, Serialize};
 
 const MAX_COORD: f64 = 100_000.0;
@@ -17,13 +18,13 @@ pub enum CloseReason {
 }
 
 impl CloseReason {
-    pub fn text(self) -> &'static str {
+    pub fn msg(self) -> UserMsg {
         match self {
-            Self::Full => "La sala está llena (máximo 8).",
-            Self::Kicked => "El anfitrión te ha expulsado.",
-            Self::RateLimit => "Conexión cortada por enviar demasiados mensajes.",
-            Self::HostClosed => "El anfitrión ha cerrado la sala.",
-            Self::Protocol => "Conexión cortada por un mensaje no válido.",
+            Self::Full => UserMsg::new("roomFull", "The room is full (8 players maximum)."),
+            Self::Kicked => UserMsg::new("kicked", "The host removed you from the room."),
+            Self::RateLimit => UserMsg::new("rateLimited", "Disconnected for sending too many messages."),
+            Self::HostClosed => UserMsg::new("roomClosed", "The host closed the room."),
+            Self::Protocol => UserMsg::new("protocolError", "Disconnected after an invalid message."),
         }
     }
 }
@@ -49,7 +50,7 @@ pub enum Msg {
 pub fn validate_name(name: &str) -> Result<(), String> {
     let n = name.chars().count();
     if n == 0 || n > 24 || name.chars().any(is_unsafe_char) || name.trim() != name {
-        return Err("el nombre debe tener entre 1 y 24 caracteres, sin caracteres de control".into());
+        return Err("the name must be 1 to 24 characters, with no control characters".into());
     }
     Ok(())
 }
@@ -58,13 +59,13 @@ fn coords(vals: &[f64]) -> Result<(), String> {
     if vals.iter().all(|v| v.is_finite() && v.abs() <= MAX_COORD) {
         Ok(())
     } else {
-        Err("coordenada no válida".into())
+        Err("invalid coordinate".into())
     }
 }
 
 fn place(map: &str, vals: &[f64]) -> Result<(), String> {
     if !is_valid_id(map) {
-        return Err("id de mapa no válido".into());
+        return Err("invalid map id".into());
     }
     coords(vals)
 }
@@ -73,7 +74,7 @@ fn heading(h: f64) -> Result<(), String> {
     if h.is_finite() && (0.0..360.0).contains(&h) {
         Ok(())
     } else {
-        Err("rumbo no válido".into())
+        Err("invalid heading".into())
     }
 }
 
@@ -81,7 +82,7 @@ fn color(c: u8) -> Result<(), String> {
     if c < PALETTE_SIZE {
         Ok(())
     } else {
-        Err("color fuera de la paleta".into())
+        Err("colour outside the palette".into())
     }
 }
 

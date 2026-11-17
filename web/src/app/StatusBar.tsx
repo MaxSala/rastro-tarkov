@@ -3,6 +3,7 @@ import { t } from "../locales";
 import { coord, raidClock } from "../lib/format";
 import { iconSm } from "../lib/icons";
 import { useApp } from "../store/app";
+import { say } from "../lib/msg";
 
 export function StatusBar() {
   const view = useApp((s) => s.view);
@@ -18,7 +19,7 @@ export function StatusBar() {
           <FolderOpen {...iconSm} className="shrink-0" />
         )}
         <span className="shrink-0">{w.error ? t.status.notWatching : t.status.watching}</span>
-        <span className="num truncate text-fg-soft">{w.error ?? w.folder}</span>
+        <span className="num truncate text-fg-soft">{w.error ? say(w.error) : w.folder}</span>
       </span>
       <div className="flex-1" />
       {w.lastTakenAt ? (

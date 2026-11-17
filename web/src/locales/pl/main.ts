@@ -56,6 +56,7 @@ const main: Main = {
     right: "prawo",
     ahead: "na wprost",
     noPosition: "Zrób zrzut ekranu w grze, aby obliczyć odległość.",
+    requires: (list: string) => `Wymaga: ${list}`,
   },
   party: {
     idleTitle: "Brak pokoju",
@@ -148,10 +149,6 @@ const main: Main = {
     fit: "Cała mapa",
     follow: "Śledź moją pozycję",
     center: "Wyśrodkuj na mojej pozycji",
-  },
-  floors: {
-    label: "Piętro",
-    auto: (name: string | null) => (name ? `Automatycznie (${name})` : "Automatycznie"),
   },
   filter: {
     button: "Filtruj pojemniki",

@@ -6,7 +6,11 @@ use crate::maps::download::{fetch_with, inspect, Options};
 use crate::maps::image::{sniff, Kind};
 use crate::state::App;
 use std::path::PathBuf;
+use std::sync::Mutex;
+use std::time::{Duration, Instant};
 use tokio::sync::Semaphore;
+
+static OFFLINE_UNTIL: Mutex<Option<Instant>> = Mutex::new(None);
 
 const MAX_ICON: usize = 96 * 1024;
 const MAX_SIDE: u32 = 256;
@@ -17,7 +21,7 @@ pub fn valid_id(id: &str) -> bool {
 }
 
 fn validate(bytes: &[u8]) -> AppResult<Kind> {
-    let (kind, (w, h)) = sniff(bytes).ok_or_else(|| AppError::pack("icono no válido"))?;
+    let (kind, (w, h)) = sniff(bytes).ok_or_else(|| AppError::pack("invalid icon"))?;
     if bytes.len() > MAX_ICON || w > MAX_SIDE || h > MAX_SIDE || w == 0 || h == 0 {
         return Err(AppError::pack("icono demasiado grande"));
     }
@@ -40,10 +44,23 @@ impl App {
                 return Ok((bytes, kind));
             }
         }
+        // After a network failure, don't try again for a minute: offline, hundreds of rows would
+        // each wait for their own timeout.
+        if OFFLINE_UNTIL.lock().map(|t| t.is_some_and(|t| Instant::now() < t)).unwrap_or(false) {
+            return Err(AppError::NotFound);
+        }
         let _permit = DOWNLOADS.acquire().await.map_err(|e| AppError::Internal(e.to_string()))?;
         let (url, _) = inspect(&format!("https://assets.tarkov.dev/{id}-icon.webp"))?;
-        let bytes =
-            fetch_with(url, MAX_ICON, Options { json_body: None, allowed_hosts: Some(super::fetch::HOSTS) }).await?;
+        let fetched =
+            fetch_with(url, MAX_ICON, Options { json_body: None, allowed_hosts: Some(super::fetch::HOSTS) }).await;
+        if let Err(AppError::Download(e)) = &fetched {
+            if e.starts_with("could not connect") || e.starts_with("could not resolve") || e.starts_with("DNS") {
+                if let Ok(mut t) = OFFLINE_UNTIL.lock() {
+                    *t = Some(Instant::now() + Duration::from_secs(60));
+                }
+            }
+        }
+        let bytes = fetched?;
         let kind = validate(&bytes)?;
         if let Some(dir) = path.parent() {
             let _ = std::fs::create_dir_all(dir);

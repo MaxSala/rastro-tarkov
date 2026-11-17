@@ -14,6 +14,7 @@ mod gamelog;
 mod logs;
 mod maps;
 mod market;
+mod msg;
 mod party;
 mod points;
 mod protocol;
@@ -22,6 +23,7 @@ mod setup;
 mod state;
 mod state_import;
 mod tarkovdev;
+mod update;
 mod view;
 mod view_extra;
 
@@ -48,14 +50,14 @@ fn parse_args() -> anyhow::Result<Args> {
             "--browser" => args.window = Some(false),
             "--window" => args.window = Some(true),
             "--port" => {
-                let v = it.next().context("--port necesita un número")?;
-                args.port = Some(v.parse().context("--port debe ser un número entre 1024 y 65535")?);
+                let v = it.next().context("--port needs a number")?;
+                args.port = Some(v.parse().context("--port must be a number between 1024 and 65535")?);
             }
             "--help" | "-h" => {
-                println!("Uso: rastro [--port N] [--window | --browser] [--no-open] [--dev]");
+                println!("Usage: rastro [--port N] [--window | --browser] [--no-open] [--dev]");
                 std::process::exit(0);
             }
-            other => bail!("opción desconocida: {other} (usa --help)"),
+            other => bail!("unknown option: {other} (see --help)"),
         }
     }
     Ok(args)
@@ -64,13 +66,13 @@ fn parse_args() -> anyhow::Result<Args> {
 fn main() -> anyhow::Result<()> {
     let args = parse_args()?;
     let paths = config::Paths::discover()?;
-    paths.ensure().context("no se pudo preparar el directorio de datos")?;
+    paths.ensure().context("could not prepare the data folder")?;
     logs::init(Some(&paths.log_file));
     let cfg = config::load(&paths.config_file);
     let port = args.port.unwrap_or(cfg.server_port);
     let window = args.open && !args.dev && args.window.unwrap_or(cfg.open_in_window);
     if port < 1024 {
-        bail!("el puerto debe ser 1024 o superior");
+        bail!("the port must be 1024 or higher");
     }
 
     let rt = tokio::runtime::Builder::new_multi_thread().enable_all().build()?;
@@ -80,9 +82,9 @@ fn main() -> anyhow::Result<()> {
         Ok(l) => l,
         Err(e) => {
             let msg = if e.kind() == std::io::ErrorKind::AddrInUse {
-                format!("El puerto {port} ya está en uso. Probablemente Rastro ya está abierto; si no, elige otro puerto en config.json o con --port.")
+                format!("Port {port} is already in use. Rastro is probably already open; if not, choose another port in config.json or with --port.")
             } else {
-                format!("No se pudo escuchar en {addr}: {e}")
+                format!("Could not listen on {addr}: {e}")
             };
             tracing::error!("{msg}");
             if window {
@@ -105,13 +107,21 @@ fn main() -> anyhow::Result<()> {
             }
         }
     });
+    if app.check_updates_on_start() {
+        let app = app.clone();
+        // A few seconds after starting, so the window opens first.
+        rt.spawn(async move {
+            tokio::time::sleep(Duration::from_secs(4)).await;
+            app.check_updates();
+        });
+    }
     let router = server::router(app);
     rt.spawn(async move {
         if let Err(e) = axum::serve(listener, router).await {
-            tracing::error!("el servidor se detuvo: {e}");
+            tracing::error!("the server stopped: {e}");
         }
     });
-    tracing::info!("Rastro escuchando en http://{addr} (solo este equipo)");
+    tracing::info!("Rastro listening on http://{addr} (this PC only)");
 
     let web_port = if args.dev { server::DEV_PORT } else { port };
     let origin = format!("http://127.0.0.1:{web_port}");
@@ -119,14 +129,14 @@ fn main() -> anyhow::Result<()> {
     if window {
         // Bloquea hasta cerrar la ventana; al cerrarla termina el proceso.
         if let Err(e) = desktop::run(desktop::Page::Url(url.clone()), origin) {
-            tracing::error!("no se pudo abrir la ventana ({e}); se usa el navegador");
+            tracing::error!("could not open the window ({e}); using the browser");
             let _ = opener::open(&url);
         }
     } else if args.open && opener::open(&url).is_ok() {
-        tracing::info!("Navegador abierto.");
+        tracing::info!("Browser opened.");
     } else {
         // El token solo se muestra aquí, en la consola local, y cambia en cada arranque.
-        println!("\nAbre esta dirección en el navegador (no la compartas):\n{url}\n");
+        println!("\nOpen this address in your browser (don't share it):\n{url}\n");
     }
     // Modo navegador (o si la ventana falló): seguir hasta Ctrl+C o «Salir» en la app.
     rt.block_on(async {

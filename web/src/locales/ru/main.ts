@@ -55,6 +55,7 @@ const main: Main = {
     right: "прав.",
     ahead: "прямо",
     noPosition: "Сделай скриншот в игре, чтобы рассчитать расстояние.",
+    requires: (list: string) => `Требуется: ${list}`,
   },
   party: {
     idleTitle: "Нет комнаты",
@@ -147,10 +148,6 @@ const main: Main = {
     fit: "Вся карта",
     follow: "Следовать за мной",
     center: "Центрировать на мне",
-  },
-  floors: {
-    label: "Этаж",
-    auto: (name: string | null) => (name ? `Авто (${name})` : "Авто"),
   },
   filter: {
     button: "Фильтр контейнеров",

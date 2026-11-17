@@ -36,7 +36,7 @@ pub async fn serve(uri: Uri) -> Response {
             None => {
                 return (
                     StatusCode::SERVICE_UNAVAILABLE,
-                    "La web no está compilada. Ejecuta `npm run build` en web/ y vuelve a compilar, o usa el modo desarrollo.",
+                    "The interface is not built. Run `npm run build` in web/ and rebuild, or use development mode.",
                 )
                     .into_response()
             }

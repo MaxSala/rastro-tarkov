@@ -116,19 +116,16 @@ pub fn check(kind: Kind, bytes: &[u8], declared: (u32, u32)) -> Result<(u32, u32
             check_svg(bytes)?;
             declared
         }
-        Kind::Png => png_size(bytes).ok_or("la imagen no es un PNG válido")?,
-        Kind::Jpeg => jpeg_size(bytes).ok_or("la imagen no es un JPEG válido")?,
-        Kind::Webp => webp_size(bytes).ok_or("la imagen no es un WebP válido")?,
+        Kind::Png => png_size(bytes).ok_or("the image is not a valid PNG")?,
+        Kind::Jpeg => jpeg_size(bytes).ok_or("the image is not a valid JPEG")?,
+        Kind::Webp => webp_size(bytes).ok_or("the image is not a valid WebP")?,
     };
     let side = 1..=MAX_IMAGE_SIDE;
     if !side.contains(&size.0) || !side.contains(&size.1) {
-        return Err(format!("la imagen mide {}x{}; el máximo es {MAX_IMAGE_SIDE}px por lado", size.0, size.1));
+        return Err(format!("the image is {}x{}; the maximum is {MAX_IMAGE_SIDE}px per side", size.0, size.1));
     }
     if size != declared {
-        return Err(format!(
-            "la imagen mide {}x{} pero el manifest dice {}x{}",
-            size.0, size.1, declared.0, declared.1
-        ));
+        return Err(format!("the image is {}x{} but the manifest says {}x{}", size.0, size.1, declared.0, declared.1));
     }
     Ok(size)
 }
@@ -162,19 +159,19 @@ fn is_safe_ref(value: &str) -> bool {
 }
 
 pub fn check_svg(bytes: &[u8]) -> Result<(), String> {
-    let text = std::str::from_utf8(bytes).map_err(|_| "el SVG no es UTF-8 válido")?;
+    let text = std::str::from_utf8(bytes).map_err(|_| "the SVG is not valid UTF-8")?;
     if !text.contains("<svg") {
-        return Err("el archivo no parece un SVG".into());
+        return Err("the file does not look like an SVG".into());
     }
-    let rules = svg_rules().ok_or("no se pudo preparar la validación de SVG")?;
+    let rules = svg_rules().ok_or("could not prepare SVG validation")?;
     if let Some(m) = rules.banned.find(text) {
-        return Err(format!("el SVG contiene contenido no permitido ({})", m.as_str().trim()));
+        return Err(format!("the SVG contains disallowed content ({})", m.as_str().trim()));
     }
     let refs = rules.refs.captures_iter(text).chain(rules.css_url.captures_iter(text));
     for cap in refs {
         let value = cap.get(1).map_or("", |m| m.as_str());
         if !is_safe_ref(value) {
-            return Err("el SVG contiene referencias externas".into());
+            return Err("the SVG contains external references".into());
         }
     }
     Ok(())

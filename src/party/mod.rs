@@ -9,6 +9,7 @@ pub mod secure;
 pub mod session;
 
 use crate::error::{AppError, AppResult};
+use crate::msg::UserMsg;
 use proto::Msg;
 use std::collections::BTreeMap;
 use std::net::{IpAddr, SocketAddr};
@@ -26,7 +27,7 @@ pub enum Status {
     Hosting,
     Connecting,
     Connected,
-    Error(String),
+    Error(UserMsg),
 }
 
 #[derive(Debug, Clone)]
@@ -150,9 +151,13 @@ impl Party {
         let code = code::encode(&invite).map_err(AppError::bad)?;
         let std_listener = std::net::TcpListener::bind(SocketAddr::new(bind_ip, port)).map_err(|e| {
             if e.kind() == std::io::ErrorKind::AddrInUse {
-                AppError::bad(format!("el puerto {port} ya está en uso; elige otro en Ajustes"))
+                AppError::user_with(
+                    "portInUse",
+                    port,
+                    format!("Port {port} is already in use; choose another one in Settings."),
+                )
             } else {
-                AppError::bad(format!("no se pudo escuchar en {bind_ip}:{port} ({e})"))
+                AppError::user_with("listenFailed", &e, format!("Could not listen on {bind_ip}:{port} ({e})"))
             }
         })?;
         std_listener.set_nonblocking(true)?;
@@ -171,7 +176,7 @@ impl Party {
     }
 
     pub fn join(&mut self, code_text: &str, me: Me) -> AppResult<()> {
-        let invite = code::decode(code_text).map_err(AppError::bad)?;
+        let invite = code::decode(code_text).map_err(AppError::User)?;
         let (rx, generation) = self.start();
         lock(&self.roster).reset(Status::Connecting);
         let ctx = client::Ctx { roster: self.roster.clone(), changed: self.changed.clone(), generation };

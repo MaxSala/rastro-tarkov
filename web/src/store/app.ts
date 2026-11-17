@@ -16,7 +16,7 @@ function loadWorkspace(): Workspace {
 }
 
 export type PanelId = "extracts" | "points" | "party" | "maps";
-export type DialogId = "import" | "settings" | "host" | "palette" | "point" | null;
+export type DialogId = "import" | "settings" | "host" | "palette" | "point" | "changelog" | null;
 
 /** Menú contextual del mapa: posición en pantalla y en píxeles del mapa, y el objeto bajo el cursor. */
 export interface ContextMenu {

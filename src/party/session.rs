@@ -3,6 +3,7 @@
 use super::frame::{read_frame, write_frame};
 use super::proto::{CloseReason, Msg};
 use super::secure::Channel;
+use crate::msg::UserMsg;
 use tokio::io::{AsyncRead, AsyncWrite};
 use tokio::sync::mpsc;
 use tokio::time::{interval, sleep_until, Duration, Instant};
@@ -15,8 +16,8 @@ const RATE_BURST: f64 = 30.0;
 #[derive(Debug, PartialEq)]
 pub enum Event {
     Msg(Msg),
-    /// La conexión terminó; el texto explica por qué (en español, sin datos sensibles).
-    Ended(String),
+    /// The connection ended; the message says why (never contains secrets).
+    Ended(UserMsg),
 }
 
 /// Cubo de fichas: 10 mensajes/s sostenidos, ráfagas de hasta 30.
@@ -54,7 +55,7 @@ where
     (out_tx, ev_rx)
 }
 
-async fn run<S>(stream: S, mut chan: Channel, mut out_rx: mpsc::Receiver<Msg>, ev_tx: &mpsc::Sender<Event>) -> String
+async fn run<S>(stream: S, mut chan: Channel, mut out_rx: mpsc::Receiver<Msg>, ev_tx: &mpsc::Sender<Event>) -> UserMsg
 where
     S: AsyncRead + AsyncWrite + Send + Unpin + 'static,
 {
@@ -78,37 +79,37 @@ where
             raw = raw_rx.recv() => {
                 let frame = match raw {
                     Some(Ok(f)) => f,
-                    Some(Err(_)) | None => break "Conexión cerrada.".to_string(),
+                    Some(Err(_)) | None => break UserMsg::new("connectionClosed", "Connection closed."),
                 };
                 deadline = Instant::now() + IDLE_TIMEOUT;
                 if !bucket.take() {
                     send(&mut writer, &mut chan, &Msg::Closed { reason: CloseReason::RateLimit }).await;
-                    break CloseReason::RateLimit.text().to_string();
+                    break CloseReason::RateLimit.msg();
                 }
                 match chan.open(&frame) {
                     Ok(Msg::Beat) => {}
                     Ok(msg) => {
                         if ev_tx.send(Event::Msg(msg)).await.is_err() {
-                            break "Sesión terminada.".into();
+                            break UserMsg::new("connectionClosed", "Session ended.");
                         }
                     }
-                    Err(e) => break format!("Mensaje rechazado: {e}."),
+                    Err(e) => break UserMsg::with("protocolError", &e, format!("Message rejected: {e}.")),
                 }
             }
             out = out_rx.recv() => match out {
                 Some(msg) => {
                     if !send(&mut writer, &mut chan, &msg).await {
-                        break "No se pudo enviar.".into();
+                        break UserMsg::new("connectionClosed", "Could not send.");
                     }
                 }
-                None => break "Sesión cerrada.".into(),
+                None => break UserMsg::new("connectionClosed", "Session closed."),
             },
             _ = beat.tick() => {
                 if !send(&mut writer, &mut chan, &Msg::Beat).await {
-                    break "No se pudo enviar.".into();
+                    break UserMsg::new("connectionClosed", "Could not send.");
                 }
             }
-            () = sleep_until(deadline) => break "Sin noticias del otro extremo en 21 s; conexión cortada.".into(),
+            () = sleep_until(deadline) => break UserMsg::new("connectionLost", "No response from the other side for 21 s; disconnected."),
         }
     };
     reader_task.abort();

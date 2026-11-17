@@ -74,8 +74,8 @@ fn parses_floor_layers_with_zones() {
     assert_eq!(c.base_layer.as_deref(), Some("Ground_Level"));
     assert_eq!(c.layers.len(), 2, "el id con caracteres CSS se descarta");
     let second = c.layers.first().expect("piso");
-    assert_eq!(second.name, "2.ª planta");
+    assert_eq!(second.name, "2nd floor");
     assert!(second.zones.first().expect("zona").contains(200.0, 4.0, 150.0));
     assert!(!second.zones.first().expect("zona").contains(200.0, 1.0, 150.0));
-    assert_eq!(c.layers.get(1).map(|l| l.name.as_str()), Some("Subterráneo"));
+    assert_eq!(c.layers.get(1).map(|l| l.name.as_str()), Some("Underground"));
 }

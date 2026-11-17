@@ -51,6 +51,8 @@ export function buildCommands(view: View | null): Command[] {
       shortcut: "G",
       run: () => s.setPrefs({ follow: !useApp.getState().prefs.follow }),
     },
+    { id: "changelog", label: t.changelog.open, run: () => s.openDialog("changelog") },
+    { id: "check-updates", label: t.update.checkNow, run: () => send({ type: "checkUpdates" }) },
     { id: "quit", label: t.palette.quit, run: () => send({ type: "quit" }) },
   ];
   if (view?.party.code) {

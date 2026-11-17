@@ -87,6 +87,12 @@ pub enum ClientMsg {
     SetLanguage {
         lang: crate::config::Language,
     },
+    /// The player's answer to "check for updates on startup?".
+    SetCheckUpdates {
+        enabled: bool,
+    },
+    /// "Check now" in Settings → About.
+    CheckUpdates,
 }
 
 #[derive(Debug, Deserialize)]
@@ -104,12 +110,29 @@ pub struct SettingsInput {
 #[derive(Debug, Serialize)]
 #[serde(tag = "type", rename_all = "camelCase", rename_all_fields = "camelCase")]
 pub enum ServerMsg {
-    Snapshot { view: Box<crate::view::View> },
-    Interfaces { list: Vec<Interface> },
-    Notice { level: NoticeLevel, text: String },
-    FolderCheck { result: crate::setup::FolderCheck },
-    Logs { lines: Vec<String> },
-    MapData { map_id: String, markers: Vec<crate::view_extra::MarkerView>, icons: Vec<String> },
+    Snapshot {
+        view: Box<crate::view::View>,
+    },
+    Interfaces {
+        list: Vec<Interface>,
+    },
+    /// `msg` is flattened: `{ "type": "notice", "level", "code", "arg"?, "text" }`.
+    Notice {
+        level: NoticeLevel,
+        #[serde(flatten)]
+        msg: crate::msg::UserMsg,
+    },
+    FolderCheck {
+        result: crate::setup::FolderCheck,
+    },
+    Logs {
+        lines: Vec<String>,
+    },
+    MapData {
+        map_id: String,
+        markers: Vec<crate::view_extra::MarkerView>,
+        icons: Vec<String>,
+    },
 }
 
 #[derive(Debug, Clone, Copy, Serialize)]

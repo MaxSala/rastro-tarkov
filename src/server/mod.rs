@@ -55,26 +55,26 @@ fn header_str(h: &HeaderMap, name: header::HeaderName) -> Option<&str> {
 /// Decide si una petición se acepta. Devuelve el motivo del rechazo (solo para logs).
 pub fn check_request(app: &App, method: &Method, path: &str, h: &HeaderMap) -> Result<(), &'static str> {
     // Host exacto: frena el DNS rebinding (evil.com resolviendo a 127.0.0.1).
-    let host = header_str(h, header::HOST).ok_or("sin Host")?;
+    let host = header_str(h, header::HOST).ok_or("missing Host")?;
     if !allowed_hosts(app).iter().any(|a| a == host) {
-        return Err("Host no permitido");
+        return Err("Host not allowed");
     }
     let origin = header_str(h, header::ORIGIN);
     if let Some(o) = origin {
         if !allowed_origins(app).iter().any(|a| a == o) {
-            return Err("Origin no permitido");
+            return Err("Origin not allowed");
         }
     }
     if header_str(h, header::HeaderName::from_static("sec-fetch-site")) == Some("cross-site") {
-        return Err("petición cross-site");
+        return Err("cross-site request");
     }
     let is_ws = path == "/ws";
     let is_api = path.starts_with("/api/");
     if (is_ws || method != Method::GET) && origin.is_none() {
-        return Err("falta Origin");
+        return Err("missing Origin");
     }
     if is_api {
-        let t = h.get(TOKEN_HEADER).and_then(|v| v.to_str().ok()).ok_or("sin token")?;
+        let t = h.get(TOKEN_HEADER).and_then(|v| v.to_str().ok()).ok_or("missing token")?;
         if !token_ok(app, t) {
             return Err("token incorrecto");
         }
@@ -83,10 +83,10 @@ pub fn check_request(app: &App, method: &Method, path: &str, h: &HeaderMap) -> R
         let ct = header_str(h, header::CONTENT_TYPE).unwrap_or("");
         let expected = if path == "/api/import/upload" { "application/zip" } else { "application/json" };
         if ct.split(';').next().map(str::trim) != Some(expected) {
-            return Err("Content-Type no permitido");
+            return Err("Content-Type not allowed");
         }
     } else if method != Method::GET {
-        return Err("método no permitido");
+        return Err("method not allowed");
     }
     Ok(())
 }
@@ -98,7 +98,7 @@ async fn guard(State(ctx): State<Ctx>, req: Request, next: Next) -> Response {
     let mut resp = match check_request(&ctx.app, req.method(), req.uri().path(), req.headers()) {
         Ok(()) => next.run(req).await,
         Err(why) => {
-            tracing::warn!("petición rechazada: {why}");
+            tracing::warn!("request rejected: {why}");
             (StatusCode::FORBIDDEN, "Acceso denegado.").into_response()
         }
     };
@@ -130,6 +130,7 @@ pub fn router(app: Arc<App>) -> Router {
         .route("/api/market", get(api::market))
         .route("/api/item-icon/{id}", get(api::item_icon))
         .route("/api/key-locations/{id}", get(api::key_locations))
+        .route("/api/changelog", get(api::changelog))
         .route("/api/import/demo", post(api::demo))
         .route("/api/import/inspect-url", post(api::inspect_url))
         .route("/api/import/url", post(api::from_url))

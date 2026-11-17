@@ -4,6 +4,7 @@ use super::code::Invite;
 use super::proto::Msg;
 use super::session::{self, Event};
 use super::{lock, Local, Me, PeerPos, PeerState, Roster, Status};
+use crate::msg::UserMsg;
 use std::sync::{Arc, Mutex};
 use tokio::net::TcpStream;
 use tokio::sync::{broadcast, mpsc};
@@ -17,24 +18,24 @@ pub struct Ctx {
     pub generation: u64,
 }
 
-async fn connect(invite: &Invite) -> Result<(TcpStream, super::secure::Channel), String> {
+async fn connect(invite: &Invite) -> Result<(TcpStream, super::secure::Channel), UserMsg> {
     let target = (invite.host.as_str(), invite.port);
     let mut stream = timeout(CONNECT_TIMEOUT, TcpStream::connect(target))
         .await
-        .map_err(|_| "El anfitrión no responde (5 s).".to_string())?
-        .map_err(|e| format!("No se pudo conectar con el anfitrión: {e}"))?;
+        .map_err(|_| UserMsg::new("hostTimeout", "The host is not responding."))?
+        .map_err(|e| UserMsg::with("hostUnreachable", &e, format!("Could not connect to the host: {e}")))?;
     let chan = timeout(CONNECT_TIMEOUT, super::secure::initiate(&mut stream, &invite.secret))
         .await
-        .map_err(|_| "El anfitrión no completó el saludo a tiempo.".to_string())?
-        .map_err(|e| e.to_string())?;
+        .map_err(|_| UserMsg::new("hostTimeout", "The host is not responding."))?
+        .map_err(|e| e.msg())?;
     Ok((stream, chan))
 }
 
 /// Aplica un mensaje del anfitrión. `Err` = hay que cortar con ese motivo.
-fn apply(roster: &Mutex<Roster>, generation: u64, msg: Msg) -> Result<(), String> {
+fn apply(roster: &Mutex<Roster>, generation: u64, msg: Msg) -> Result<(), UserMsg> {
     let mut r = lock(roster);
     if r.generation != generation {
-        return Err("Sesión sustituida.".into());
+        return Err(UserMsg::new("connectionClosed", "Session replaced."));
     }
     match msg {
         Msg::Welcome { .. } => {}
@@ -54,8 +55,8 @@ fn apply(roster: &Mutex<Roster>, generation: u64, msg: Msg) -> Result<(), String
         Msg::PeerLeft { id } => {
             r.peers.remove(&id);
         }
-        Msg::Closed { reason } => return Err(reason.text().into()),
-        _ => return Err("El anfitrión envió un mensaje no válido.".into()),
+        Msg::Closed { reason } => return Err(reason.msg()),
+        _ => return Err(UserMsg::new("protocolError", "The host sent an invalid message.")),
     }
     Ok(())
 }
@@ -87,7 +88,7 @@ pub async fn run(invite: Invite, me: Me, ctx: Ctx, mut local: mpsc::Receiver<Loc
     let _ = tx.send(Msg::Hello { name: me.name, color: me.color }).await;
     set_status(Status::Connected);
     notify();
-    let outcome: Option<String> = loop {
+    let outcome: Option<UserMsg> = loop {
         tokio::select! {
             ev = rx.recv() => match ev {
                 Some(Event::Msg(m)) => match apply(&roster, generation, m) {
@@ -95,7 +96,7 @@ pub async fn run(invite: Invite, me: Me, ctx: Ctx, mut local: mpsc::Receiver<Loc
                     Err(why) => break Some(why),
                 },
                 Some(Event::Ended(why)) => break Some(why),
-                None => break Some("Conexión cerrada.".into()),
+                None => break Some(UserMsg::new("connectionClosed", "Connection closed.")),
             },
             cmd = local.recv() => match cmd {
                 Some(Local::Send(m)) => { let _ = tx.try_send(m); }

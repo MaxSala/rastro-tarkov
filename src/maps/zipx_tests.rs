@@ -44,7 +44,7 @@ fn zip_bomb_is_rejected() {
     let z = build(&[("manifest.json", b"{}"), ("map.png", &zeros)]);
     assert!(z.len() < 1024 * 1024);
     let err = extract(&z, &tmp()).expect_err("debe fallar");
-    assert!(err.to_string().contains("bomba"), "{err}");
+    assert!(err.to_string().contains("zip bomb"), "{err}");
 }
 
 #[test]

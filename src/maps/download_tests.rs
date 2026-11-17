@@ -66,5 +66,5 @@ async fn host_allowlist_is_enforced_before_connecting() {
     let (url, _) = inspect("https://example.com/x.zip").expect("forma válida");
     let opts = Options { json_body: None, allowed_hosts: Some(&["api.tarkov.dev"]) };
     let err = fetch_with(url, 1024, opts).await.expect_err("dominio fuera de la lista");
-    assert!(err.to_string().contains("lista de dominios permitidos"), "{err}");
+    assert!(err.to_string().contains("list of allowed domains"), "{err}");
 }

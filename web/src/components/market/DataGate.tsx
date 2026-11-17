@@ -9,6 +9,7 @@ import { send } from "../../lib/socket";
 import { useApp } from "../../store/app";
 import { Button, IconButton } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
+import { say } from "../../lib/msg";
 
 export const refreshMarket = () => send({ type: "marketRefresh", fleaName: t.market.flea });
 
@@ -89,7 +90,7 @@ export function DataGate({ children }: { children: (c: Catalog) => ReactNode }) 
       )}
       <div className="grid gap-1.5">
         <h2 className="text-lg font-medium">{failed ? t.data.failed : t.data.title}</h2>
-        <p className="text-sm text-fg-soft">{failed ? (m?.error ?? error) : t.data.body}</p>
+        <p className="text-sm text-fg-soft">{failed ? (m?.error ? say(m.error) : error) : t.data.body}</p>
         <p className="text-xs text-fg-muted">{t.data.hosts}</p>
       </div>
       <Button variant="primary" onClick={refreshMarket}>

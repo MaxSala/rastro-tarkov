@@ -1,4 +1,5 @@
 import { lang, t } from "../locales";
+import { say } from "./msg";
 import { useApp } from "../store/app";
 import { serverMsgSchema, type ClientMsg } from "./protocol";
 import { readToken } from "./token";
@@ -65,7 +66,7 @@ export function connect(): void {
     } else if (msg.type === "folderCheck") {
       s.setFolderCheck(msg.result);
     } else {
-      s.notify(msg.level, msg.text);
+      s.notify(msg.level, say(msg));
     }
   };
   socket.onclose = () => {

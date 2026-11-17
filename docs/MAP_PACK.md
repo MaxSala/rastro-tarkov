@@ -52,7 +52,7 @@ Limits: 50 MB compressed, 100 MB uncompressed, a compression ratio of at most 10
 | `calibration.invert_x`, `invert_z` | Optional. Flip an axis before rotating. |
 | `calibration.rotation` | `0`, `90`, `180` or `270`, clockwise. |
 | `levels` | Optional, up to 16. A level applies when `y_min ≤ height < y_max`. In layered SVGs, `svg_layer` names the `<g>` group for that floor, and `zones` (up to 64 boxes of the form `{ "x": [a, b], "z": [a, b], "y": [min, max] }`) drive automatic floor selection. |
-| `extracts` | Up to 500. `faction` is `pmc`, `scav` or `shared`; `conditions` is up to 300 characters. |
+| `extracts` | Up to 500. `faction` is `pmc`, `scav` or `shared`; `conditions` is up to 300 characters. `switches` is optional: up to 8 names (60 characters each) of switches to activate first, shown as a translated "Requires: …" note. |
 | `markers` | Optional, version 2 only, up to 3000. See below. |
 | `game_ids` | Optional, up to 8. The game's internal names for this map (`[A-Za-z0-9_]{1,40}`, for example `bigmap` for Customs), used to switch maps automatically from the game logs. |
 | `raid_minutes` | Optional, 1 to 600. Raid length, used to show the time left. |

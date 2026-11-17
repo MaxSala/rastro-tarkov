@@ -47,6 +47,7 @@ const main: Main = {
     right: "des.",
     ahead: "di fronte",
     noPosition: "Fai uno screenshot in gioco per calcolare la distanza.",
+    requires: (list: string) => `Richiede: ${list}`,
   },
   party: {
     idleTitle: "Nessuna stanza",
@@ -139,10 +140,6 @@ const main: Main = {
     fit: "Vedi tutta la mappa",
     follow: "Segui la mia posizione",
     center: "Centra sulla mia posizione",
-  },
-  floors: {
-    label: "Piano",
-    auto: (name: string | null) => (name ? `Automatico (${name})` : "Automatico"),
   },
   filter: {
     button: "Filtra contenitori",

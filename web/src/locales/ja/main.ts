@@ -47,6 +47,7 @@ const main: Main = {
     right: "右",
     ahead: "正面",
     noPosition: "距離を計算するには、ゲーム内でスクリーンショットを撮ってください。",
+    requires: (list: string) => `必要：${list}`,
   },
   party: {
     idleTitle: "ルームなし",
@@ -139,10 +140,6 @@ const main: Main = {
     fit: "マップ全体を表示",
     follow: "自分の位置を追従",
     center: "自分の位置を中央に",
-  },
-  floors: {
-    label: "フロア",
-    auto: (name: string | null) => (name ? `自動（${name}）` : "自動"),
   },
   filter: {
     button: "コンテナを絞り込む",

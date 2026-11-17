@@ -46,7 +46,7 @@ pub fn random_hex(bytes: usize) -> AppResult<String> {
 fn normalize_sha(raw: &str) -> AppResult<String> {
     let s = raw.trim().to_ascii_lowercase();
     if s.len() != 64 || !s.bytes().all(|b| b.is_ascii_hexdigit()) {
-        return Err(AppError::bad("el SHA-256 debe tener 64 caracteres hexadecimales"));
+        return Err(AppError::user("shaInvalid", "The SHA-256 must be 64 hexadecimal characters."));
     }
     Ok(s)
 }
@@ -107,7 +107,10 @@ impl Importer {
         let sha = data_encoding::HEXLOWER.encode(&Sha256::digest(bytes));
         let verified = match expected_sha.filter(|s| !s.trim().is_empty()) {
             Some(raw) if normalize_sha(raw)? != sha => {
-                return Err(AppError::pack("el SHA-256 no coincide: el archivo no es el esperado"));
+                return Err(AppError::user(
+                    "shaMismatch",
+                    "The SHA-256 does not match: this is not the expected file.",
+                ));
             }
             Some(_) => Some(true),
             None => None,
@@ -134,7 +137,7 @@ impl Importer {
             let ok = *name == "manifest.json" || super::image::Kind::from_file_name(name).is_some();
             if !ok {
                 let _ = std::fs::remove_dir_all(&dir);
-                return Err(AppError::pack(format!("archivo no permitido: {name}")));
+                return Err(AppError::pack(format!("file not allowed: {name}")));
             }
             hasher.update(bytes);
             std::fs::write(dir.join(name), bytes)?;
@@ -148,7 +151,7 @@ impl Importer {
             .pending
             .get(staging_id)
             .cloned()
-            .ok_or_else(|| AppError::bad("la importación caducó; vuelve a empezar"))?;
+            .ok_or_else(|| AppError::user("importExpired", "The import expired; start again."))?;
         let id = store.install(&dir, overwrite)?;
         self.pending.remove(staging_id);
         self.order.retain(|s| s != staging_id);

@@ -47,6 +47,7 @@ const main: Main = {
     right: "dir.",
     ahead: "em frente",
     noPosition: "Tire um print no jogo para calcular a distância.",
+    requires: (list: string) => `Requer: ${list}`,
   },
   party: {
     idleTitle: "Sem sala",
@@ -139,10 +140,6 @@ const main: Main = {
     fit: "Ver o mapa inteiro",
     follow: "Seguir minha posição",
     center: "Centralizar na minha posição",
-  },
-  floors: {
-    label: "Andar",
-    auto: (name: string | null) => (name ? `Automático (${name})` : "Automático"),
   },
   filter: {
     button: "Filtrar contêineres",

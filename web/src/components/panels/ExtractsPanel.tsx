@@ -12,6 +12,7 @@ import { useApp } from "../../store/app";
 import { Segmented } from "../ui/segmented";
 import { Switch } from "../ui/switch";
 import { PanelFrame, PanelNote } from "./PanelFrame";
+import { extractNote } from "../../lib/mapText";
 
 type Filter = "all" | Faction;
 const filters: { value: Filter; label: string }[] = [
@@ -52,12 +53,12 @@ function Row({ e, selected }: { e: ExtractView; selected: boolean }) {
         aria-pressed={selected}
         onClick={() => send({ type: "selectExtract", extractId: selected ? null : e.id })}
         className="flex min-w-0 flex-1 items-center gap-2.5 py-2 text-left"
-        title={e.conditions}
+        title={extractNote(e)}
       >
         <Shape faction={e.faction} />
         <span className="min-w-0 flex-1">
           <span className="block truncate text-sm">{e.name}</span>
-          {e.conditions && <span className="block truncate text-xs text-fg-muted">{e.conditions}</span>}
+          {extractNote(e) && <span className="block truncate text-xs text-fg-muted">{extractNote(e)}</span>}
         </span>
         {e.distanceM !== null && (
           <span className="num shrink-0 text-xs text-fg-soft">{meters(e.distanceM)}</span>

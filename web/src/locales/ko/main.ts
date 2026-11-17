@@ -46,6 +46,7 @@ const main: Main = {
     right: "오른쪽",
     ahead: "정면",
     noPosition: "거리를 계산하려면 게임에서 스크린샷을 찍으세요.",
+    requires: (list: string) => `필요: ${list}`,
   },
   party: {
     idleTitle: "방 없음",
@@ -138,10 +139,6 @@ const main: Main = {
     fit: "맵 전체 보기",
     follow: "내 위치 따라가기",
     center: "내 위치로 이동",
-  },
-  floors: {
-    label: "층",
-    auto: (name: string | null) => (name ? `자동 (${name})` : "자동"),
   },
   filter: {
     button: "컨테이너 필터",

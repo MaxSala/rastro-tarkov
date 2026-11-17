@@ -49,6 +49,7 @@ const main: Main = {
     right: "rechts",
     ahead: "geradeaus",
     noPosition: "Mach im Spiel einen Screenshot, um die Entfernung zu berechnen.",
+    requires: (list: string) => `Erfordert: ${list}`,
   },
   party: {
     idleTitle: "Kein Raum",
@@ -141,10 +142,6 @@ const main: Main = {
     fit: "Ganze Karte",
     follow: "Meiner Position folgen",
     center: "Auf meine Position zentrieren",
-  },
-  floors: {
-    label: "Etage",
-    auto: (name: string | null) => (name ? `Automatisch (${name})` : "Automatisch"),
   },
   filter: {
     button: "Behälter filtern",

@@ -28,6 +28,8 @@ import { StatusBar } from "./StatusBar";
 import { TopBar } from "./TopBar";
 import { MarketView } from "../components/market/MarketView";
 import { AmmoView } from "../components/ammo/AmmoView";
+import { UpdatePrompt } from "./UpdatePrompt";
+import { WhatsNew, useWhatsNewOnUpdate } from "./WhatsNew";
 
 export function Shell() {
   const view = useApp((s) => s.view);
@@ -57,6 +59,7 @@ export function Shell() {
     ];
   }, [view, openDialog]);
   useHotkeys(hotkeys);
+  useWhatsNewOnUpdate();
 
   return (
     <div className="grid h-full grid-rows-[auto_1fr_auto]">
@@ -91,6 +94,8 @@ export function Shell() {
       <PointDialog />
       <ContextMenu />
       <KeyCard />
+      <UpdatePrompt />
+      <WhatsNew />
       <Toaster />
     </div>
   );

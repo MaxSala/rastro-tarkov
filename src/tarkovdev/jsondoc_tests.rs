@@ -21,7 +21,7 @@ fn resolves_locale_keys_and_switches() {
     assert_eq!(m.extracts.len(), 1, "sin posición se descarta");
     let ex = m.extracts.first().expect("ex");
     assert_eq!(ex.name, "Cruce");
-    assert_eq!(ex.conditions, "Requiere activar: Generador principal");
+    assert_eq!(ex.switches, vec!["Generador principal".to_string()]);
     let names: Vec<&str> = m.markers.iter().map(|k| k.name.as_str()).collect();
     let loot = m.markers.iter().find(|k| k.kind == MarkerKind::Loot).expect("loot");
     assert_eq!(loot.group.as_deref(), Some("weapon-box"), "tipo deducido del nombre inglés");

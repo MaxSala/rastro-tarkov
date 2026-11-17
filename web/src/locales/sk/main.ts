@@ -53,6 +53,7 @@ const main: Main = {
     right: "vpravo",
     ahead: "rovno",
     noPosition: "Urob v hre snímku obrazovky na výpočet vzdialenosti.",
+    requires: (list: string) => `Vyžaduje: ${list}`,
   },
   party: {
     idleTitle: "Žiadna miestnosť",
@@ -145,10 +146,6 @@ const main: Main = {
     fit: "Celá mapa",
     follow: "Sledovať moju pozíciu",
     center: "Vycentrovať na moju pozíciu",
-  },
-  floors: {
-    label: "Poschodie",
-    auto: (name: string | null) => (name ? `Automaticky (${name})` : "Automaticky"),
   },
   filter: {
     button: "Filtrovať kontajnery",

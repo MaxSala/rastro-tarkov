@@ -2,6 +2,7 @@
 
 use super::{token_ok, Ctx};
 use crate::error::AppError;
+use crate::msg::UserMsg;
 use crate::protocol::{ClientMsg, NoticeLevel, ServerMsg};
 use crate::state::App;
 use axum::extract::ws::{Message, WebSocket, WebSocketUpgrade};
@@ -17,7 +18,7 @@ const AUTH_TIMEOUT: Duration = Duration::from_secs(5);
 
 pub async fn handler(State(ctx): State<Ctx>, ws: WebSocketUpgrade) -> Response {
     let Ok(slot) = ctx.ws_slots.clone().try_acquire_owned() else {
-        return (StatusCode::SERVICE_UNAVAILABLE, "Demasiadas pestañas abiertas.").into_response();
+        return (StatusCode::SERVICE_UNAVAILABLE, "Too many tabs open.").into_response();
     };
     ws.max_message_size(MAX_WS_MESSAGE).max_frame_size(MAX_WS_MESSAGE).on_upgrade(move |socket| async move {
         session(ctx, socket).await;
@@ -29,7 +30,7 @@ async fn send(socket: &mut WebSocket, msg: &ServerMsg) -> bool {
     match serde_json::to_string(msg) {
         Ok(text) => socket.send(Message::Text(text.into())).await.is_ok(),
         Err(e) => {
-            tracing::error!("no se pudo serializar: {e}");
+            tracing::error!("could not serialize: {e}");
             false
         }
     }
@@ -65,7 +66,7 @@ async fn session(ctx: Ctx, mut socket: WebSocket) {
                 };
                 let reply = match serde_json::from_str::<ClientMsg>(&text) {
                     Ok(msg) => handle(&app, msg),
-                    Err(_) => Some(notice(NoticeLevel::Error, "Mensaje no reconocido.".into())),
+                    Err(_) => Some(notice(NoticeLevel::Error, UserMsg::new("unknownMessage", "Unrecognised message."))),
                 };
                 if let Some(r) = reply {
                     if !send(&mut socket, &r).await {
@@ -108,8 +109,8 @@ fn snapshot(app: &App) -> ServerMsg {
     ServerMsg::Snapshot { view: Box::new(crate::view::build(app)) }
 }
 
-fn notice(level: NoticeLevel, text: String) -> ServerMsg {
-    ServerMsg::Notice { level, text }
+fn notice(level: NoticeLevel, msg: UserMsg) -> ServerMsg {
+    ServerMsg::Notice { level, msg }
 }
 
 fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
@@ -125,9 +126,9 @@ fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
             Ok(None)
         }
         ClientMsg::ToggleExtract { extract_id } => app.toggle_extract(extract_id).map(|()| None),
-        ClientMsg::UpdateSettings { settings } => {
-            app.update_settings(settings).map(|()| Some(notice(NoticeLevel::Info, "Ajustes guardados.".into())))
-        }
+        ClientMsg::UpdateSettings { settings } => app
+            .update_settings(settings)
+            .map(|()| Some(notice(NoticeLevel::Info, UserMsg::new("settingsSaved", "Settings saved.")))),
         ClientMsg::AckShareWarning => app.ack_share_warning().map(|()| None),
         ClientMsg::PartyHost { bind_ip, advertise } => app.party_host(&bind_ip, &advertise).map(|()| None),
         ClientMsg::PartyJoin { code } => app.party_join(&code).map(|()| None),
@@ -154,7 +155,7 @@ fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
         ClientMsg::GetLogs => Ok(Some(ServerMsg::Logs { lines: crate::logs::lines() })),
         ClientMsg::OpenDataDir => opener::open(&app.paths.base)
             .map(|()| None)
-            .map_err(|e| AppError::Internal(format!("no se pudo abrir la carpeta: {e}"))),
+            .map_err(|e| AppError::Internal(format!("could not open the folder: {e}"))),
         ClientMsg::SetOpenInWindow { value } => app.set_open_in_window(value).map(|()| None),
         ClientMsg::SetGameLogs { enabled, path } => app.set_game_logs(enabled, &path).map(|()| None),
         ClientMsg::SetGameMode { mode } => app.set_game_mode(mode).map(|()| None),
@@ -163,10 +164,15 @@ fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
             app.market_refresh(flea).map(|()| None)
         }
         ClientMsg::SetLanguage { lang } => app.set_language(lang).map(|()| None),
+        ClientMsg::SetCheckUpdates { enabled } => app.set_check_updates(enabled).map(|()| None),
+        ClientMsg::CheckUpdates => {
+            app.check_updates();
+            Ok(None)
+        }
         ClientMsg::Quit => {
-            tracing::info!("Cierre pedido desde la app.");
+            tracing::info!("Quit requested from the app.");
             std::process::exit(0);
         }
     };
-    result.unwrap_or_else(|e| Some(notice(NoticeLevel::Error, e.to_string())))
+    result.unwrap_or_else(|e| Some(notice(NoticeLevel::Error, e.user_msg())))
 }

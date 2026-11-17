@@ -84,7 +84,7 @@ pub fn validate(bytes: &[u8]) -> AppResult<()> {
         let h = u32::from_be_bytes(b.get(20..24)?.try_into().ok()?);
         Some((w, h))
     };
-    let (w, h) = png_size(bytes).ok_or_else(|| AppError::pack("icono no válido"))?;
+    let (w, h) = png_size(bytes).ok_or_else(|| AppError::pack("invalid icon"))?;
     if w > MAX_ICON_SIDE || h > MAX_ICON_SIDE {
         return Err(AppError::pack("icono demasiado grande"));
     }

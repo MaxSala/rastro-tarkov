@@ -11,7 +11,7 @@ use serde::Serialize;
 #[serde(rename_all = "camelCase")]
 pub struct PartyView {
     pub status: &'static str,
-    pub error: Option<String>,
+    pub error: Option<crate::msg::UserMsg>,
     pub is_host: bool,
     pub code: Option<String>,
     pub peers: Vec<PeerView>,
@@ -35,6 +35,29 @@ pub struct PingView {
     pub px: f64,
     pub py: f64,
     pub remaining_ms: u64,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PointView {
+    pub id: String,
+    pub name: String,
+    pub kind: crate::points::PointKind,
+    pub note: String,
+    pub px: f64,
+    pub py: f64,
+    pub distance_m: Option<f64>,
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Guide {
+    pub from: [f64; 2],
+    pub to: [f64; 2],
+    pub distance_m: f64,
+    pub height_diff_m: f64,
+    /// Rumbo relativo a hacia donde miras: negativo = izquierda, positivo = derecha.
+    pub relative_deg: f64,
 }
 
 #[derive(Debug, Serialize)]
