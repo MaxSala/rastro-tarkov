@@ -4,9 +4,9 @@ Rastro runs on the player's own PC, opens a web server bound to `127.0.0.1`, and
 
 ## Reporting a vulnerability
 
-Please **do not** report security issues in public GitHub issues or on Discord.
+Please **do not** report security issues in public GitHub issues or in public Discord channels.
 
-Use GitHub's private reporting instead: open the repository's **Security** tab and choose **Report a vulnerability**. Include the version, your operating system, the steps to reproduce and, if you have one, a proof of concept.
+Use GitHub's private reporting instead: open the repository's **Security** tab and choose **Report a vulnerability**. If you don't have a GitHub account, open a private *Security & privacy* ticket on [Discord](https://discord.gg/H4pRxGBGDb); only the maintainers can see it. Include the version, your operating system, the steps to reproduce and, if you have one, a proof of concept.
 
 You'll get an acknowledgement as soon as possible. Fixes are released for the latest version only; there are no long-term support branches.
 

@@ -3,7 +3,13 @@
 </p>
 
 <p align="center">
+  🌐 <b>English</b> · <a href="README.es.md">Español</a> · <a href="README.ru.md">Русский</a> · <a href="README.de.md">Deutsch</a> · <a href="README.pt-BR.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.pl.md">Polski</a> · <a href="README.zh-CN.md">中文</a>
+</p>
+
+<p align="center">
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest"><img src="https://img.shields.io/github/v/release/MaxSala/rastro-tarkov?label=Latest%20version&color=f0a43a" alt="Latest version"></a>
+  <img src="https://img.shields.io/badge/Status-Public%20beta-f0a43a" alt="Public beta">
+  <a href="https://github.com/MaxSala/rastro-tarkov/stargazers"><img src="https://img.shields.io/github/stars/MaxSala/rastro-tarkov?label=Stars&color=f0a43a&logo=github" alt="GitHub stars"></a>
   <a href="https://discord.gg/H4pRxGBGDb"><img src="https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?logo=discord&logoColor=white" alt="Join the Discord"></a>
   <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows&logoColor=white" alt="Windows 10 and 11">
   <a href="LICENSE"><img src="https://img.shields.io/github/license/MaxSala/rastro-tarkov?color=4c4c4c" alt="MIT License"></a>
@@ -20,8 +26,14 @@
   <a href="#play-with-your-squad">Squad mode</a> ·
   <a href="#is-it-safe">Is it safe?</a> ·
   <a href="#install">Install</a> ·
+  <a href="#where-rastro-is-going">Roadmap</a> ·
+  <a href="#get-involved">Get involved</a> ·
   <a href="https://discord.gg/H4pRxGBGDb">Discord</a>
 </p>
+
+> [!TIP]
+> **Rastro is in public beta, and this is only the beginning.** Quests, the hideout and much more are on the way, and the community decides what comes first.
+> If you like where it's going, **[⭐ star the repo](https://github.com/MaxSala/rastro-tarkov/stargazers)** and **[join the Discord](https://discord.gg/H4pRxGBGDb)**. It takes five seconds and helps more than you think.
 
 ---
 
@@ -59,6 +71,25 @@ It never touches the game. Rastro only reads files Tarkov already writes to your
 </table>
 
 <sub>Map imagery by the <a href="https://github.com/the-hideout/tarkov-dev-svg-maps">tarkov.dev contributors</a>, CC BY-NC-SA 4.0. Prices and item data from <a href="https://tarkov.dev">tarkov.dev</a>. Squad screenshots use example positions.</sub>
+
+## Where Rastro is going
+
+Rastro started as a way to never get lost on a second monitor. The plan is much bigger: **one companion app for everything you check between and during raids**, still without ever touching the game. Here's what's on the table:
+
+| | Coming next | What it means for you |
+|---|---|---|
+| 📜 | **Quest tracker** | Your active quests on the map, with every objective marked. Step-by-step help if you're new, a fast checklist if you're a veteran. |
+| 👥 | **Squad quests** | See your teammates' pending quests on the same map, so the whole squad can plan one route. |
+| 🏠 | **Hideout tracker** | Every upgrade, what it needs and which items to keep. No more selling what you'll need tomorrow. |
+| 🔑 | **Your key ring** | Mark the keys you own and the doors you can open stand out on every map. |
+| 🛒 | **Shopping list** | Favourite items and get notified when their price moves. |
+| 📊 | **Raid history** | Map, duration, queue time and game mode of every raid you play. |
+| 🎯 | **Ammo vs armor** | A penetration chart for every round against each armor class. |
+| 📍 | **Share your points** | Send your loot spots and stashes to your squad, or move them to another PC. |
+
+Nothing here has a date yet, and the order isn't fixed: **it's shaped by what players ask for.** The full list, including smaller items and what's already shipped, is in [docs/ROADMAP.md](docs/ROADMAP.md).
+
+**Got an idea?** Post it in the feature requests forum on [Discord](https://discord.gg/H4pRxGBGDb) or [open an issue](https://github.com/MaxSala/rastro-tarkov/issues). Every suggestion is read, and the most requested ones move up.
 
 ## How it works
 
@@ -234,9 +265,43 @@ Rastro has no account, no telemetry and no ads. The interface talks only to the 
 
 Every download host is on a fixed allowlist, also checked on redirects, and everything downloaded is validated before use. The full threat model is in [docs/SECURITY.md](docs/SECURITY.md).
 
-## Community
+## Get involved
 
-Questions, bug reports, feature ideas or looking for a squad to try party mode with: join the **[Rastro Discord](https://discord.gg/H4pRxGBGDb)**. It's also where development happens day to day, so it's the best place to see what's coming and to help with translations. Bug reports and pull requests are welcome here on GitHub too.
+Rastro is built in the open by a small team, and we want to grow it together with the people who use it. Whether you have five seconds or five hours a week, there's a way to help.
+
+### ⭐ Show your support
+
+- **Star the repository.** It's free, takes a click and is the main way new players find Rastro on GitHub.
+- **Watch → Custom → Releases** to get notified when a new version ships.
+- **Tell your squad.** Party mode is better with friends, and word of mouth is how most people find us.
+- **Share a clip or a screenshot** of Rastro in action and tag us on Discord.
+
+### 💬 Join the community
+
+The **[Rastro Discord](https://discord.gg/H4pRxGBGDb)** is where everything happens: release announcements, the live roadmap, help from other players, forums for bug reports and feature requests, and a place to find a squad to try party mode with. Development happens there day to day, so it's the best place to see what's coming before anyone else.
+
+### 🙋 We're looking for people
+
+We have far more ideas than hands. If any of these sounds like you, we'd love to hear from you:
+
+| Role | What you'd do |
+|---|---|
+| 🛡️ **Moderators** | Keep the Discord friendly and helpful as the community grows. |
+| 🌍 **Translators** | Review one of the 14 languages that native speakers haven't checked yet, or keep yours up to date. |
+| 🦀 **Developers** | Rust on the backend, React and TypeScript on the interface. From small fixes to whole features. |
+| 🧪 **Testers** | Try new versions early, especially in PvP, on less-played maps and on different setups. |
+| 🗺️ **Map and data helpers** | Check positions, floors and locks against the game, and help with maps tarkov.dev doesn't cover yet. |
+| 🎥 **Content creators** | Streamers and video makers who want to show Rastro or give feedback from their community. |
+
+**How to apply:** open a *Join the team* ticket in the support channel on [Discord](https://discord.gg/H4pRxGBGDb). Developers and translators can also jump straight in with a pull request: [CONTRIBUTING.md](CONTRIBUTING.md) explains how.
+
+### 💡 Ideas, feedback and bugs
+
+Honest feedback is the most valuable thing you can give a beta. Tell us what's confusing, what's missing and what you'd use every raid:
+
+- **Ideas:** the feature requests forum on [Discord](https://discord.gg/H4pRxGBGDb), or a [GitHub issue](https://github.com/MaxSala/rastro-tarkov/issues).
+- **Bugs:** the bug reports forum on Discord, or a GitHub issue. Include your Rastro version (*Settings → About*) and what you did. Please never post full game logs publicly, since they contain your account ID.
+- **Security issues:** never in public. Use GitHub's private reporting (*Security* tab → *Report a vulnerability*) or a private *Security & privacy* ticket on Discord. Details in [docs/SECURITY.md](docs/SECURITY.md).
 
 ## Credits
 
@@ -268,55 +333,24 @@ Rastro is a hobby project made for the community. It's free, there's no paid ver
 
 ## Building from source
 
-You only need this if you want to change the code or build the `.exe` yourself.
-
-**Requirements:** [Rust](https://rustup.rs/) 1.85 or newer and [Node.js](https://nodejs.org/) LTS. On Linux, also `libwebkit2gtk-4.1-dev` and `libgtk-3-dev`.
+You only need this if you want to change the code or build the `.exe` yourself. You'll need [Rust](https://rustup.rs/) 1.85 or newer and [Node.js](https://nodejs.org/) LTS (on Linux, also `libwebkit2gtk-4.1-dev` and `libgtk-3-dev`):
 
 ```sh
 git clone https://github.com/MaxSala/rastro-tarkov.git
 cd rastro-tarkov
+./build.sh        # build.bat on Windows
 ```
 
-On Windows, run `build.bat`. On Linux or macOS, run `./build.sh`. Both build the web interface first and then the app, which embeds it. The result is a single executable: `target\release\rastro.exe` on Windows, `target/release/rastro` elsewhere.
-
-Maintainers: how to publish a new version is described in [docs/RELEASING.md](docs/RELEASING.md).
-
-## Development
-
-```sh
-cd web && npm ci && npm run dev    # terminal 1: Vite dev server on 127.0.0.1:5173
-cargo run -- --dev                 # terminal 2: backend; opens the browser with the session key
-```
-
-`--dev` only widens the accepted origins to `localhost:5173`. Don't use it to play.
-
-Before sending changes:
-
-```sh
-cargo fmt --check
-cargo clippy --all-targets
-cargo test
-cd web && npm run typecheck && npm run lint && npm run format:check
-```
-
-Dependencies are pinned to exact versions, `cargo deny check` and `cargo audit` cover the Rust side, and npm runs with `ignore-scripts=true`.
-
-### Project layout
-
-```
-src/          Rust backend: screenshot watcher, local server, map packs, party, market, game logs
-web/          Interface: React, TypeScript, Leaflet and Tailwind
-  src/locales/  One folder per language
-assets/       Logo, app icon and the demo map
-docs/         Security model, protocol, map pack format and roadmap
-```
-
-Technical documentation lives in `docs/`: [security model](docs/SECURITY.md), [interface protocol](docs/PROTOCOL.md), [map pack format](docs/MAP_PACK.md), [roadmap](docs/ROADMAP.md) and [release process](docs/RELEASING.md).
-
-### Translations
-
-Each language lives in `web/src/locales/<code>/` (`main.ts`, `game.ts` and `tools.ts`) and is type-checked against the Spanish files, so a missing key won't compile. To fix a translation, edit the file and open a pull request, or point it out in the `#translations` channel on [Discord](https://discord.gg/H4pRxGBGDb).
+The result is a single executable in `target/release/`. Development setup, project layout, code rules and how to add a translation are in **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ## License
 
 Rastro's source code is released under the [MIT License](LICENSE). Maps and data downloaded from tarkov.dev keep their own licenses, listed under [Credits](#credits) and in [NOTICE.md](NOTICE.md).
+
+---
+
+<p align="center">
+  <b>If Rastro helped you find your way out, <a href="https://github.com/MaxSala/rastro-tarkov/stargazers">give it a ⭐</a> and <a href="https://discord.gg/H4pRxGBGDb">come say hi on Discord</a>.</b>
+  <br>
+  <sub>Made by players, for players. See you at the extract.</sub>
+</p>
