@@ -7,6 +7,36 @@ use crate::state::App;
 use crate::view::{heading_dir, marker, Marker};
 use serde::Serialize;
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Settings {
+    pub screenshots_dir: String,
+    pub screenshots_dir_is_default: bool,
+    pub trail_length: usize,
+    pub player_name: String,
+    pub player_color: u8,
+    pub party_port: u16,
+    pub share_warning_ack: bool,
+    pub open_in_window: bool,
+    pub language: crate::config::Language,
+    pub check_updates: Option<bool>,
+}
+
+pub(crate) fn settings(cfg: &crate::config::Config) -> Settings {
+    Settings {
+        screenshots_dir: cfg.effective_screenshots_dir().map(|p| p.display().to_string()).unwrap_or_default(),
+        screenshots_dir_is_default: cfg.screenshots_dir.is_none(),
+        trail_length: cfg.trail_length,
+        player_name: cfg.player_name.clone(),
+        player_color: cfg.player_color,
+        party_port: cfg.party_port,
+        share_warning_ack: cfg.share_warning_ack,
+        open_in_window: cfg.open_in_window,
+        language: cfg.language,
+        check_updates: cfg.check_updates,
+    }
+}
+
 #[derive(Debug, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PartyView {

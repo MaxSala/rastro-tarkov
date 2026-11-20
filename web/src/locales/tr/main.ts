@@ -25,6 +25,7 @@ const main: Main = {
     extracts: "Çıkışlar",
     party: "Grup",
     maps: "Haritalar",
+    quests: "Görevler",
     collapse: "Paneli gizle",
   },
   extracts: {
@@ -160,6 +161,7 @@ const main: Main = {
     switch: "Şalterler",
     loot: "Kaplar",
     lock: "Kilitler",
+    quests: "Görevler",
   },
   tarkovdev: {
     title: "tarkov.dev",

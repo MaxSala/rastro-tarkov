@@ -32,6 +32,7 @@ function Row({ label, hint, children }: { label: string; hint?: string; children
 
 export function GeneralTab({ form, set, current }: { form: SettingsInput; set: Setter; current: Current }) {
   const [theme, setTheme] = useState<ThemePref>(getThemePref);
+  const autoLanguageData = useApp((s) => s.view?.languageData.auto ?? null);
   return (
     <div className="grid gap-4">
       <Field id="set-folder" label={t.settings.folder} hint={t.settings.folderHint}>
@@ -73,6 +74,13 @@ export function GeneralTab({ form, set, current }: { form: SettingsInput; set: S
               </option>
             ))}
           </select>
+        </Row>
+        <Row label={t.language.auto} hint={t.language.autoHint}>
+          <Switch
+            label={t.language.auto}
+            checked={autoLanguageData === true}
+            onChange={(enabled) => send({ type: "setAutoLanguageData", enabled })}
+          />
         </Row>
         <Row label={t.settings.theme}>
           <Segmented

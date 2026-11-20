@@ -5,6 +5,7 @@ import { useApp, type Workspace } from "../store/app";
 import { copyPartyCode } from "../components/panels/PartyPanel";
 import { fitWhole } from "../components/map/mapRef";
 import { refreshMarket } from "../components/market/DataGate";
+import { refreshQuests } from "../components/quests/QuestGate";
 
 export interface Command {
   id: string;
@@ -17,7 +18,7 @@ export interface Command {
 export function buildCommands(view: View | null): Command[] {
   const s = useApp.getState();
   // Los paneles viven en la sección Mapa: abrir uno desde otra sección te lleva allí.
-  const showPanel = (p: "extracts" | "points" | "party" | "maps") => {
+  const showPanel = (p: "extracts" | "points" | "party" | "maps" | "quests") => {
     if (useApp.getState().workspace !== "map") {
       s.setWorkspace("map");
       if (useApp.getState().panel === p) return;
@@ -30,8 +31,9 @@ export function buildCommands(view: View | null): Command[] {
     run: () => s.setWorkspace(w),
   });
   const cmds: Command[] = [
-    ...(["map", "market", "ammo"] as const).filter((w) => w !== s.workspace).map(go),
+    ...(["map", "market", "ammo", "quests"] as const).filter((w) => w !== s.workspace).map(go),
     { id: "refresh-prices", label: t.workspace.refresh, run: refreshMarket },
+    { id: "refresh-quests", label: t.quests.data.refresh, run: refreshQuests },
     { id: "new-raid", label: t.palette.newRaid, shortcut: "N", run: () => send({ type: "newRaid" }) },
     { id: "import", label: t.palette.import, shortcut: "I", run: () => s.openDialog("import") },
     { id: "settings", label: t.palette.settings, shortcut: ",", run: () => s.openDialog("settings") },
@@ -44,6 +46,7 @@ export function buildCommands(view: View | null): Command[] {
     { id: "panel-points", label: t.palette.showPoints, shortcut: "2", run: () => showPanel("points") },
     { id: "panel-party", label: t.palette.showParty, shortcut: "3", run: () => showPanel("party") },
     { id: "panel-maps", label: t.palette.showMaps, shortcut: "4", run: () => showPanel("maps") },
+    { id: "panel-quests", label: t.quests.palette, shortcut: "5", run: () => showPanel("quests") },
     { id: "fit", label: t.palette.fit, shortcut: "F", run: fitWhole },
     {
       id: "follow",

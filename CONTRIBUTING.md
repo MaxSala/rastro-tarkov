@@ -55,7 +55,7 @@ Technical documentation lives in `docs/`: [security model](docs/SECURITY.md), [i
 
 - **Rust:** `unsafe` is forbidden, and Clippy denies `unwrap`, `expect`, `panic!` and unchecked slice indexing. Handle errors explicitly.
 - **Interface:** every piece of text the user sees lives in the locale files, never hard-coded in a component. Build DOM content with nodes, never with `innerHTML`.
-- **Dependencies** are pinned to exact versions. `cargo deny check` and `cargo audit` cover the Rust side, and npm runs with `ignore-scripts=true`. Adding a dependency needs a good reason.
+- **Dependencies** are pinned to exact versions. `cargo deny check` and `cargo audit` cover the Rust side, and npm runs with `ignore-scripts=true`. Builds fail if anything that ships in the app has a known vulnerability (`npm audit --omit=dev`); development tools are checked with a plain `npm audit` and updated to exact, fixed versions once a fix is out. Adding a dependency needs a good reason.
 - **Small files.** Keep each source file under 300 lines. Split it before it grows past that.
 - **Tests** for new logic, especially anything that parses files or network messages.
 

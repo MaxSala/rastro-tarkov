@@ -26,6 +26,7 @@ const main: Main = {
     extracts: "Kijáratok",
     party: "Csapat",
     maps: "Térképek",
+    quests: "Küldetések",
     collapse: "Panel elrejtése",
   },
   extracts: {
@@ -161,6 +162,7 @@ const main: Main = {
     switch: "Kapcsolók",
     loot: "Konténerek",
     lock: "Zárak",
+    quests: "Küldetések",
   },
   tarkovdev: {
     title: "tarkov.dev",

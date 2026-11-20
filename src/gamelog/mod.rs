@@ -1,9 +1,12 @@
-//! Detección automática de mapa, raid y modo leyendo los logs del juego (solo lectura).
+//! Detección automática de mapa, raid, modo y progreso de misiones leyendo los logs del juego
+//! (solo lectura).
 //! Desactivada por defecto. No se guarda ni se registra nada de los logs salvo el modo y el
 //! nombre interno del mapa; los identificadores de perfil y las IPs nunca salen del archivo.
 
 pub mod control;
+pub mod history;
 pub mod parse;
+pub mod questlog;
 pub mod watcher;
 
 use serde::{Deserialize, Serialize};

@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Joc",
-  enable: "Detectează automat harta și raidul",
+  enable: "Detectează automat harta, raidul și misiunile",
   enableHint:
-    "Citește jurnalele pe care jocul le scrie pe PC-ul tău. Schimbă singur harta, pornește un raid nou și arată timpul de raid. Se folosesc doar numele hărții și modul; nimic nu se salvează și nu se partajează.",
+    "Citește jurnalele pe care jocul le scrie pe PC-ul tău. Schimbă singur harta, pornește un raid nou, arată timpul raidului și bifează misiunile acceptate, predate sau ratate. Se folosesc doar harta, modul și id-urile misiunilor; nimic altceva nu se salvează și nu se partajează.",
   folder: "Dosarul jurnalelor jocului",
   folderHint: "Gol = cel al instalării implicite (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Salvează dosarul",

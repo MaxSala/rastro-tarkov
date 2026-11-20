@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Hra",
-  enable: "Automaticky rozpoznať mapu a raid",
+  enable: "Automaticky rozpoznať mapu, raid a úlohy",
   enableHint:
-    "Číta logy, ktoré hra zapisuje na tvojom PC. Sám prepne mapu, začne nový raid a ukáže čas raidu. Používa sa len názov mapy a režim; nič sa neukladá ani nezdieľa.",
+    "Číta logy, ktoré hra zapisuje do tvojho PC. Sám prepne mapu, začne nový raid, ukáže čas raidu a odškrtne úlohy, ktoré prijmeš, odovzdáš alebo nesplníš. Používa sa len mapa, režim a ID úloh; nič ďalšie sa neukladá ani nezdieľa.",
   folder: "Priečinok logov hry",
   folderHint: "Prázdne = priečinok predvolenej inštalácie (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Uložiť priečinok",

@@ -14,6 +14,9 @@ import { drawLocks, lockPoints } from "./locks";
 import { useAutoCatalog } from "../market/DataGate";
 import { useMapImage } from "./useMapImage";
 import { NO_FLOORS, type FloorCtx } from "./hover";
+import { drawQuests } from "./quests";
+import { useQuestOptions } from "./useQuestOptions";
+import { useAutoQuests, useQuests } from "../../lib/quests";
 
 type ActiveMap = NonNullable<View["activeMap"]>;
 const LAYERS = [
@@ -22,6 +25,7 @@ const LAYERS = [
   "markers",
   "extracts",
   "points",
+  "quests",
   "guide",
   "peers",
   "pings",
@@ -65,6 +69,11 @@ export function MapView({ active }: { active: ActiveMap }) {
   const layerOn = useApp((s) => s.layers);
   const focusKey = useApp((s) => s.focusKey);
   const { catalog } = useAutoCatalog(layerOn.lock);
+  const questMarkers = view?.questMarkers;
+  const { db: questDb } = useAutoQuests((questMarkers?.length ?? 0) > 0);
+  const questDone = useQuests((s) => s.progress?.objectives);
+  const questFocus = useApp((s) => s.questFocus);
+  const questOpts = useQuestOptions(active.id, questMarkers);
   const prefs = useApp((s) => s.prefs);
   const theme = useSyncExternalStore(subscribeTheme, currentTheme);
 
@@ -193,6 +202,33 @@ export function MapView({ active }: { active: ActiveMap }) {
       if (layerOn.lock) drawLocks(g, mapMarkers.list, focusKey, catalog, floors);
     }
   }, [mapMarkers, layerOn, active.id, theme, hiddenGroups, iconsVersion, focusKey, catalog, floors]);
+
+  // Quest objectives; the first time a previewed quest shows up, frame its spots.
+  const questState = [questMarkers, view?.selectedExtract, layerOn.quests, floors, questDone, questOpts.key];
+  const questKey = JSON.stringify(questState);
+  const framedQuest = useRef("");
+  useEffect(() => {
+    const m = map.current;
+    const g = groups.current.quests;
+    if (!m || !g) return;
+    g.clearLayers();
+    if (!layerOn.quests || !questMarkers || image.status !== "ready") return;
+    const sel = useApp.getState().view?.selectedExtract ?? null;
+    const focused = drawQuests(g, questMarkers, questDb, questDone ?? {}, sel, floors, questFocus, questOpts);
+    const id = `${active.id}:${questFocus}`;
+    if (questFocus && focused.length > 0 && framedQuest.current !== id) {
+      framedQuest.current = id;
+      fit.current.userMoved = true;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      m.flyToBounds(L.latLngBounds(focused), {
+        padding: [140, 140],
+        maxZoom: 1,
+        animate: !reduce,
+        duration: 0.6,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- la clave serializada resume las dependencias
+  }, [questKey, questDb, questFocus, active.id, image.status]);
 
   // Al resaltar una llave (desde el Mercado o la tarjeta), encuadrar sus cerraduras una vez.
   const fitted = useRef("");

@@ -8,13 +8,12 @@ Every idea here has to fit the project's ground rule: Rastro only reads files th
 
 These are the big features we want to build next.
 
-- **Quest tracker.** Your active quests with their objectives marked on the map. Step-by-step help for new players and a fast checklist for veterans. Accepted and completed quests appear in the game logs as notifications; the exact format still needs to be confirmed with real logs.
 - **Squad quests.** In a party, see your teammates' pending quests on the same map, so the squad can plan one route that helps everyone.
 - **Hideout tracker.** Every hideout upgrade, what it needs and which items you still have to keep, linked to their prices in the Market.
 
 ## Map
 
-- Quest objectives and loose loot as map layers. Containers, transits, switches and locks already come from tarkov.dev.
+- Loose loot as a map layer. Containers, transits, switches and locks already come from tarkov.dev.
 - Your key ring: mark the keys you own, so the locks you can open stand out on every map.
 - A built-in editor to calibrate custom maps by clicking on them.
 
@@ -37,6 +36,8 @@ These are the big features we want to build next.
 
 ## Released
 
+- **0.6.2**: quests follow the game logs (with the history), catch-up per trader, raid plan with route and kit, next objective, hand-in list, items to keep, honest quest spots (exact, area, possible spawns), quests by trader with Kappa and Lightkeeper progress.
+- **0.6.0**: quest tracker: every quest in your language with its trader, picture and rewards, what's next and why the rest is locked, your active objectives on the map with guidance and their real areas, the items your quests need in the Market, and maps, prices and quests that follow your language.
 - **0.5.0**: floor switcher with dimming of other floors, hover cards on the map, clearer explanation of what Rastro reads.
 - **0.4.0**: every app message in the user's language, update notifications (opt-in) and a *What's new* section.
 - **0.3.0**: keys on the map (locks layer, key cards, key ↔ map links) and the interface in 16 languages.

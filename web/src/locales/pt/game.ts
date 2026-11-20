@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Jogo",
-  enable: "Detectar mapa e raid automaticamente",
+  enable: "Detectar mapa, raid e missões automaticamente",
   enableHint:
-    "Lê os logs que o jogo grava no seu PC. Troca de mapa sozinho, começa uma nova raid e mostra o tempo de raid. Só o nome do mapa e o modo são usados; nada é salvo nem compartilhado.",
+    "Lê os logs que o jogo grava no seu PC. Troca de mapa sozinho, começa uma raid nova, mostra o tempo de raid e marca as missões que você aceita, entrega ou falha. Só o mapa, o modo e os ids das missões são usados; nada mais é guardado ou compartilhado.",
   folder: "Pasta de logs do jogo",
   folderHint: "Vazio = a da instalação padrão (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Salvar pasta",

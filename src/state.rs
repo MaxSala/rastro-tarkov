@@ -58,6 +58,8 @@ pub struct App {
     /// Estado del mercado y catálogo cargado (si lo hay).
     pub market: Mutex<(crate::market::MarketStatus, Option<Arc<crate::market::Catalog>>)>,
     pub update: Mutex<crate::update::UpdateStatus>,
+    /// Quest data, its download status and the player's progress.
+    pub quests: Mutex<crate::quests::Quests>,
     capture_tx: mpsc::Sender<CaptureEvent>,
     watch_guard: Mutex<Option<WatchGuard>>,
 }
@@ -81,6 +83,7 @@ impl App {
             game: Mutex::new(crate::gamelog::GameStatus::default()),
             market: Mutex::new(Default::default()),
             update: Mutex::new(Default::default()),
+            quests: Mutex::new(crate::quests::Quests::load(&paths.quests_file)),
             paths,
             token,
             port,

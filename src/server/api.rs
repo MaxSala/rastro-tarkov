@@ -105,6 +105,14 @@ pub async fn market(State(ctx): State<Ctx>) -> AppResult<Response> {
     Ok(([(header::CONTENT_TYPE, "application/json"), (header::CACHE_CONTROL, "no-store")], json).into_response())
 }
 
+/// Quest data (large: over HTTP, not the WebSocket).
+pub async fn quests(State(ctx): State<Ctx>) -> AppResult<Response> {
+    let app = ctx.app.clone();
+    let db = blocking(move || app.quest_db().ok_or(AppError::NotFound)).await?;
+    let json = serde_json::to_vec(&*db).map_err(|e| AppError::Internal(e.to_string()))?;
+    Ok(([(header::CONTENT_TYPE, "application/json"), (header::CACHE_CONTROL, "no-store")], json).into_response())
+}
+
 /// Version history (CHANGELOG.md, embedded at build time) for "What's new".
 pub async fn changelog() -> Response {
     const TEXT: &str = include_str!("../../CHANGELOG.md");
@@ -124,6 +132,15 @@ pub async fn key_locations(State(ctx): State<Ctx>, Path(id): Path<String>) -> Ap
 pub async fn item_icon(State(ctx): State<Ctx>, Path(id): Path<String>) -> AppResult<Response> {
     // No icon (offline, or tarkov.dev has none) is a normal case: 204 keeps the console quiet.
     let Ok((bytes, kind)) = ctx.app.item_icon(&id).await else {
+        return Ok(StatusCode::NO_CONTENT.into_response());
+    };
+    Ok(([(header::CONTENT_TYPE, kind.mime()), (header::CACHE_CONTROL, "private, max-age=86400")], bytes)
+        .into_response())
+}
+
+/// Portrait of a trader or picture of a quest (24-hex id): from the cache or assets.tarkov.dev.
+pub async fn tarkov_image(State(ctx): State<Ctx>, Path(id): Path<String>) -> AppResult<Response> {
+    let Ok((bytes, kind)) = ctx.app.tarkov_asset(crate::market::icons::Asset::Picture, &id).await else {
         return Ok(StatusCode::NO_CONTENT.into_response());
     };
     Ok(([(header::CONTENT_TYPE, kind.mime()), (header::CACHE_CONTROL, "private, max-age=86400")], bytes)

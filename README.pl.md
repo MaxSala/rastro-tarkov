@@ -34,12 +34,12 @@
 </p>
 
 > [!TIP]
-> **Rastro jest w publicznej becie i to dopiero początek.** Zadania, kryjówka i dużo więcej są w drodze, a o tym, co pojawi się najpierw, decyduje społeczność.
+> **Rastro jest w publicznej becie i to dopiero początek.** Zadania właśnie dotarły; kryjówka, zadania drużynowe i dużo więcej są w drodze, a o tym, co pojawi się najpierw, decyduje społeczność.
 > Jeśli podoba ci się ten kierunek, **[⭐ daj gwiazdkę repozytorium](https://github.com/MaxSala/rastro-tarkov/stargazers)** i **[dołącz do Discorda](https://discord.gg/H4pRxGBGDb)**. To pięć sekund, a pomaga bardziej, niż myślisz.
 
 ---
 
-**Rastro to mapa twojego rajdu na żywo, działająca na drugim monitorze.** Zrób zrzut ekranu w grze, a twoja pozycja pojawi się na mapie razem z odległością i kierunkiem do każdej ewakuacji. Otwórz pokój, a cała drużyna widzi się na tej samej mapie, każdy na swoim PC. Najedź kursorem na zamknięte drzwi, żeby zobaczyć, jaki klucz je otwiera i ile kosztuje. Sprawdzaj ceny i amunicję bez alt-tabowania do przeglądarki.
+**Rastro to mapa twojego rajdu na żywo, działająca na drugim monitorze.** Zrób zrzut ekranu w grze, a twoja pozycja pojawi się na mapie razem z odległością i kierunkiem do każdej ewakuacji. Otwórz pokój, a cała drużyna widzi się na tej samej mapie, każdy na swoim PC. Najedź kursorem na zamknięte drzwi, żeby zobaczyć, jaki klucz je otwiera i ile kosztuje. Śledź swoje zadania z każdym otwartym celem na mapie. Sprawdzaj ceny i amunicję bez alt-tabowania do przeglądarki.
 
 Rastro nigdy nie dotyka gry. Czyta tylko pliki, które Tarkov i tak zapisuje na dysku. Jest darmowy, open source i zrobiony przez graczy dla graczy.
 
@@ -80,7 +80,6 @@ Rastro zaczął się jako mapa na drugim monitorze, żeby już nigdy się nie zg
 
 | | Co dalej | Co to da tobie |
 |---|---|---|
-| 📜 | **Śledzenie zadań** | Twoje aktywne zadania na mapie, każdy cel zaznaczony. Pomoc krok po kroku dla nowych graczy, szybka lista dla weteranów. |
 | 👥 | **Zadania drużyny** | Niewykonane zadania kolegów na tej samej mapie, żeby drużyna mogła zaplanować jedną trasę dla wszystkich. |
 | 🏠 | **Śledzenie kryjówki** | Każde ulepszenie, czego wymaga i które przedmioty zachować. Koniec ze sprzedawaniem dziś tego, czego jutro będziesz potrzebować. |
 | 🔑 | **Twój pęk kluczy** | Zaznacz klucze, które masz, a drzwi, które możesz otworzyć, wyróżnią się na każdej mapie. |
@@ -100,7 +99,7 @@ Rastro czyta dwa rodzaje plików, które Escape from Tarkov i tak zapisuje na tw
 | Co czyta | Gdzie | Co z tego wyciąga |
 |---|---|---|
 | **Nazwy twoich zrzutów ekranu** | `Documents\Escape from Tarkov\Screenshots` | Twoją pozycję i kierunek, w którym patrzysz. Tarkov zapisuje twoje współrzędne w nazwie każdego zrzutu. Rastro czyta nazwę, nigdy obraz, i nigdy nie przenosi, nie edytuje ani nie usuwa twoich zrzutów. |
-| **Logi gry** (opcjonalne, wyłączone, dopóki ich nie włączysz) | `Battlestate Games\Escape from Tarkov\Logs` | Która mapa się wczytuje, kiedy zaczyna się rajd i czy grasz w PvP czy PvE. Dzięki temu Rastro sam przełącza się na właściwą mapę, zaczyna nowy ślad w każdym rajdzie i pokazuje pozostały czas rajdu. Zapisywane są tylko nazwa mapy i tryb gry. |
+| **Logi gry** (opcjonalne, wyłączone, dopóki ich nie włączysz) | `Battlestate Games\Escape from Tarkov\Logs` | Która mapa się wczytuje, kiedy zaczyna się rajd i czy grasz w PvP czy PvE. Dzięki temu Rastro sam przełącza się na właściwą mapę, zaczyna nowy ślad w każdym rajdzie i pokazuje pozostały czas rajdu. Zapisywane są tylko nazwa mapy i tryb gry. Czyta też wiadomości handlarzy, by odhaczać zadania, które przyjmiesz, oddasz lub oblejesz. |
 
 W praktyce: wciskasz w grze klawisz zrzutu ekranu, a sekundę później twoja strzałka przesuwa się na mapie.
 
@@ -131,6 +130,14 @@ Każdy gracz i tak uruchamia Rastro na swoim PC i robi własne zrzuty: dzięki t
 - Najedź na cokolwiek, żeby zobaczyć kartę z nazwą, odległością, piętrem i tym, co robi kliknięcie.
 - Własne punkty: prawy klik na mapie, żeby zapisać miejsca z lootem, niebezpieczne strefy, skrytki albo miejsca zadań. Zapisują się we współrzędnych gry, więc przetrwają ponowną instalację mapy.
 
+**Zadania**
+- Wszystkie zadania w twoim języku: te w toku, te, które możesz już zacząć, a przy reszcie dokładnie to, czego brakuje (twój poziom albo wcześniejsze zadania). Filtruj według handlarza, mapy lub Kappy albo szukaj zadań, celów i przedmiotów.
+- **Zadania podążają za grą.** Przy włączonym wykrywaniu rajdu zadania, które przyjmiesz, oddasz lub oblejesz, odhaczają się same z logów gry, osobno dla PvP i PvE. Za pierwszym razem Rastro czyta wszystkie uruchomienia zachowane przez grę, więc w połowie wipe'a od razu nadrabiasz postęp. Brak logów? *Nadrób postęp*, wybierając ostatnie zadanie u każdego handlarza.
+- Każde zadanie pokazuje handlarza, swój obrazek i nagrody: doświadczenie, reputację, przedmioty oraz oferty i receptury, które odblokowuje.
+- Twoje otwarte cele na mapie, uczciwie wobec danych: znaczek dla dokładnego miejsca, prawdziwy obrys dla obszaru i małe kropki dla miejsc, gdzie przedmiot *może* się pojawić. Kliknij, a Rastro cię poprowadzi jak do ewakuacji. Złe miejsce? *Złe miejsce?* zgłasza je jednym kliknięciem.
+- **Plan rajdu** w panelu *Zadania*: zaznacz, co zrobisz w tym rajdzie, a mapa pokaże tylko to, ponumerowane wzdłuż najkrótszej trasy, razem z tym, co zabrać. *Następne* pokazuje duży kolejny cel; *Do oddania* — to, co gotowe.
+- Zadania według handlarzy, jak w grze, z postępem Kappy i Lightkeepera, mapą, na której zrobisz najwięcej, oraz *Przedmiotami*: tym, czego twoje zadania jeszcze wymagają, żebyś tego nie sprzedał.
+
 **Klucze**
 - Warstwa *Zamki* pokazuje wszystkie drzwi, pojemniki i bagażniki, które wymagają klucza. Zamki wymagające prądu mają żółtą obwódkę.
 - Kliknij zamek, żeby zobaczyć, jaki klucz go otwiera, gdzie kupić go najtaniej i za ile najlepiej sprzedać.
@@ -151,7 +158,7 @@ Każdy gracz i tak uruchamia Rastro na swoim PC i robi własne zrzuty: dzięki t
 - Przełącza na właściwą mapę, gdy rajd się wczytuje, czyści ślad i znaczniki na początku każdego rajdu i pokazuje pozostały czas. Czyta logi gry, jak opisano w [Jak to działa](#jak-to-działa).
 
 **Cała reszta**
-- 16 języków, tych samych co w tarkov.dev: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe i 中文. Nazwy przedmiotów, map i ewakuacji też są w twoim języku.
+- 16 języków, tych samych co w tarkov.dev: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe i 中文. Nazwy przedmiotów, map i ewakuacji też są w twoim języku. Po zmianie języka Rastro zaproponuje przełączenie map, cen i zadań.
 - Dane PvP i PvE, wybierane automatycznie na podstawie logów gry albo ręcznie.
 - Opcjonalne powiadomienia o aktualizacjach i strona *Co nowego* po każdej aktualizacji.
 - Skróty klawiszowe do wszystkiego i paleta poleceń (`Ctrl+K`).
@@ -204,9 +211,9 @@ Po aktualizacji Rastro pokazuje, co się zmieniło. Pełna historia jest w *Usta
 | Akcja | Jak |
 |---|---|
 | Zaktualizuj swoją pozycję | Zrób zrzut ekranu w grze |
-| Zmień sekcję (Mapa, Rynek, Amunicja) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3` |
+| Zmień sekcję (Mapa, Rynek, Amunicja, Zadania) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3`, `Ctrl+4` |
 | Paleta poleceń | `Ctrl+K` |
-| Panele ewakuacji, punktów, drużyny i map | `1`, `2`, `3`, `4` |
+| Panele ewakuacji, punktów, drużyny, map i zadań | `1`, `2`, `3`, `4`, `5` |
 | Nowy rajd (wyczyść ślad i znaczniki) | `N` |
 | Pokaż całą mapę / podążaj za pozycją | `F` / `G` |
 | Przybliżanie | `+` / `-` albo kółko myszy |
@@ -217,7 +224,7 @@ Po aktualizacji Rastro pokazuje, co się zmieniło. Pełna historia jest w *Usta
 
 ### Gdzie są twoje dane
 
-Ustawienia, twoje punkty, pobrane mapy i pamięć podręczna cen są w jednym folderze, oddzielnie od pliku `.exe`:
+Ustawienia, twoje punkty, postęp zadań, pobrane mapy oraz pamięć podręczna cen i zadań są w jednym folderze, oddzielnie od pliku `.exe`:
 
 | System | Folder |
 |---|---|
@@ -261,6 +268,7 @@ Rastro nie ma konta, telemetrii ani reklam. Interfejs rozmawia tylko z samą apl
 | Zawsze | Niczym poza twoim PC |
 | Pobierasz mapy z tarkov.dev | `raw.githubusercontent.com`, `json.tarkov.dev` i awaryjnie `api.tarkov.dev` |
 | Pobierasz lub odświeżasz ceny | `json.tarkov.dev`, plus `assets.tarkov.dev` dla ikon przedmiotów |
+| Pobierasz lub odświeżasz zadania | `json.tarkov.dev` i awaryjnie `api.tarkov.dev`, plus `assets.tarkov.dev` dla obrazków |
 | Importujesz paczkę map z adresu URL | Tylko z adresem, który wpiszesz (tylko HTTPS, nigdy adresy wewnętrzne) |
 | Tworzysz pokój albo dołączasz do drużyny | Bezpośrednio z PC kolegów |
 | Raz na uruchomienie, jeśli zgodziłeś się na sprawdzanie aktualizacji (albo po kliknięciu *Sprawdź teraz*) | `api.github.com`, żeby odczytać numer najnowszej wersji. Nic o tobie nie jest wysyłane. |
@@ -310,7 +318,7 @@ Szczera opinia to najcenniejsze, co możesz dać becie. Powiedz nam, co jest nie
 Rastro nie istniałby bez **[tarkov.dev](https://tarkov.dev)**, otwartej bazy danych Escape from Tarkov prowadzonej przez społeczność **[The Hideout](https://github.com/the-hideout)**. tarkov.dev zaczęło się jako [tarkov-tools](https://github.com/kokarn/tarkov-tools) autorstwa **Oskara Risberga ([@kokarn](https://github.com/kokarn))**, a współtwórcy The Hideout przywrócili je do życia i otworzyli dla wszystkich. Rastro korzysta z:
 
 - **Mapy:** mapy SVG z [the-hideout/tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps) autorstwa współtwórców tarkov.dev, na licencji [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Ich autorzy nie pozwalają używać map w cheatach ani w oprogramowaniu dającym nieuczciwą przewagę, na przykład w radarach. Mapy pobierasz sam, nigdy nie są rozpowszechniane razem z Rastro, a każda zainstalowana mapa zachowuje swoje autorstwo i licencję.
-- **Dane:** ewakuacje, przejścia, przełączniki, pojemniki, zamki, przedmioty, ceny i tłumaczenia z API tarkov.dev i jego plików danych.
+- **Dane:** ewakuacje, przejścia, przełączniki, pojemniki, zamki, przedmioty, ceny, zadania i tłumaczenia z API tarkov.dev i jego plików danych.
 - **Ikony znaczników:** z [tarkov-dev](https://github.com/the-hideout/tarkov-dev) (`public/maps/interactive`), licencja MIT, © 2019 Oskar Risberg.
 - **Ikony przedmiotów** należą do Battlestate Games i są tylko lokalnie buforowane do wyświetlania.
 

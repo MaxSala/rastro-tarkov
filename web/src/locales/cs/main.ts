@@ -32,6 +32,7 @@ const main: Main = {
     extracts: "Extrakce",
     party: "Skupina",
     maps: "Mapy",
+    quests: "Úkoly",
     collapse: "Skrýt panel",
   },
   extracts: {
@@ -167,6 +168,7 @@ const main: Main = {
     switch: "Spínače",
     loot: "Kontejnery",
     lock: "Zámky",
+    quests: "Úkoly",
   },
   tarkovdev: {
     title: "tarkov.dev",

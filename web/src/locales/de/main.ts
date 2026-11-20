@@ -27,6 +27,7 @@ const main: Main = {
     extracts: "Extraktionen",
     party: "Gruppe",
     maps: "Karten",
+    quests: "Aufgaben",
     collapse: "Leiste ausblenden",
   },
   extracts: {
@@ -163,6 +164,7 @@ const main: Main = {
     switch: "Schalter",
     loot: "Behälter",
     lock: "Schlösser",
+    quests: "Aufgaben",
   },
   tarkovdev: {
     title: "tarkov.dev",

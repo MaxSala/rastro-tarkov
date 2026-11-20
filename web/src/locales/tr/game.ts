@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Oyun",
-  enable: "Haritayı ve baskını otomatik algıla",
+  enable: "Haritayı, baskını ve görevleri otomatik algıla",
   enableHint:
-    "Oyunun bilgisayarına yazdığı günlükleri okur. Haritayı kendisi değiştirir, yeni baskın başlatır ve baskın süresini gösterir. Yalnızca harita adı ve mod kullanılır; hiçbir şey kaydedilmez veya paylaşılmaz.",
+    "Oyunun bilgisayarına yazdığı kayıtları okur. Haritayı kendisi değiştirir, yeni baskın başlatır, baskın süresini gösterir ve kabul ettiğin, teslim ettiğin veya başarısız olduğun görevleri işaretler. Yalnızca harita, mod ve görev kimlikleri kullanılır; başka hiçbir şey saklanmaz veya paylaşılmaz.",
   folder: "Oyun günlükleri klasörü",
   folderHint: "Boş = varsayılan kurulum klasörü (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Klasörü kaydet",

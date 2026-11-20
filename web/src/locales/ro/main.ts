@@ -33,6 +33,7 @@ const main: Main = {
     extracts: "Extracții",
     party: "Grup",
     maps: "Hărți",
+    quests: "Misiuni",
     collapse: "Ascunde panoul",
   },
   extracts: {
@@ -168,6 +169,7 @@ const main: Main = {
     switch: "Comutatoare",
     loot: "Containere",
     lock: "Încuietori",
+    quests: "Misiuni",
   },
   tarkovdev: {
     title: "tarkov.dev",

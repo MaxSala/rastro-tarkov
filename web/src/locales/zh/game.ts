@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "游戏",
-  enable: "自动识别地图和战局",
+  enable: "自动检测地图、战局和任务",
   enableHint:
-    "读取游戏写在你电脑上的日志。自动切换地图、开始新战局并显示战局时间。只使用地图名称和模式；不会保存或分享任何内容。",
+    "读取游戏写在你电脑上的日志。自动切换地图、开始新战局、显示战局时间，并标记你接受、提交或失败的任务。只使用地图、模式和任务 ID；不保存也不分享其他任何内容。",
   folder: "游戏日志文件夹",
   folderHint: "留空 = 默认安装位置 (Battlestate Games\\Escape from Tarkov\\Logs)。",
   apply: "保存文件夹",

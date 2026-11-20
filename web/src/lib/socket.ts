@@ -4,6 +4,7 @@ import { useApp } from "../store/app";
 import { serverMsgSchema, type ClientMsg } from "./protocol";
 import { readToken } from "./token";
 import { loadIcons } from "./iconCache";
+import { useQuests } from "./quests";
 
 let ws: WebSocket | null = null;
 let retry = 0;
@@ -65,6 +66,8 @@ export function connect(): void {
       s.setLogs(msg.lines);
     } else if (msg.type === "folderCheck") {
       s.setFolderCheck(msg.result);
+    } else if (msg.type === "questProgress") {
+      useQuests.getState().setProgress(msg.progress);
     } else {
       s.notify(msg.level, say(msg));
     }

@@ -34,12 +34,12 @@
 </p>
 
 > [!TIP]
-> **Rastro ist in der öffentlichen Beta, und das ist erst der Anfang.** Quests, das Versteck und vieles mehr sind unterwegs, und die Community entscheidet, was zuerst kommt.
+> **Rastro ist in der öffentlichen Beta, und das ist erst der Anfang.** Quests sind gerade erschienen; das Versteck, Squad-Quests und vieles mehr sind unterwegs, und die Community entscheidet, was zuerst kommt.
 > Wenn dir gefällt, wohin es geht, **[⭐ gib dem Repo einen Stern](https://github.com/MaxSala/rastro-tarkov/stargazers)** und **[komm auf den Discord](https://discord.gg/H4pRxGBGDb)**. Das dauert fünf Sekunden und hilft mehr, als du denkst.
 
 ---
 
-**Rastro ist eine Live-Karte deines Raids auf deinem zweiten Monitor.** Mach im Spiel einen Screenshot und deine Position erscheint auf der Karte, mit Entfernung und Richtung zu jeder Extraktion. Öffne einen Raum und dein Squad sieht sich gegenseitig auf derselben Karte, jeder an seinem eigenen PC. Fahr mit der Maus über eine verschlossene Tür und du siehst, welcher Schlüssel sie öffnet und was er kostet. Prüf Preise und Munition, ohne per Alt-Tab in den Browser zu wechseln.
+**Rastro ist eine Live-Karte deines Raids auf deinem zweiten Monitor.** Mach im Spiel einen Screenshot und deine Position erscheint auf der Karte, mit Entfernung und Richtung zu jeder Extraktion. Öffne einen Raum und dein Squad sieht sich gegenseitig auf derselben Karte, jeder an seinem eigenen PC. Fahr mit der Maus über eine verschlossene Tür und du siehst, welcher Schlüssel sie öffnet und was er kostet. Verfolge deine Quests mit jedem offenen Ziel auf der Karte. Prüf Preise und Munition, ohne per Alt-Tab in den Browser zu wechseln.
 
 Das Spiel wird nie angefasst. Rastro liest nur Dateien, die Tarkov ohnehin auf deine Festplatte schreibt. Es ist kostenlos, Open Source und von Spielern für Spieler gemacht.
 
@@ -80,7 +80,6 @@ Rastro begann als Karte auf dem zweiten Monitor, damit du dich nie wieder verlä
 
 | | Als Nächstes | Was das für dich bedeutet |
 |---|---|---|
-| 📜 | **Quest-Tracker** | Deine aktiven Quests auf der Karte, jedes Ziel markiert. Schritt-für-Schritt-Hilfe für Neue, eine schnelle Checkliste für Veteranen. |
 | 👥 | **Squad-Quests** | Die offenen Quests deiner Mitspieler auf derselben Karte, damit das Squad eine gemeinsame Route plant. |
 | 🏠 | **Versteck-Tracker** | Jedes Upgrade, was es braucht und welche Gegenstände du behalten solltest. Nie wieder heute verkaufen, was du morgen brauchst. |
 | 🔑 | **Dein Schlüsselbund** | Markiere die Schlüssel, die du hast, und die Türen, die du öffnen kannst, stechen auf jeder Karte hervor. |
@@ -100,7 +99,7 @@ Rastro liest zwei Arten von Dateien, die Escape from Tarkov ohnehin auf deinem P
 | Was gelesen wird | Wo | Was Rastro daraus gewinnt |
 |---|---|---|
 | **Die Dateinamen deiner Screenshots** | `Documents\Escape from Tarkov\Screenshots` | Deine Position und Blickrichtung. Tarkov schreibt deine Koordinaten in den Namen jedes gespeicherten Screenshots. Rastro liest den Namen, nie das Bild, und verschiebt, bearbeitet oder löscht deine Screenshots nie. |
-| **Die Logdateien des Spiels** (optional, aus, bis du es einschaltest) | `Battlestate Games\Escape from Tarkov\Logs` | Welche Karte lädt, wann ein Raid beginnt und ob du PvP oder PvE spielst. Damit wechselt Rastro selbst zur richtigen Karte, beginnt in jedem Raid eine neue Spur und zeigt die verbleibende Raidzeit. Gespeichert werden nur Kartenname und Spielmodus. |
+| **Die Logdateien des Spiels** (optional, aus, bis du es einschaltest) | `Battlestate Games\Escape from Tarkov\Logs` | Welche Karte lädt, wann ein Raid beginnt und ob du PvP oder PvE spielst. Damit wechselt Rastro selbst zur richtigen Karte, beginnt in jedem Raid eine neue Spur und zeigt die verbleibende Raidzeit. Gespeichert werden nur Kartenname und Spielmodus. Außerdem liest es die Händlernachrichten, um Quests abzuhaken, die du annimmst, abgibst oder verlierst. |
 
 In der Praxis: Du drückst im Spiel die Screenshot-Taste, und eine Sekunde später bewegt sich dein Pfeil auf der Karte.
 
@@ -131,6 +130,14 @@ Jeder Spieler nutzt Rastro trotzdem auf seinem eigenen PC und macht eigene Scree
 - Fahr mit der Maus über alles für eine Karte mit Name, Entfernung, Stockwerk und dem, was ein Klick bewirkt.
 - Eigene Punkte: Rechtsklick auf die Karte, um Loot-Spots, Gefahrenzonen, Verstecke oder Quest-Orte zu speichern. Sie werden in Spielkoordinaten gespeichert und überstehen eine Neuinstallation der Karte.
 
+**Quests**
+- Alle Quests in deiner Sprache: woran du gerade bist, was du als Nächstes starten kannst und beim Rest genau, was fehlt (dein Level oder die vorherigen Quests). Filtere nach Händler, Karte oder Kappa, oder suche nach Quests, Zielen und Gegenständen.
+- **Quests folgen dem Spiel.** Mit eingeschalteter Raid-Erkennung werden Quests, die du annimmst, abgibst oder verlierst, aus den Spiel-Logs von selbst abgehakt, PvP und PvE getrennt. Beim ersten Mal liest Rastro alle Starts, die das Spiel aufbewahrt hat, sodass du mitten im Wipe sofort auf Stand bist. Keine Logs? *Auf Stand bringen*, indem du pro Händler deine letzte Quest wählst.
+- Jede Quest zeigt ihren Händler, ihr Bild und ihre Belohnungen: Erfahrung, Ruf, Gegenstände sowie die Angebote und Herstellungen, die sie freischaltet.
+- Deine offenen Ziele auf der Karte, ehrlich zu den Daten: ein Abzeichen für einen genauen Ort, der echte Umriss für einen Bereich und kleine Punkte für Orte, an denen ein Gegenstand erscheinen *kann*. Klick eins an und Rastro führt dich hin, wie zu einer Extraktion. Ein falscher Ort? *Falscher Ort?* meldet ihn mit einem Klick.
+- **Raid-Plan** im *Quests*-Panel: Hake an, was du in diesem Raid machst, und die Karte zeigt nur das, entlang der kürzesten Route nummeriert, samt dem, was du mitnehmen musst. *Als Nächstes* zeigt das nächste Ziel groß; *Abzugeben* listet, was fertig ist.
+- Quests nach Händler, wie im Spiel, mit deinem Kappa- und Lightkeeper-Fortschritt, der Karte, auf der du am meisten schaffst, und *Gegenstände*: was deine Quests noch verlangen, damit du es nicht verkaufst.
+
 **Schlüssel**
 - Die Ebene *Schlösser* zeigt jede Tür, jeden Behälter und jeden Kofferraum, der einen Schlüssel braucht. Schlösser, die Strom brauchen, haben einen gelben Rand.
 - Klick auf ein Schloss, um zu sehen, welcher Schlüssel es öffnet, wo er am günstigsten ist und wie viel er beim Verkauf bringt.
@@ -151,7 +158,7 @@ Jeder Spieler nutzt Rastro trotzdem auf seinem eigenen PC und macht eigene Scree
 - Wechselt beim Laden eines Raids zur richtigen Karte, setzt Spur und Markierungen zu Beginn jedes Raids zurück und zeigt die verbleibende Zeit. Liest die Logdateien des Spiels, wie unter [So funktioniert es](#so-funktioniert-es) beschrieben.
 
 **Alles andere**
-- 16 Sprachen, dieselben wie bei tarkov.dev: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe und 中文. Auch Gegenstands-, Karten- und Extraktionsnamen folgen deiner Sprache.
+- 16 Sprachen, dieselben wie bei tarkov.dev: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe und 中文. Auch Gegenstands-, Karten- und Extraktionsnamen folgen deiner Sprache. Wechselst du sie, bietet Rastro an, Karten, Preise und Quests mitzunehmen.
 - PvP- und PvE-Daten, automatisch anhand der Spiel-Logs oder von Hand gewählt.
 - Optionale Update-Hinweise und eine *Neuigkeiten*-Seite nach jedem Update.
 - Tastenkürzel für alles und eine Befehlspalette (`Ctrl+K`).
@@ -204,9 +211,9 @@ Nach einem Update zeigt Rastro, was sich geändert hat. Den vollständigen Verla
 | Aktion | Wie |
 |---|---|
 | Position aktualisieren | Im Spiel einen Screenshot machen |
-| Bereich wechseln (Karte, Markt, Munition) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3` |
+| Bereich wechseln (Karte, Markt, Munition, Quests) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3`, `Ctrl+4` |
 | Befehlspalette | `Ctrl+K` |
-| Panels für Extraktionen, Punkte, Gruppe und Karten | `1`, `2`, `3`, `4` |
+| Panels für Extraktionen, Punkte, Gruppe, Karten und Quests | `1`, `2`, `3`, `4`, `5` |
 | Neuer Raid (Spur und Markierungen löschen) | `N` |
 | Ganze Karte zeigen / deiner Position folgen | `F` / `G` |
 | Zoom | `+` / `-` oder Mausrad |
@@ -217,7 +224,7 @@ Nach einem Update zeigt Rastro, was sich geändert hat. Den vollständigen Verla
 
 ### Wo deine Daten liegen
 
-Einstellungen, deine Punkte, heruntergeladene Karten und der Preis-Cache liegen in einem Ordner, getrennt von der `.exe`:
+Einstellungen, deine Punkte, dein Quest-Fortschritt, heruntergeladene Karten sowie der Preis- und Quest-Cache liegen in einem Ordner, getrennt von der `.exe`:
 
 | System | Ordner |
 |---|---|
@@ -261,6 +268,7 @@ Rastro hat kein Konto, keine Telemetrie und keine Werbung. Die Oberfläche spric
 | Immer | Nichts außerhalb deines PCs |
 | Du lädst Karten von tarkov.dev | `raw.githubusercontent.com`, `json.tarkov.dev` und als Ausweichlösung `api.tarkov.dev` |
 | Du lädst oder aktualisierst Preise | `json.tarkov.dev`, dazu `assets.tarkov.dev` für Gegenstandssymbole |
+| Du lädst oder aktualisierst Quests | `json.tarkov.dev` und als Ausweichlösung `api.tarkov.dev`, dazu `assets.tarkov.dev` für Bilder |
 | Du importierst ein Kartenpaket per URL | Nur die Adresse, die du eingibst (nur HTTPS, nie interne Adressen) |
 | Du hostest eine Gruppe oder trittst einer bei | Direkt zu den PCs deiner Mitspieler |
 | Einmal pro Start, wenn du Update-Prüfungen erlaubt hast (oder bei *Jetzt prüfen*) | `api.github.com`, um die neueste Versionsnummer zu lesen. Über dich wird nichts gesendet. |
@@ -310,7 +318,7 @@ Ehrliches Feedback ist das Wertvollste, was du einer Beta geben kannst. Sag uns,
 Rastro gäbe es nicht ohne **[tarkov.dev](https://tarkov.dev)**, die Open-Source-Datenbank zu Escape from Tarkov, gepflegt von der Community **[The Hideout](https://github.com/the-hideout)**. tarkov.dev begann als [tarkov-tools](https://github.com/kokarn/tarkov-tools) von **Oskar Risberg ([@kokarn](https://github.com/kokarn))** und wurde von den Mitwirkenden von The Hideout wiederbelebt und geöffnet. Rastro nutzt:
 
 - **Karten:** die SVG-Karten aus [the-hideout/tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps) der tarkov.dev-Mitwirkenden, lizenziert unter [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Ihre Urheber erlauben keine Nutzung in Cheats oder Software, die einen unfairen Vorteil verschafft, etwa Radare. Die Karten lädst du selbst herunter, sie werden nie mit Rastro verteilt, und jede installierte Karte behält ihre Credits und Lizenz.
-- **Daten:** Extraktionen, Übergänge, Schalter, Behälter, Schlösser, Gegenstände, Preise und Übersetzungen aus der tarkov.dev-API und ihren Datendateien.
+- **Daten:** Extraktionen, Übergänge, Schalter, Behälter, Schlösser, Gegenstände, Preise, Quests und Übersetzungen aus der tarkov.dev-API und ihren Datendateien.
 - **Markierungssymbole:** aus [tarkov-dev](https://github.com/the-hideout/tarkov-dev) (`public/maps/interactive`), MIT-Lizenz, © 2019 Oskar Risberg.
 - **Gegenstandssymbole** gehören Battlestate Games und werden nur lokal zur Anzeige zwischengespeichert.
 

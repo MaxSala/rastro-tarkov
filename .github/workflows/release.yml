@@ -54,6 +54,7 @@ jobs:
         working-directory: web
         run: |
           npm ci
+          npm audit --omit=dev --audit-level=moderate
           npm run build
 
       - name: Build rastro.exe

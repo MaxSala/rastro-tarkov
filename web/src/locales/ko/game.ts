@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "게임",
-  enable: "맵과 레이드 자동 감지",
+  enable: "맵, 레이드, 퀘스트 자동 감지",
   enableHint:
-    "게임이 PC에 기록하는 로그를 읽습니다. 맵을 자동으로 바꾸고, 새 레이드를 시작하며, 레이드 시간을 표시합니다. 맵 이름과 모드만 사용하며, 아무것도 저장하거나 공유하지 않습니다.",
+    "게임이 PC에 기록하는 로그를 읽습니다. 맵을 자동으로 바꾸고, 새 레이드를 시작하고, 레이드 시간을 보여 주며, 수락·완료·실패한 퀘스트를 표시합니다. 맵, 모드, 퀘스트 ID만 사용하며 그 밖의 것은 저장하거나 공유하지 않습니다.",
   folder: "게임 로그 폴더",
   folderHint: "비워 두면 기본 설치 폴더 (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "폴더 저장",

@@ -13,7 +13,7 @@ use std::sync::Arc;
 #[serde(rename_all = "camelCase")]
 pub struct View {
     pub version: &'static str,
-    pub settings: Settings,
+    pub settings: crate::view_extra::Settings,
     pub watcher: Watcher,
     pub packs: Vec<PackInfo>,
     pub active_map: Option<ActiveMap>,
@@ -32,21 +32,11 @@ pub struct View {
     pub game: crate::gamelog::GameView,
     pub market: crate::market::MarketStatus,
     pub update: crate::update::UpdateStatus,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Settings {
-    pub screenshots_dir: String,
-    pub screenshots_dir_is_default: bool,
-    pub trail_length: usize,
-    pub player_name: String,
-    pub player_color: u8,
-    pub party_port: u16,
-    pub share_warning_ack: bool,
-    pub open_in_window: bool,
-    pub language: crate::config::Language,
-    pub check_updates: Option<bool>,
+    pub quests: crate::quests::QuestsStatus,
+    /// Downloaded data in another language than the interface.
+    pub language_data: crate::langdata::LanguageData,
+    /// Open objectives of your active quests on the map shown.
+    pub quest_markers: Vec<crate::quests::view::QuestMarker>,
 }
 
 #[derive(Debug, Serialize)]
@@ -140,24 +130,15 @@ pub(crate) fn heading_dir(h: f64) -> (f64, f64) {
 }
 
 pub fn build(app: &App) -> View {
+    // Read before taking `inner`: it takes `inner` and the quests lock one after the other.
+    let quest_spot = crate::quests::view::selected_spot(app);
     let inner = lock(&app.inner);
     let cfg = &inner.config;
     let pack: Option<Arc<Pack>> = cfg.last_map.as_deref().and_then(|id| inner.store.get(id));
     let last = inner.raid.last.as_ref();
     let mut v = View {
         version: env!("CARGO_PKG_VERSION"),
-        settings: Settings {
-            screenshots_dir: cfg.effective_screenshots_dir().map(|p| p.display().to_string()).unwrap_or_default(),
-            screenshots_dir_is_default: cfg.screenshots_dir.is_none(),
-            trail_length: cfg.trail_length,
-            player_name: cfg.player_name.clone(),
-            player_color: cfg.player_color,
-            party_port: cfg.party_port,
-            share_warning_ack: cfg.share_warning_ack,
-            open_in_window: cfg.open_in_window,
-            language: cfg.language,
-            check_updates: cfg.check_updates,
-        },
+        settings: crate::view_extra::settings(cfg),
         watcher: Watcher {
             folder: inner.watch_folder.as_ref().map(|p| p.display().to_string()),
             error: inner.watch_error.clone(),
@@ -190,6 +171,9 @@ pub fn build(app: &App) -> View {
         game: Default::default(),
         market: Default::default(),
         update: lock(&app.update).clone(),
+        quests: Default::default(),
+        language_data: Default::default(),
+        quest_markers: Vec::new(),
     };
     if let Some(pack) = &pack {
         let m = &pack.manifest;
@@ -275,6 +259,7 @@ pub fn build(app: &App) -> View {
                 .find(|e| &e.id == id)
                 .map(|e| (e.x, e.y, e.z))
                 .or_else(|| user_points.iter().find(|p| &p.id == id).map(|p| (p.x, p.y, p.z)))
+                .or(quest_spot)
         });
         if let (Some(l), Some((ex, ey, ez))) = (last, target) {
             let e = crate::capture::parser::Vec3 { x: ex, y: ey, z: ez };
@@ -291,9 +276,15 @@ pub fn build(app: &App) -> View {
             });
         }
     }
+    let me = last.map(|l| l.pos);
     drop(inner);
     v.party = party_view(app, pack.as_deref());
     v.game = app.game_view();
     v.market = app.market_status();
+    v.quests = app.quests_status();
+    v.language_data = app.language_data();
+    if let Some(p) = &pack {
+        v.quest_markers = crate::quests::view::markers(app, p, me);
+    }
     v
 }

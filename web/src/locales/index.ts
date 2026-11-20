@@ -4,6 +4,7 @@
 import type { Main } from "./es/main";
 import type { Game } from "./es/game";
 import type { Tools } from "./es/tools";
+import type { Quests } from "./es/quests";
 
 export const LANGS = [
   "cs",
@@ -64,7 +65,7 @@ const LOCALES: Record<Lang, string> = {
   zh: "zh-CN",
 };
 
-export type Strings = Main & { game: Game } & Tools;
+export type Strings = Main & { game: Game } & Tools & { quests: Quests };
 const KEY = "rastro.lang";
 const isLang = (v: unknown): v is Lang => typeof v === "string" && (LANGS as readonly string[]).includes(v);
 
@@ -83,13 +84,23 @@ function detect(): Lang {
 }
 
 type Part = { default: unknown };
-const files = import.meta.glob<Part>("./*/{main,game,tools}.ts");
+const files = import.meta.glob<Part>("./*/{main,game,tools,quests}.ts");
 
 async function load(l: Lang): Promise<Strings> {
   const part = (f: string) => files[`./${l}/${f}.ts`]?.() ?? Promise.reject(new Error(f));
-  const [main, game, tools] = await Promise.all([part("main"), part("game"), part("tools")]);
+  const [main, game, tools, quests] = await Promise.all([
+    part("main"),
+    part("game"),
+    part("tools"),
+    part("quests"),
+  ]);
   // Cada archivo ya está tipado contra el español: aquí solo se juntan.
-  return { ...(main.default as Main), game: game.default as Game, ...(tools.default as Tools) };
+  return {
+    ...(main.default as Main),
+    game: game.default as Game,
+    ...(tools.default as Tools),
+    quests: quests.default as Quests,
+  };
 }
 
 const detected = detect();

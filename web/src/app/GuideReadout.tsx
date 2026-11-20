@@ -4,13 +4,20 @@ import { meters, relativeBearing, signedMeters } from "../lib/format";
 import { iconSm } from "../lib/icons";
 import { send } from "../lib/socket";
 import { useApp } from "../store/app";
+import { useQuests } from "../lib/quests";
 
 /** Lectura de la guía hacia la extracción seleccionada; los números los calcula el backend. */
 export function GuideReadout() {
   const view = useApp((s) => s.view);
+  const questDb = useQuests((s) => s.db);
+  const quest = view?.questMarkers.find((m) => m.id === view.selectedExtract);
+  const objective = quest
+    ? questDb?.quests.find((q) => q.id === quest.quest)?.objectives.find((o) => o.id === quest.objective)
+    : undefined;
   const target =
     view?.extracts.find((e) => e.id === view.selectedExtract) ??
-    view?.points.find((p) => p.id === view.selectedExtract);
+    view?.points.find((p) => p.id === view.selectedExtract) ??
+    (quest ? { name: objective?.text ?? t.quests.hover.kind } : undefined);
   if (!view || !target) return null;
   const g = view.guide;
   return (

@@ -34,12 +34,12 @@
 </p>
 
 > [!TIP]
-> **Rastro está en beta pública y esto es solo el principio.** Las misiones, el hideout y mucho más están en camino, y la comunidad decide qué llega primero.
+> **Rastro está en beta pública y esto es solo el principio.** Las misiones acaban de llegar; el hideout, las misiones en squad y mucho más están en camino, y la comunidad decide qué llega primero.
 > Si te gusta hacia dónde va, **[⭐ dale una estrella al repo](https://github.com/MaxSala/rastro-tarkov/stargazers)** y **[únete al Discord](https://discord.gg/H4pRxGBGDb)**. Son cinco segundos y ayudan más de lo que crees.
 
 ---
 
-**Rastro es un mapa en directo de tu raid que funciona en tu segundo monitor.** Haz una captura en el juego y tu posición aparece en el mapa, con la distancia y la dirección a cada extracción. Abre una sala y tu squad se ve en el mismo mapa, cada uno en su PC. Pasa el ratón por una puerta cerrada para ver qué llave la abre y cuánto cuesta. Consulta precios y munición sin hacer alt-tab al navegador.
+**Rastro es un mapa en directo de tu raid que funciona en tu segundo monitor.** Haz una captura en el juego y tu posición aparece en el mapa, con la distancia y la dirección a cada extracción. Abre una sala y tu squad se ve en el mismo mapa, cada uno en su PC. Pasa el ratón por una puerta cerrada para ver qué llave la abre y cuánto cuesta. Sigue tus misiones con cada objetivo pendiente en el mapa. Consulta precios y munición sin hacer alt-tab al navegador.
 
 Nunca toca el juego. Rastro solo lee archivos que Tarkov ya escribe en tu disco, y es gratis, de código abierto y hecho por jugadores para jugadores.
 
@@ -80,7 +80,6 @@ Rastro nació para no perderse nunca, con el mapa en el segundo monitor. El plan
 
 | | Lo próximo | Qué significa para ti |
 |---|---|---|
-| 📜 | **Seguimiento de misiones** | Tus misiones activas en el mapa, con cada objetivo marcado. Ayuda paso a paso si eres nuevo, una lista rápida si eres veterano. |
 | 👥 | **Misiones de la squad** | Las misiones pendientes de tus compañeros en el mismo mapa, para planear una sola ruta entre todos. |
 | 🏠 | **Seguimiento del hideout** | Cada mejora, lo que necesita y qué objetos guardar. Se acabó vender hoy lo que vas a necesitar mañana. |
 | 🔑 | **Tu llavero** | Marca las llaves que tienes y las puertas que puedes abrir destacan en todos los mapas. |
@@ -100,7 +99,7 @@ Rastro lee dos tipos de archivos que Escape from Tarkov ya guarda en tu PC. No n
 | Qué lee | Dónde | Qué saca de ahí |
 |---|---|---|
 | **Los nombres de tus capturas** | `Documents\Escape from Tarkov\Screenshots` | Tu posición y hacia dónde miras. Tarkov escribe tus coordenadas en el nombre de cada captura que guarda. Rastro lee el nombre, nunca la imagen, y nunca mueve, edita ni borra tus capturas. |
-| **Los logs del juego** (opcional, desactivado hasta que lo actives) | `Battlestate Games\Escape from Tarkov\Logs` | Qué mapa se está cargando, cuándo empieza una raid y si juegas PvP o PvE. Con eso Rastro cambia solo al mapa correcto, empieza un rastro nuevo en cada raid y te enseña cuánto tiempo de raid queda. Solo se guardan el nombre del mapa y el modo de juego. |
+| **Los logs del juego** (opcional, desactivado hasta que lo actives) | `Battlestate Games\Escape from Tarkov\Logs` | Qué mapa se está cargando, cuándo empieza una raid y si juegas PvP o PvE. Con eso Rastro cambia solo al mapa correcto, empieza un rastro nuevo en cada raid y te enseña cuánto tiempo de raid queda. Solo se guardan el nombre del mapa y el modo de juego. También lee los mensajes de los comerciantes, para marcar las misiones que aceptas, entregas o fallas. |
 
 En la práctica: pulsas la tecla de captura en el juego y un segundo después tu flecha se mueve en el mapa.
 
@@ -131,6 +130,14 @@ Cada jugador sigue usando Rastro en su propio PC y hace sus propias capturas: es
 - Pasa el ratón por cualquier cosa para ver una tarjeta con qué es, a qué distancia está, en qué planta y qué pasa si haces clic.
 - Tus propios puntos: clic derecho en el mapa para guardar sitios de loot, zonas peligrosas, escondites o lugares de misiones. Se guardan en coordenadas del juego, así que sobreviven a reinstalar un mapa.
 
+**Misiones**
+- Todas las misiones en tu idioma: las que llevas, las que puedes empezar ya y, para el resto, exactamente qué te falta (tu nivel o las misiones anteriores). Filtra por comerciante, mapa o Kappa, o busca misiones, objetivos y objetos.
+- **Las misiones siguen al juego.** Con la detección de raid activada, las misiones que aceptas, entregas o fallas se marcan solas desde los logs del juego, PvP y PvE por separado. La primera vez, Rastro lee todas las partidas que el juego ha guardado, así que a mitad de wipe te pones al día al instante. ¿Sin logs? *Ponte al día* eligiendo la última misión que hiciste con cada comerciante.
+- Cada misión muestra su comerciante, su imagen y sus recompensas: experiencia, reputación, objetos, y las ofertas y fabricaciones que desbloquea.
+- Tus objetivos pendientes en el mapa, honestos con los datos: un distintivo para un sitio exacto, el contorno real para una zona y puntos pequeños para los sitios donde un objeto *puede* aparecer. Haz clic en uno y Rastro te guía, como a una extracción. ¿Ves uno mal? *¿Mal situado?* lo reporta en un clic.
+- **Plan de raid** en el panel *Misiones*: marca lo que harás en esta raid y el mapa enseña solo eso, numerado por la ruta más corta, con lo que tienes que llevarte. *Siguiente* muestra en grande el próximo objetivo; *Para entregar*, lo que ya está listo.
+- Misiones por comerciante, como en el juego, con tu progreso de Kappa y Lightkeeper, el mapa donde más avanzas y *Objetos*: lo que tus misiones aún piden, para que no lo vendas.
+
 **Llaves**
 - La capa *Cerraduras* muestra cada puerta, contenedor y maletero que necesita llave. Las que necesitan electricidad llevan un borde amarillo.
 - Haz clic en una cerradura para ver qué llave la abre, dónde comprarla más barata y su mejor precio de venta.
@@ -151,7 +158,7 @@ Cada jugador sigue usando Rastro en su propio PC y hace sus propias capturas: es
 - Cambia al mapa correcto cuando carga una raid, borra tu rastro y tus marcas al empezar cada raid y muestra el tiempo que queda. Lee los logs del juego, como se explica en [Cómo funciona](#cómo-funciona).
 
 **Todo lo demás**
-- 16 idiomas, los mismos que tarkov.dev: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe y 中文. Los nombres de objetos, mapas y extracciones también siguen tu idioma.
+- 16 idiomas, los mismos que tarkov.dev: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe y 中文. Los nombres de objetos, mapas y extracciones también siguen tu idioma. Si lo cambias, Rastro te ofrece pasar tus mapas, precios y misiones al nuevo idioma.
 - Datos de PvP y PvE, elegidos automáticamente a partir de los logs del juego o a mano.
 - Avisos de actualización opcionales y una página de *Novedades* después de cada actualización.
 - Atajos de teclado para todo y una paleta de comandos (`Ctrl+K`).
@@ -204,9 +211,9 @@ Después de actualizar, Rastro te enseña qué ha cambiado. El historial complet
 | Acción | Cómo |
 |---|---|
 | Actualizar tu posición | Haz una captura en el juego |
-| Cambiar de sección (Mapa, Mercado, Munición) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3` |
+| Cambiar de sección (Mapa, Mercado, Munición, Misiones) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3`, `Ctrl+4` |
 | Paleta de comandos | `Ctrl+K` |
-| Paneles de extracciones, puntos, party y mapas | `1`, `2`, `3`, `4` |
+| Paneles de extracciones, puntos, party, mapas y misiones | `1`, `2`, `3`, `4`, `5` |
 | Nueva raid (borrar rastro y marcas) | `N` |
 | Ver el mapa entero / seguir tu posición | `F` / `G` |
 | Zoom | `+` / `-` o la rueda del ratón |
@@ -217,7 +224,7 @@ Después de actualizar, Rastro te enseña qué ha cambiado. El historial complet
 
 ### Dónde se guardan tus datos
 
-Los ajustes, tus puntos, los mapas descargados y la caché de precios se guardan en una carpeta, separada del `.exe`:
+Los ajustes, tus puntos, tu progreso de misiones, los mapas descargados y las cachés de precios y misiones se guardan en una carpeta, separada del `.exe`:
 
 | Sistema | Carpeta |
 |---|---|
@@ -261,6 +268,7 @@ Rastro no tiene cuenta, ni telemetría, ni anuncios. La interfaz solo habla con 
 | Siempre | Nada fuera de tu PC |
 | Descargas mapas de tarkov.dev | `raw.githubusercontent.com`, `json.tarkov.dev` y, como alternativa, `api.tarkov.dev` |
 | Descargas o actualizas precios | `json.tarkov.dev`, y `assets.tarkov.dev` para los iconos de objetos |
+| Descargas o actualizas misiones | `json.tarkov.dev` y, como alternativa, `api.tarkov.dev`, y `assets.tarkov.dev` para las imágenes |
 | Importas un pack de mapas desde una URL | Solo la dirección que escribas (solo HTTPS, nunca direcciones internas) |
 | Abres una sala o te unes a una party | Directamente a los PC de tus compañeros |
 | Una vez por arranque, si dijiste que sí a buscar actualizaciones (o al pulsar *Buscar ahora*) | `api.github.com`, para leer el número de la última versión. No se envía nada sobre ti. |
@@ -310,7 +318,7 @@ Una opinión sincera es lo más valioso que puedes darle a una beta. Cuéntanos 
 Rastro no existiría sin **[tarkov.dev](https://tarkov.dev)**, la base de datos de código abierto de Escape from Tarkov que mantiene la comunidad **[The Hideout](https://github.com/the-hideout)**. tarkov.dev nació como [tarkov-tools](https://github.com/kokarn/tarkov-tools), de **Oskar Risberg ([@kokarn](https://github.com/kokarn))**, y los colaboradores de The Hideout lo recuperaron y lo abrieron a todos. Rastro usa:
 
 - **Mapas:** los mapas SVG de [the-hideout/tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps), de los colaboradores de tarkov.dev, con licencia [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Sus autores no permiten usarlos en cheats ni en software que dé una ventaja injusta, como radares. Los mapas los descargas tú y nunca se distribuyen con Rastro, y cada mapa instalado conserva sus créditos y su licencia.
-- **Datos:** extracciones, tránsitos, interruptores, contenedores, cerraduras, objetos, precios y traducciones de la API de tarkov.dev y sus archivos de datos.
+- **Datos:** extracciones, tránsitos, interruptores, contenedores, cerraduras, objetos, precios, misiones y traducciones de la API de tarkov.dev y sus archivos de datos.
 - **Iconos de marcadores:** de [tarkov-dev](https://github.com/the-hideout/tarkov-dev) (`public/maps/interactive`), licencia MIT, © 2019 Oskar Risberg.
 - **Los iconos de objetos** pertenecen a Battlestate Games y solo se guardan en caché local para mostrarlos.
 

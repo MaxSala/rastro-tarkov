@@ -33,6 +33,10 @@ pub struct Config {
     pub language: Language,
     /// Check GitHub for a newer release on startup. None = the player hasn't been asked yet.
     pub check_updates: Option<bool>,
+    /// Language of the tarkov.dev map data installed (None: installed by an earlier build).
+    pub maps_language: Option<Language>,
+    /// Update maps, prices and quests on their own when the language changes. None = not asked.
+    pub auto_language_data: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -59,6 +63,29 @@ pub enum Language {
 }
 
 impl Language {
+    pub const ALL: [Self; 16] = [
+        Self::Cs,
+        Self::De,
+        Self::En,
+        Self::Es,
+        Self::Fr,
+        Self::Hu,
+        Self::It,
+        Self::Ja,
+        Self::Ko,
+        Self::Pl,
+        Self::Pt,
+        Self::Ro,
+        Self::Ru,
+        Self::Sk,
+        Self::Tr,
+        Self::Zh,
+    ];
+
+    pub fn from_code(code: &str) -> Option<Self> {
+        Self::ALL.into_iter().find(|l| l.code() == code)
+    }
+
     pub fn code(self) -> &'static str {
         match self {
             Self::Cs => "cs",
@@ -99,6 +126,8 @@ impl Default for Config {
             game_mode: crate::gamelog::GameModePref::Auto,
             language: Language::Es,
             check_updates: None,
+            maps_language: None,
+            auto_language_data: None,
         }
     }
 }
@@ -164,6 +193,8 @@ pub struct Paths {
     pub base: PathBuf,
     pub config_file: PathBuf,
     pub points_file: PathBuf,
+    /// Quest progress per game mode.
+    pub quests_file: PathBuf,
     pub log_file: PathBuf,
     pub icons_dir: PathBuf,
     pub maps_dir: PathBuf,
@@ -182,6 +213,7 @@ impl Paths {
             base: base.to_path_buf(),
             config_file: base.join("config.json"),
             points_file: base.join("points.json"),
+            quests_file: base.join("quests.json"),
             log_file: base.join("rastro.log"),
             icons_dir: base.join("icons"),
             maps_dir: base.join("maps"),

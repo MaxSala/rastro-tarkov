@@ -1,0 +1,108 @@
+/* Quest objective markers. An amber badge with a dark glyph and a dark ring, so it reads on any
+   map and never looks like an extract (shields) or a point of yours (pins). When several quests
+   share the map, each one adds a ring in its own colour (--rt-quest-color). */
+.rt-qm {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: 1px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #1c1206;
+  box-shadow:
+    0 0 0 1.5px #111,
+    0 0 0 3.5px var(--rt-quest-color, transparent),
+    0 1px 4px rgb(0 0 0 / 60%);
+  scale: var(--rt-scale, 1);
+  transition:
+    scale 140ms ease,
+    opacity 160ms ease,
+    box-shadow 140ms ease;
+}
+.rt-qm svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* An area: the outline is the information; the badge only marks its middle. */
+.rt-qm[data-kind="area"] {
+  width: 18px;
+  height: 18px;
+}
+.rt-qm[data-kind="area"] svg {
+  width: 11px;
+  height: 11px;
+}
+/* One of the places an item can spawn: small, so many of them don't read as many objectives. */
+.rt-qm[data-kind="candidate"] {
+  width: 10px;
+  height: 10px;
+  margin: 2px;
+  background: #141414;
+  box-shadow:
+    0 0 0 2px var(--accent),
+    0 0 0 4px var(--rt-quest-color, transparent),
+    0 1px 3px rgb(0 0 0 / 60%);
+}
+/* Route number while a raid plan is set. */
+.rt-qm-n {
+  position: absolute;
+  top: -7px;
+  right: -8px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  background: #111;
+  color: #fff;
+  font: 600 9px/14px var(--font-mono, ui-monospace, monospace);
+  text-align: center;
+  box-shadow: 0 0 0 1px var(--rt-quest-color, var(--accent));
+}
+/* Previewed quest (not started): hollow, so it never looks like something you have to do. */
+.rt-qm[data-focus="true"] {
+  background: #141414;
+  color: var(--accent);
+  box-shadow:
+    0 0 0 2px var(--accent),
+    0 1px 4px rgb(0 0 0 / 60%);
+}
+.rt-qm[data-selected="true"] {
+  scale: calc(var(--rt-scale, 1) * 1.25);
+  box-shadow:
+    0 0 0 1.5px #111,
+    0 0 0 6px color-mix(in srgb, var(--rt-quest-color, var(--accent)) 40%, transparent);
+}
+.leaflet-marker-icon:hover .rt-qm {
+  scale: calc(var(--rt-scale, 1) * 1.2);
+}
+
+/* The objective's area on the ground. */
+.rt-qzone {
+  stroke: var(--rt-quest-color, var(--accent));
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  fill: var(--rt-quest-color, var(--accent));
+  fill-opacity: 0.08;
+}
+.rt-qzone-strong {
+  stroke-width: 2;
+  stroke-dasharray: none;
+  fill-opacity: 0.14;
+}
+
+.rt-card[data-tone="quest"] .rt-card-dot {
+  background: var(--accent);
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rt-qm {
+    transition: none;
+  }
+}

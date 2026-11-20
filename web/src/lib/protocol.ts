@@ -2,7 +2,9 @@
 // y src/view.rs (View) en el backend. Todo lo que llega se valida con zod antes de usarse.
 import { z } from "zod";
 import { LANGS, type Lang } from "../locales";
+import { languageDataSchema } from "./languageData";
 import { userMsgSchema } from "./msg";
+import { progressSchema, questMarkerSchema, questsStatusSchema, type QuestClientMsg } from "./questProtocol";
 
 const num = z.number().finite();
 const point = z.tuple([num, num]);
@@ -172,6 +174,9 @@ export const viewSchema = z.object({
     noData: z.boolean(),
     error: userMsgSchema.nullable(),
   }),
+  quests: questsStatusSchema,
+  languageData: languageDataSchema,
+  questMarkers: z.array(questMarkerSchema).max(400),
 });
 
 const iconName = z.string().regex(/^[a-z0-9_-]{1,48}$/);
@@ -213,6 +218,7 @@ export const serverMsgSchema = z.discriminatedUnion("type", [
     icons: z.array(iconName).max(64),
   }),
   z.object({ type: z.literal("logs"), lines: z.array(text).max(5000) }),
+  z.object({ type: z.literal("questProgress"), progress: progressSchema }),
 ]);
 
 export type View = z.infer<typeof viewSchema>;
@@ -265,8 +271,11 @@ export type ClientMsg =
   | { type: "setGameMode"; mode: "auto" | "regular" | "pve" }
   | { type: "marketRefresh"; fleaName: string }
   | { type: "setLanguage"; lang: Lang }
+  | { type: "updateLanguageData"; fleaName: string }
+  | { type: "setAutoLanguageData"; enabled: boolean }
   | { type: "setCheckUpdates"; enabled: boolean }
-  | { type: "checkUpdates" };
+  | { type: "checkUpdates" }
+  | QuestClientMsg;
 
 /** Respuesta de vista previa de importación (src/maps/import.rs, Preview). */
 export const previewSchema = z.object({

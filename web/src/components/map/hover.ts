@@ -4,7 +4,8 @@ import type L from "leaflet";
 import { t } from "../../locales";
 import { floorName } from "../../lib/mapText";
 
-export type Tone = "pmc" | "scav" | "shared" | "transit" | "switch" | "loot" | "lock" | "point" | "peer";
+export type Tone =
+  "pmc" | "scav" | "shared" | "transit" | "switch" | "loot" | "lock" | "point" | "peer" | "quest";
 
 export interface Hover {
   tone: Tone;

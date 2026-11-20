@@ -6,8 +6,10 @@ import { X } from "lucide-react";
 import { iconSm } from "../lib/icons";
 import { useCatalog } from "../lib/catalog";
 import { keyName } from "../components/map/locks";
+import { stopQuestPreview } from "../lib/questMap";
+import { useQuests } from "../lib/quests";
 
-const order: LayerId[] = ["extracts", "transit", "switch", "lock", "loot"];
+const order: LayerId[] = ["extracts", "quests", "transit", "switch", "lock", "loot"];
 
 /** Interruptores de capas del mapa; solo aparecen las que tienen datos. */
 export function LayerControl() {
@@ -19,8 +21,13 @@ export function LayerControl() {
   const catalog = useCatalog((s) => s.catalog);
   const activeId = useApp((s) => s.view?.activeMap?.id);
   const hasExtracts = useApp((s) => (s.view?.extracts.length ?? 0) > 0);
-  const kinds = new Set(markers?.mapId === activeId ? markers?.list.map((m) => m.kind) : []);
-  const available = order.filter((l) => (l === "extracts" ? hasExtracts : kinds.has(l)));
+  const hasQuests = useApp((s) => (s.view?.questMarkers.length ?? 0) > 0);
+  const questFocus = useApp((s) => s.questFocus);
+  const focusName = useQuests((s) => s.db?.quests.find((q) => q.id === questFocus)?.name);
+  const kinds = new Set<string>(markers?.mapId === activeId ? markers?.list.map((m) => m.kind) : []);
+  const available = order.filter((l) =>
+    l === "extracts" ? hasExtracts : l === "quests" ? hasQuests : kinds.has(l),
+  );
   if (available.length === 0) return null;
   return (
     <div
@@ -42,6 +49,20 @@ export function LayerControl() {
           {t.layers[l]}
         </button>
       ))}
+      {questFocus && focusName && (
+        <>
+          <div className="mx-0.5 w-px self-stretch bg-line" />
+          <button
+            type="button"
+            onClick={stopQuestPreview}
+            title={t.quests.clearFocus}
+            className="flex h-7 max-w-56 items-center gap-1.5 rounded-sm bg-accent-soft px-2 text-xs text-fg hover:bg-hover"
+          >
+            <span className="truncate">{t.quests.focus(focusName)}</span>
+            <X {...iconSm} aria-hidden />
+          </button>
+        </>
+      )}
       {layers.lock && focusKey && (
         <>
           <div className="mx-0.5 w-px self-stretch bg-line" />

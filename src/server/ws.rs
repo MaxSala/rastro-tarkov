@@ -52,8 +52,8 @@ async fn session(ctx: Ctx, mut socket: WebSocket) {
         return;
     }
     let mut changes = app.changed.subscribe();
-    let mut sent_map: Option<String> = None;
-    if !push_state(&app, &mut socket, &mut sent_map).await {
+    let mut sent = Sent::default();
+    if !push_state(&app, &mut socket, &mut sent).await {
         return;
     }
     loop {
@@ -79,7 +79,7 @@ async fn session(ctx: Ctx, mut socket: WebSocket) {
                     Ok(()) | Err(RecvError::Lagged(_)) => {
                         // Agrupa ráfagas de cambios en una sola instantánea.
                         while changes.try_recv().is_ok() {}
-                        if !push_state(&app, &mut socket, &mut sent_map).await {
+                        if !push_state(&app, &mut socket, &mut sent).await {
                             break;
                         }
                     }
@@ -90,16 +90,31 @@ async fn session(ctx: Ctx, mut socket: WebSocket) {
     }
 }
 
-/// Envía las capas del mapa si ha cambiado y después la instantánea.
-async fn push_state(app: &App, socket: &mut WebSocket, sent_map: &mut Option<String>) -> bool {
+/// What this socket already has, so it's only sent again when it changes.
+#[derive(Default)]
+struct Sent {
+    map: Option<String>,
+    quests: Option<String>,
+}
+
+/// Envía las capas del mapa y el progreso de misiones si han cambiado, y después la instantánea.
+async fn push_state(app: &App, socket: &mut WebSocket, sent: &mut Sent) -> bool {
     if let Some((map_id, markers, icons)) = crate::view_extra::map_markers(app) {
         // Se reenvía al cambiar de mapa o si cambian los iconos disponibles (tras descargarlos).
         let key = format!("{map_id}#{}", icons.len());
-        if sent_map.as_deref() != Some(key.as_str()) {
-            *sent_map = Some(key);
+        if sent.map.as_deref() != Some(key.as_str()) {
+            sent.map = Some(key);
             if !send(socket, &ServerMsg::MapData { map_id, markers, icons }).await {
                 return false;
             }
+        }
+    }
+    let key = crate::quests::view::progress_key(app);
+    if sent.quests.as_deref() != Some(key.as_str()) {
+        sent.quests = Some(key);
+        let progress = crate::quests::view::progress_view(app);
+        if !send(socket, &ServerMsg::QuestProgress { progress }).await {
+            return false;
         }
     }
     send(socket, &snapshot(app)).await
@@ -164,11 +179,26 @@ fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
             app.market_refresh(flea).map(|()| None)
         }
         ClientMsg::SetLanguage { lang } => app.set_language(lang).map(|()| None),
+        ClientMsg::UpdateLanguageData { flea_name } => {
+            let flea: String = flea_name.chars().filter(|c| !c.is_control()).take(40).collect();
+            app.update_language_data(flea).map(|()| None)
+        }
+        ClientMsg::SetAutoLanguageData { enabled } => app.set_auto_language_data(enabled).map(|()| None),
         ClientMsg::SetCheckUpdates { enabled } => app.set_check_updates(enabled).map(|()| None),
         ClientMsg::CheckUpdates => {
             app.check_updates();
             Ok(None)
         }
+        ClientMsg::QuestsRefresh => app.quests_refresh().map(|()| None),
+        ClientMsg::QuestSet { quest_id, status } => app.quest_set(quest_id, status).map(|()| None),
+        ClientMsg::QuestObjective { objective_id, count } => app.quest_objective(objective_id, count).map(|()| None),
+        ClientMsg::QuestsLevel { level } => app.quests_level(level).map(|()| None),
+        ClientMsg::QuestsFaction { faction } => app.quests_faction(faction).map(|()| None),
+        ClientMsg::QuestsCompleteBefore { quest_id } => app.quests_complete_before(&quest_id).map(|()| None),
+        ClientMsg::QuestsReset => app.quests_reset().map(|()| None),
+        ClientMsg::QuestsReadLogs => app.rescan_quest_logs().map(|()| None),
+        ClientMsg::QuestsCompleteThrough { quest_ids } => app.quests_complete_through(&quest_ids).map(|()| None),
+        ClientMsg::QuestFocus { quest_id } => crate::quests::view::set_focus(app, quest_id).map(|()| None),
         ClientMsg::Quit => {
             tracing::info!("Quit requested from the app.");
             std::process::exit(0);

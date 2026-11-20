@@ -25,6 +25,7 @@ const main: Main = {
     extracts: "撤离点",
     party: "小队",
     maps: "地图",
+    quests: "任务",
     collapse: "隐藏面板",
   },
   extracts: {
@@ -159,6 +160,7 @@ const main: Main = {
     switch: "开关",
     loot: "容器",
     lock: "门锁",
+    quests: "任务",
   },
   tarkovdev: {
     title: "tarkov.dev",

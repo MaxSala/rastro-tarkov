@@ -35,6 +35,7 @@ const main: Main = {
     extracts: "Ewakuacje",
     party: "Drużyna",
     maps: "Mapy",
+    quests: "Zadania",
     collapse: "Ukryj panel",
   },
   extracts: {
@@ -170,6 +171,7 @@ const main: Main = {
     switch: "Przełączniki",
     loot: "Pojemniki",
     lock: "Zamki",
+    quests: "Zadania",
   },
   tarkovdev: {
     title: "tarkov.dev",

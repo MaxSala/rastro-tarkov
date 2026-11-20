@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Jeu",
-  enable: "Détecter la carte et le raid automatiquement",
+  enable: "Détecter la carte, le raid et les quêtes automatiquement",
   enableHint:
-    "Lit les journaux que le jeu écrit sur ton PC. Change de carte tout seul, démarre un nouveau raid et affiche le temps de raid. Seuls le nom de la carte et le mode sont utilisés ; rien n’est enregistré ni partagé.",
+    "Lit les journaux que le jeu écrit sur votre PC. Change de carte tout seul, démarre un nouveau raid, affiche le temps de raid et coche les quêtes que vous acceptez, rendez ou ratez. Seuls la carte, le mode et les identifiants de quête sont utilisés ; rien d’autre n’est enregistré ni partagé.",
   folder: "Dossier des journaux du jeu",
   folderHint: "Vide = celui de l’installation par défaut (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Enregistrer le dossier",

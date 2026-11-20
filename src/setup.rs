@@ -73,6 +73,12 @@ impl App {
         if inner.config.language == lang {
             return Ok(());
         }
+        // Maps installed by an earlier build don't record their language: it's the one being left.
+        if inner.config.maps_language.is_none()
+            && inner.store.all().any(|p| p.manifest.credits.source == crate::tarkovdev::sync::SVG_SOURCE)
+        {
+            inner.config.maps_language = Some(inner.config.language);
+        }
         inner.config.language = lang;
         config::save(&self.paths.config_file, &inner.config)?;
         drop(inner);

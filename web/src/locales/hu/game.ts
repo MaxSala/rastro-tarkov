@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Játék",
-  enable: "Térkép és raid automatikus felismerése",
+  enable: "Térkép, raid és küldetések automatikus felismerése",
   enableHint:
-    "Olvassa a naplókat, amelyeket a játék a gépedre ír. Magától térképet vált, új raidet kezd, és mutatja a raid idejét. Csak a térkép nevét és a módot használja; semmit nem ment és nem oszt meg.",
+    "Beolvassa a játék által a gépedre írt naplókat. Magától térképet vált, új raidet kezd, mutatja a raid idejét, és jelöli az elfogadott, leadott vagy elbukott küldetéseket. Csak a térkép, a mód és a küldetésazonosítók kerülnek felhasználásra; mást nem tárol és nem oszt meg.",
   folder: "A játék naplómappája",
   folderHint: "Üres = az alapértelmezett telepítés mappája (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Mappa mentése",

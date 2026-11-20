@@ -89,12 +89,54 @@ pub enum ClientMsg {
     SetLanguage {
         lang: crate::config::Language,
     },
+    /// Bring maps, prices and quests downloaded in another language over to the current one.
+    UpdateLanguageData {
+        flea_name: String,
+    },
+    /// Do that on its own after every language change.
+    SetAutoLanguageData {
+        enabled: bool,
+    },
     /// The player's answer to "check for updates on startup?".
     SetCheckUpdates {
         enabled: bool,
     },
     /// "Check now" in Settings → About.
     CheckUpdates,
+    /// Download the quests from tarkov.dev (only on request).
+    QuestsRefresh,
+    /// A quest's state; `null` takes it back to "not started".
+    QuestSet {
+        quest_id: String,
+        status: Option<crate::quests::progress::Status>,
+    },
+    /// How many times an objective has been done (0 clears it).
+    QuestObjective {
+        objective_id: String,
+        count: u32,
+    },
+    QuestsLevel {
+        level: u8,
+    },
+    QuestsFaction {
+        faction: crate::quests::Faction,
+    },
+    /// Marks every quest leading to this one as completed.
+    QuestsCompleteBefore {
+        quest_id: String,
+    },
+    /// Clears the progress of the current game mode.
+    QuestsReset,
+    /// Read the quest history in the game logs again.
+    QuestsReadLogs,
+    /// Catching up: these quests, and everything before each of them, are done (max 32).
+    QuestsCompleteThrough {
+        quest_ids: Vec<String>,
+    },
+    /// Previews a quest's objectives on the map; `null` stops.
+    QuestFocus {
+        quest_id: Option<String>,
+    },
 }
 
 #[derive(Debug, Deserialize)]
@@ -134,6 +176,10 @@ pub enum ServerMsg {
         map_id: String,
         markers: Vec<crate::view_extra::MarkerView>,
         icons: Vec<String>,
+    },
+    /// Quest progress of the current game mode; sent again whenever it changes.
+    QuestProgress {
+        progress: crate::quests::view::ProgressView,
     },
 }
 

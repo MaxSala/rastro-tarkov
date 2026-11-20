@@ -7,6 +7,7 @@ import { useApp } from "../../store/app";
 import { Button } from "../ui/button";
 import { ItemIcon } from "./ItemIcon";
 import { KeyLocations } from "./KeyLocations";
+import { QuestNeeds } from "./QuestNeeds";
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
@@ -103,6 +104,7 @@ export function ItemDetail({ item }: { item: Item | null }) {
       </dl>
       <OfferList title={t.market.sellTo} offers={item.sell} best={item.bestSell} />
       <OfferList title={t.market.buyFrom} offers={item.buy} />
+      <QuestNeeds id={item.id} />
       {item.types.includes("keys") && <KeyLocations id={item.id} />}
       <p className="text-2xs text-fg-muted">{t.market.feeNote}</p>
       <div className="flex flex-wrap gap-2">

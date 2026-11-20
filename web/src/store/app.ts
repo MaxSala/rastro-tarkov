@@ -3,19 +3,19 @@ import type { FolderCheck, Interface, MarkerKind, MarkerView, View } from "../li
 import { loadPrefs, savePrefs, type Prefs } from "../lib/prefs";
 
 export type Connection = "connecting" | "open" | "offline" | "no-token" | "expired";
-export type Workspace = "map" | "market" | "ammo";
+export type Workspace = "map" | "market" | "ammo" | "quests";
 const WS_KEY = "rastro.workspace";
 function loadWorkspace(): Workspace {
   try {
     const v = localStorage.getItem(WS_KEY);
-    if (v === "market" || v === "ammo") return v;
+    if (v === "market" || v === "ammo" || v === "quests") return v;
   } catch {
     /* sin almacenamiento */
   }
   return "map";
 }
 
-export type PanelId = "extracts" | "points" | "party" | "maps";
+export type PanelId = "extracts" | "points" | "party" | "maps" | "quests";
 export type DialogId = "import" | "settings" | "host" | "palette" | "point" | "changelog" | null;
 
 /** Menú contextual del mapa: posición en pantalla y en píxeles del mapa, y el objeto bajo el cursor. */
@@ -29,7 +29,7 @@ export interface ContextMenu {
 
 /** Punto en edición: nuevo (con px/py) o existente (con id). */
 export type PointDraft = { mode: "new"; px: number; py: number } | { mode: "edit"; id: string };
-export type LayerId = "extracts" | MarkerKind;
+export type LayerId = "extracts" | MarkerKind | "quests";
 
 const LAYERS_KEY = "rastro.layers";
 const HIDDEN_KEY = "rastro.hiddenGroups";
@@ -42,7 +42,7 @@ function loadHidden(): string[] {
   }
 }
 function loadLayers(): Record<LayerId, boolean> {
-  const base = { extracts: true, transit: true, switch: false, loot: false, lock: false };
+  const base = { extracts: true, transit: true, switch: false, loot: false, lock: false, quests: true };
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(LAYERS_KEY) ?? "{}");
     if (saved && typeof saved === "object") {
@@ -65,6 +65,17 @@ export interface KeyCardState {
   group: string | null;
   power: boolean;
   name: string;
+}
+
+/** Filters of the Quests section; kept while switching sections. */
+export interface QuestUi {
+  /** `now`: what you're on and what you can start; `items`: what your quests ask for. */
+  status: "now" | "locked" | "completed" | "all" | "items";
+  trader: string;
+  map: string;
+  kappa: boolean;
+  query: string;
+  selected: string | null;
 }
 
 export interface Toast {
@@ -108,6 +119,13 @@ interface AppState {
   showKeyOnMap: (key: string) => void;
   menu: ContextMenu | null;
   pointDraft: PointDraft | null;
+  questUi: QuestUi | null;
+  setQuestUi: (u: Partial<QuestUi>) => void;
+  /** Opens a quest in the Quests section. */
+  openQuest: (id: string) => void;
+  /** Quest previewed on the map (see lib/questMap.ts). */
+  questFocus: string | null;
+  setQuestFocus: (id: string | null) => void;
   setPrefs: (p: Partial<Prefs>) => void;
   setLogs: (l: string[]) => void;
   setMenu: (m: ContextMenu | null) => void;
@@ -178,6 +196,24 @@ export const useApp = create<AppState>((set, get) => ({
   },
   menu: null,
   pointDraft: null,
+  questUi: null,
+  setQuestUi: (u) => {
+    const cur = get().questUi ?? {
+      status: "now",
+      trader: "",
+      map: "",
+      kappa: false,
+      query: "",
+      selected: null,
+    };
+    set({ questUi: { ...cur, ...u } });
+  },
+  questFocus: null,
+  setQuestFocus: (questFocus) => set({ questFocus }),
+  openQuest: (id) => {
+    get().setQuestUi({ selected: id, status: "all", query: "", trader: "", map: "", kappa: false });
+    get().setWorkspace("quests");
+  },
   setPrefs: (p) => {
     const prefs = { ...get().prefs, ...p };
     savePrefs(prefs);

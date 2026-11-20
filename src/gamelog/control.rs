@@ -31,7 +31,20 @@ impl App {
         g.stop = Some(stop.clone());
         drop(g);
         tracing::info!("Game log detection enabled");
+        self.scan_quest_history(dir.clone());
         watcher::spawn(self.clone(), dir, stop);
+    }
+
+    /// Reads the quest history again (the player asked).
+    pub fn rescan_quest_logs(self: &Arc<Self>) -> AppResult<()> {
+        let enabled = lock(&self.inner).config.read_game_logs;
+        match (enabled, self.logs_dir().filter(|d| d.is_dir())) {
+            (true, Some(dir)) => {
+                self.scan_quest_history(dir);
+                Ok(())
+            }
+            _ => Err(AppError::user("logsOff", "Turn on raid detection to read quests from the game logs.")),
+        }
     }
 
     pub fn stop_game_logs(&self) {

@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Spiel",
-  enable: "Karte und Raid automatisch erkennen",
+  enable: "Karte, Raid und Quests automatisch erkennen",
   enableHint:
-    "Liest die Logs, die das Spiel auf deinem PC schreibt. Wechselt selbst die Karte, startet einen neuen Raid und zeigt die Raidzeit. Es werden nur Kartenname und Modus genutzt; nichts wird gespeichert oder geteilt.",
+    "Liest die Logs, die das Spiel auf deinem PC schreibt. Wechselt die Karte selbst, startet einen neuen Raid, zeigt die Raid-Zeit und hakt Quests ab, die du annimmst, abgibst oder verlierst. Genutzt werden nur Karte, Modus und Quest-IDs; sonst wird nichts gespeichert oder geteilt.",
   folder: "Ordner der Spiel-Logs",
   folderHint: "Leer = der Standard-Installationsordner (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Ordner speichern",

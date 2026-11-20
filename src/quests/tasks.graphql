@@ -1,0 +1,18 @@
+{ tasks(lang: {lang}, gameMode: {mode}) { id name normalizedName wikiLink taskImageLink minPlayerLevel experience kappaRequired lightkeeperRequired factionName
+trader { id normalizedName name } map { normalizedName }
+taskRequirements { task { id } status }
+traderRequirements { trader { name } requirementType value }
+objectives { id type description optional maps { normalizedName }
+... on TaskObjectiveBasic { zones { map { normalizedName } position { x y z } outline { x z } top bottom } requiredKeys { id name } }
+... on TaskObjectiveItem { count foundInRaid items { id name } zones { map { normalizedName } position { x y z } outline { x z } top bottom } requiredKeys { id name } }
+... on TaskObjectiveMark { markerItem { id name } zones { map { normalizedName } position { x y z } outline { x z } top bottom } requiredKeys { id name } }
+... on TaskObjectiveQuestItem { count questItem { id name } possibleLocations { map { normalizedName } positions { x y z } } zones { map { normalizedName } position { x y z } outline { x z } top bottom } requiredKeys { id name } }
+... on TaskObjectiveShoot { count zones { map { normalizedName } position { x y z } outline { x z } top bottom } requiredKeys { id name } }
+... on TaskObjectiveExtract { count requiredKeys { id name } }
+... on TaskObjectiveUseItem { count zones { map { normalizedName } position { x y z } outline { x z } top bottom } requiredKeys { id name } }
+... on TaskObjectiveExperience { count }
+... on TaskObjectiveBuildItem { item { id name } }
+}
+finishRewards { traderStanding { trader { name } standing } items { item { id name } count }
+offerUnlock { trader { name } level item { id name } } skillLevelReward { name level } traderUnlock { name }
+craftUnlock { level rewardItems { item { id name } count } } } } }

@@ -10,6 +10,8 @@ import { MapsPanel } from "../components/panels/MapsPanel";
 import { PointDialog } from "../components/panels/PointDialog";
 import { PointsPanel } from "../components/panels/PointsPanel";
 import { PartyPanel } from "../components/panels/PartyPanel";
+import { QuestsPanel } from "../components/panels/QuestsPanel";
+import { QuestsView } from "../components/quests/QuestsView";
 import { SettingsDialog } from "../components/panels/settings/SettingsDialog";
 import { Toaster } from "../components/ui/toaster";
 import { buildCommands } from "./commands";
@@ -29,6 +31,7 @@ import { StatusBar } from "./StatusBar";
 import { TopBar } from "./TopBar";
 import { MarketView } from "../components/market/MarketView";
 import { AmmoView } from "../components/ammo/AmmoView";
+import { LanguageDataPrompt } from "./LanguageDataPrompt";
 import { UpdatePrompt } from "./UpdatePrompt";
 import { WhatsNew, useWhatsNewOnUpdate } from "./WhatsNew";
 
@@ -48,7 +51,7 @@ export function Shell() {
         ctrl: true,
         run: () => openDialog(useApp.getState().dialog === "palette" ? null : "palette"),
       },
-      ...(["map", "market", "ammo"] as const).map((w, i) => ({
+      ...(["map", "market", "ammo", "quests"] as const).map((w, i) => ({
         key: String(i + 1),
         ctrl: true,
         run: () => useApp.getState().setWorkspace(w),
@@ -72,6 +75,7 @@ export function Shell() {
           {panel === "points" && <PointsPanel />}
           {panel === "party" && <PartyPanel />}
           {panel === "maps" && <MapsPanel />}
+          {panel === "quests" && <QuestsPanel />}
           <main className="relative min-w-0 flex-1" onContextMenu={(e) => e.preventDefault()}>
             {view?.activeMap ? <MapView key={view.activeMap.id} active={view.activeMap} /> : <EmptyMap />}
             {view?.activeMap && <LayerControl />}
@@ -83,7 +87,7 @@ export function Shell() {
         </div>
       ) : (
         <main className="relative min-h-0" key={workspace}>
-          {workspace === "market" ? <MarketView /> : <AmmoView />}
+          {workspace === "market" ? <MarketView /> : workspace === "quests" ? <QuestsView /> : <AmmoView />}
           <ConnectionBanner />
         </main>
       )}
@@ -97,6 +101,7 @@ export function Shell() {
       <ContextMenu />
       <KeyCard />
       <UpdatePrompt />
+      <LanguageDataPrompt />
       <WhatsNew />
       <Toaster />
     </div>

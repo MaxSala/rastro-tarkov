@@ -2,6 +2,42 @@
 
 All notable changes to Rastro. Each version lists what was added, changed and fixed; the newest is at the top.
 
+## [0.6.2] - 2026-11-20
+
+### Added
+- Quests follow the game. With raid detection on, the quests you accept, hand in or fail are ticked off by themselves, straight from the game logs, separately for PvP and PvE. The first time, Rastro reads every launch the game has kept, so your progress catches up on its own. Accepting a quest also marks everything it requires as done and raises your level to fit.
+- *Catch up*: for each trader, pick the last quest you completed and everything before it is marked as done.
+- Raid plan in the Quests panel (`5`): tick the quests you're doing this raid and the map shows only those, numbered along the shortest route, with what to bring (markers, items to plant, keys).
+- *Next*: the panel shows the next objective in big, with its distance and a button to be guided there.
+- *To hand in*: quests with every objective ticked, and which trader to see.
+- *Items*: what your quests still ask you to hand over, found in raid first, so you don't sell it.
+- The Quests section is organised by trader, like the game, with *Now* (what you're on and what you can start), your Kappa and Lightkeeper progress, and the map where you can get the most done.
+- *Wrong spot?* next to each objective opens a GitHub issue with that objective's data, so bad positions get fixed.
+
+### Changed
+- The map says how sure each quest spot is: a badge for a precise place, the real outline for an area, and small dots for the places an item *can* spawn (it's in one of them). Before, a list of possible spawns looked like a list of places to go.
+- Each quest has its own colour on the map when several share it.
+- A zone's floor is now taken from its bottom rather than its middle, so objectives in tall rooms or stairwells show on the right floor.
+
+### Fixed
+- The newest game log session is now found by date, not by name: the game writes the hour without a leading zero, so a morning session could be read before an evening one.
+
+## [0.6.0] - 2026-11-19
+
+### Added
+- Quests. A new Quests section (`Ctrl+4`) with every quest from tarkov.dev, in your language: what you're on, what you can start next and, for the rest, exactly what's missing (your level or the quests that come first). Set your level and faction, filter by trader, map or Kappa, and search quests, objectives and items.
+- Each quest shows its trader's portrait, the quest's picture and its rewards: experience, reputation, items, the trader offers and crafts it unlocks.
+- Your active quests on the map. Open objectives appear as amber markers whose symbol says what to do there (go, mark, plant, find, shoot, extract). Areas show their real outline on the ground. Hover one for a card; click it and Rastro guides you there with distance, direction and height, like an extract. The new Quests panel (`5`) lists what you can do on the map you're on, nearest first, so you can tick objectives off or count kills as you go.
+- See any quest on its map before taking it, with *Show on map*.
+- *Mark the previous quests as done*: if you start using Rastro halfway through a wipe, one click brings your progress up to date.
+- The Market tells you which of your quests still ask for an item and how many you need, so you don't sell it by mistake.
+- Quest progress is saved on your PC, separately for PvP and PvE. Rastro only connects to tarkov.dev when you download or refresh the quests, and to fetch the pictures you open.
+- Changing the language now offers to bring your maps, prices and quests over to it, or does it on its own if you choose so (*Settings → General*). Maps aren't downloaded again: only their names and texts are rebuilt.
+
+### Fixed
+- Running a command from the command palette that opens a dialog, such as *What's new*, no longer closes that dialog straight away.
+- Quest spots that fall outside the map image (bad data) are no longer drawn.
+
 ## [0.5.0] - 2026-11-17
 
 ### Added

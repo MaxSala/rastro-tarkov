@@ -1,4 +1,6 @@
 //! Descarga e instala todos los mapas con SVG de tarkov.dev. Un mapa que falla no para al resto.
+//! [`Job::Relocalize`] rebuilds the installed maps with the data in another language: it reuses
+//! each map's SVG already on disk and only downloads the (small) map data.
 
 use super::{api, calib};
 use crate::error::{AppError, AppResult};
@@ -16,7 +18,17 @@ const JSON_BASE: &str = "https://json.tarkov.dev/";
 const MAPS_JSON: &str = "https://raw.githubusercontent.com/the-hideout/tarkov-dev/main/src/data/maps.json";
 const SVG_BASE: &str = "https://raw.githubusercontent.com/the-hideout/tarkov-dev-svg-maps/main/";
 const API: &str = "https://api.tarkov.dev/graphql";
-const SVG_SOURCE: &str = "https://github.com/the-hideout/tarkov-dev-svg-maps";
+/// Packs generated from tarkov.dev carry this as their source.
+pub const SVG_SOURCE: &str = "https://github.com/the-hideout/tarkov-dev-svg-maps";
+const MAX_SVG: usize = 20 << 20;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Job {
+    /// Download and install every map.
+    Full,
+    /// Rebuild the installed maps with the data in the current language.
+    Relocalize,
+}
 
 #[derive(Debug, Clone, Default, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
@@ -61,6 +73,10 @@ fn set(app: &App, f: impl FnOnce(&mut SyncStatus)) {
 
 /// Lanza la sincronización si no hay otra en curso.
 pub fn start(app: &Arc<App>) -> AppResult<()> {
+    start_job(app, Job::Full)
+}
+
+pub fn start_job(app: &Arc<App>, job: Job) -> AppResult<()> {
     {
         let mut st = lock(&app.tarkovdev);
         if st.state == SyncState::Running {
@@ -71,7 +87,7 @@ pub fn start(app: &Arc<App>) -> AppResult<()> {
     app.notify();
     let app = app.clone();
     tokio::spawn(async move {
-        let result = run(&app).await;
+        let result = run(&app, job).await;
         set(&app, |st| match result {
             Ok(sum) => {
                 *st = SyncStatus {
@@ -86,6 +102,7 @@ pub fn start(app: &Arc<App>) -> AppResult<()> {
                 }
             }
             Err(e) => {
+                tracing::warn!("tarkov.dev: {job:?} failed: {e}");
                 st.state = SyncState::Error;
                 st.step = None;
                 st.error = Some(e.user_msg());
@@ -100,14 +117,25 @@ async fn get(url: &str, max: usize, body: Option<&str>) -> AppResult<Vec<u8>> {
     fetch_with(u, max, Options { json_body: body, allowed_hosts: Some(HOSTS) }).await
 }
 
-async fn run(app: &Arc<App>) -> AppResult<Summary> {
-    let maps = calib::parse_maps(&get(MAPS_JSON, 4 << 20, None).await?).map_err(AppError::Download)?;
+/// The tarkov.dev map installed with this id, if any.
+fn installed(app: &App, id: &str) -> Option<Arc<crate::maps::pack::Pack>> {
+    app.pack(id).filter(|p| p.manifest.credits.source == SVG_SOURCE)
+}
+
+async fn run(app: &Arc<App>, job: Job) -> AppResult<Summary> {
+    let mut maps = calib::parse_maps(&get(MAPS_JSON, 4 << 20, None).await?).map_err(AppError::Download)?;
+    if job == Job::Relocalize {
+        maps.retain(|m| installed(app, &m.id).is_some());
+    }
     set(app, |st| st.step = Some("data"));
-    // Sin datos los mapas siguen siendo útiles (posición, party): se instalan sin capas.
     let mode = app.effective_mode();
-    let lang = lock(&app.inner).config.language.code();
+    let language = lock(&app.inner).config.language;
+    let lang = language.code();
     let (data, api_error) = match fetch_data(mode, lang).await {
         Ok(d) => (d, None),
+        // Rebuilding without data would only throw away the extracts the maps already have.
+        Err(e) if job == Job::Relocalize => return Err(AppError::Download(e)),
+        // Sin datos los mapas siguen siendo útiles (posición, party): se instalan sin capas.
         Err(e) => {
             tracing::warn!("tarkov.dev: no map data: {e}");
             (Vec::new(), Some(e))
@@ -120,7 +148,7 @@ async fn run(app: &Arc<App>) -> AppResult<Summary> {
             st.step = Some("install");
             st.current = Some(m.id.clone());
         });
-        match install_one(app, m, data.iter().find(|d| d.normalized_name == m.id)).await {
+        match install_one(app, m, data.iter().find(|d| d.normalized_name == m.id), job).await {
             Ok(name) => installed.push(name),
             Err(e) => {
                 tracing::warn!("tarkov.dev: {} was not installed: {e}", m.id);
@@ -131,6 +159,12 @@ async fn run(app: &Arc<App>) -> AppResult<Summary> {
     }
     if installed.is_empty() {
         return Err(AppError::Download("no map could be installed".into()));
+    }
+    if api_error.is_none() {
+        app.set_maps_language(language);
+    }
+    if job == Job::Relocalize {
+        return Ok(Summary { installed: installed.len(), failed, icons_missing: 0, no_data: false });
     }
     set(app, |st| {
         st.step = Some("icons");
@@ -215,8 +249,17 @@ async fn fetch_data(mode: crate::gamelog::GameMode, lang: &str) -> Result<Vec<ap
     }
 }
 
-async fn install_one(app: &Arc<App>, m: &calib::SvgMap, data: Option<&api::MapData>) -> AppResult<String> {
-    let svg = get(&format!("{SVG_BASE}{}", m.file), 20 << 20, None).await?;
+async fn install_one(app: &Arc<App>, m: &calib::SvgMap, data: Option<&api::MapData>, job: Job) -> AppResult<String> {
+    let svg = match job {
+        Job::Full => get(&format!("{SVG_BASE}{}", m.file), MAX_SVG, None).await?,
+        Job::Relocalize => {
+            let path = installed(app, &m.id).ok_or(AppError::NotFound)?.image_path();
+            tokio::task::spawn_blocking(move || crate::config::read_limited(&path, MAX_SVG as u64))
+                .await
+                .map_err(|e| AppError::Internal(e.to_string()))??
+                .ok_or(AppError::NotFound)?
+        }
+    };
     let (name, file, json) = build_pack(m, &svg, data)?;
     let app = app.clone();
     tokio::task::spawn_blocking(move || app.install_files(&[("manifest.json", &json), (&file, &svg)]))

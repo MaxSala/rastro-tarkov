@@ -3,9 +3,9 @@ import type { Game } from "../es/game";
 
 const game: Game = {
   tab: "Gra",
-  enable: "Wykrywaj mapę i rajd automatycznie",
+  enable: "Automatycznie wykrywaj mapę, rajd i zadania",
   enableHint:
-    "Czyta logi, które gra zapisuje na twoim PC. Sam zmienia mapę, zaczyna nowy rajd i pokazuje czas rajdu. Używane są tylko nazwa mapy i tryb; nic nie jest zapisywane ani udostępniane.",
+    "Czyta logi, które gra zapisuje na twoim PC. Sam zmienia mapę, zaczyna nowy rajd, pokazuje czas rajdu i odhacza zadania, które przyjmiesz, oddasz lub oblejesz. Używane są tylko mapa, tryb i identyfikatory zadań; nic innego nie jest zapisywane ani udostępniane.",
   folder: "Folder logów gry",
   folderHint: "Puste = folder domyślnej instalacji (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Zapisz folder",

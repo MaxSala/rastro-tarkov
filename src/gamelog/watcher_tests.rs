@@ -19,7 +19,7 @@ fn picks_newest_session_and_relevant_files() {
     }
     assert_eq!(newest_session(&d), Some(s.clone()));
     assert_eq!(newest_session(&s), Some(s.clone()), "también vale apuntar a la sesión");
-    assert_eq!(log_files(&s).count(), 2);
+    assert_eq!(crate::gamelog::history::files(&s, "").len(), 2);
 }
 
 #[test]

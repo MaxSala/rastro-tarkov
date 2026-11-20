@@ -1,5 +1,5 @@
-// Iconos de objetos: se piden al backend (que los cachea en disco) con un máximo de 6 a la vez,
-// y se usan como URLs blob: (permitidas por la CSP).
+// Pictures from tarkov.dev (item icons, trader portraits, quest pictures): asked of the backend,
+// which caches them on disk, at most 6 at a time, and used as blob: URLs (allowed by the CSP).
 import { useEffect, useSyncExternalStore } from "react";
 import { api } from "./api";
 
@@ -17,14 +17,14 @@ function emit() {
 
 function pump() {
   while (active < MAX_CONCURRENT && queue.length > 0) {
-    const id = queue.shift();
-    if (!id) break;
+    const path = queue.shift();
+    if (!path) break;
     active += 1;
     api
-      .optionalBlobUrl(`/api/item-icon/${id}`)
+      .optionalBlobUrl(path)
       .then(
-        (u) => urls.set(id, u),
-        () => urls.set(id, null),
+        (u) => urls.set(path, u),
+        () => urls.set(path, null),
       )
       .finally(() => {
         active -= 1;
@@ -34,17 +34,16 @@ function pump() {
   }
 }
 
-function request(id: string) {
-  if (urls.has(id) || queue.includes(id)) return;
-  queue.push(id);
+function request(path: string) {
+  if (urls.has(path) || queue.includes(path)) return;
+  queue.push(path);
   pump();
 }
 
-/** El icono no se pudo obtener (sin conexión o sin icono): se muestra uno genérico. */
-export const iconFailed = (id: string) => urls.has(id) && urls.get(id) === null;
+const iconPath = (id: string) => `/api/item-icon/${id}`;
+const picturePath = (id: string) => `/api/tarkov-image/${id}`;
 
-/** URL del icono (o null mientras carga o si no hay). Las filas fuera de pantalla no lo piden. */
-export function useItemIcon(id: string, visible = true): string | null {
+function useRemote(path: string | null, visible: boolean): string | null {
   useSyncExternalStore(
     (cb) => {
       listeners.add(cb);
@@ -53,7 +52,18 @@ export function useItemIcon(id: string, visible = true): string | null {
     () => version,
   );
   useEffect(() => {
-    if (visible) request(id);
-  }, [id, visible]);
-  return urls.get(id) ?? null;
+    if (path && visible) request(path);
+  }, [path, visible]);
+  return path ? (urls.get(path) ?? null) : null;
 }
+
+/** There's no picture (offline, or tarkov.dev has none): a generic one is shown. */
+export const iconFailed = (id: string) => urls.get(iconPath(id)) === null && urls.has(iconPath(id));
+export const pictureFailed = (id: string) => urls.get(picturePath(id)) === null && urls.has(picturePath(id));
+
+/** Item icon URL (null while loading or if there's none). Rows off screen don't ask for it. */
+export const useItemIcon = (id: string, visible = true) => useRemote(iconPath(id), visible);
+
+/** Trader portrait or quest picture by its 24-hex id; `null` id asks for nothing. */
+export const useTarkovPicture = (id: string | null, visible = true) =>
+  useRemote(id ? picturePath(id) : null, visible);

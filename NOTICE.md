@@ -43,6 +43,11 @@ This list covers the main components. The complete dependency trees, with every 
 | option-ext | MPL-2.0 |
 | ICU data | Unicode-3.0 |
 
+### Ideas and formats learned from other projects
+
+- **Reading quest progress from the game logs** (`src/gamelog/questlog.rs`, `history.rs`): the format of the trader messages in `push-notifications` logs, telling PvP and PvE characters apart, and ordering launch folders by date were learned from [tarkov-map-companion](https://github.com/Battleroid/tarkov-map-companion) by Casey Weed, MIT License, Copyright (c) 2026 Casey Weed. Rastro's code is its own; no code was copied.
+- **What to bring into a raid** (`web/src/lib/questPlanning.ts`): the rule that only marked, planted and used items go into your rig follows the same project's `TaskRequirements`.
+
 ### Demo map
 
 - `assets/demo/` was made for this project and is released under CC0-1.0. It is an invented map and does not represent any real Escape from Tarkov location.
@@ -59,9 +64,9 @@ Rastro does not ship any of the following. They are downloaded only when the use
 - **Map calibration and floors** from `src/data/maps.json` in [the-hideout/tarkov-dev](https://github.com/the-hideout/tarkov-dev).
 - **Marker icons** from `public/maps/interactive` in [the-hideout/tarkov-dev](https://github.com/the-hideout/tarkov-dev), MIT License, Copyright (c) 2019 Oskar Risberg. Rastro's container-to-icon table (`src/tarkovdev/icons.rs`) follows the one in `src/pages/map/map-images.mjs` of the same project.
 - **Extracts, transits, switches, containers and locks** from the public tarkov.dev API and data files.
-- **Item catalog, traders and translations** from `json.tarkov.dev`, the same source the tarkov.dev website uses. The data format was learned by reading the tarkov.dev client (MIT); no code was copied.
+- **Item catalog, quests, traders and translations** from `json.tarkov.dev`, the same source the tarkov.dev website uses (or its GraphQL API as a fallback). The data format was learned by reading the tarkov.dev client (MIT); no code was copied.
 
-### Item icons
+### Item icons, trader portraits and quest pictures
 
 - Served by `assets.tarkov.dev`. The images belong to Battlestate Games; Rastro only caches them locally to display them.
 

@@ -32,12 +32,12 @@
 </p>
 
 > [!TIP]
-> **Rastro is in public beta, and this is only the beginning.** Quests, the hideout and much more are on the way, and the community decides what comes first.
+> **Rastro is in public beta, and this is only the beginning.** Quests just landed; the hideout, squad quests and much more are on the way, and the community decides what comes first.
 > If you like where it's going, **[⭐ star the repo](https://github.com/MaxSala/rastro-tarkov/stargazers)** and **[join the Discord](https://discord.gg/H4pRxGBGDb)**. It takes five seconds and helps more than you think.
 
 ---
 
-**Rastro is a live map of your raid that runs on your second monitor.** Take a screenshot in game and your position appears on the map, with the distance and direction to every extract. Open a room and your squad sees each other on the same map, on every PC. Hover a locked door to see which key opens it and what it costs. Check prices and ammo without alt-tabbing to a browser.
+**Rastro is a live map of your raid that runs on your second monitor.** Take a screenshot in game and your position appears on the map, with the distance and direction to every extract. Open a room and your squad sees each other on the same map, on every PC. Hover a locked door to see which key opens it and what it costs. Track your quests with every open objective on the map. Check prices and ammo without alt-tabbing to a browser.
 
 It never touches the game. Rastro only reads files Tarkov already writes to your disk, and it's free, open source and made by players for players.
 
@@ -78,7 +78,6 @@ Rastro started as a way to never get lost on a second monitor. The plan is much 
 
 | | Coming next | What it means for you |
 |---|---|---|
-| 📜 | **Quest tracker** | Your active quests on the map, with every objective marked. Step-by-step help if you're new, a fast checklist if you're a veteran. |
 | 👥 | **Squad quests** | See your teammates' pending quests on the same map, so the whole squad can plan one route. |
 | 🏠 | **Hideout tracker** | Every upgrade, what it needs and which items to keep. No more selling what you'll need tomorrow. |
 | 🔑 | **Your key ring** | Mark the keys you own and the doors you can open stand out on every map. |
@@ -98,7 +97,7 @@ Rastro reads two kinds of files that Escape from Tarkov already saves on your PC
 | What it reads | Where | What Rastro gets from it |
 |---|---|---|
 | **The file names of your screenshots** | `Documents\Escape from Tarkov\Screenshots` | Your position and the direction you're facing. Tarkov writes your coordinates into the name of every screenshot it saves. Rastro reads the name, never the picture, and never moves, edits or deletes your screenshots. |
-| **The game's log files** (optional, off until you turn it on) | `Battlestate Games\Escape from Tarkov\Logs` | Which map is loading, when a raid starts and whether you're playing PvP or PvE. Rastro uses that to switch to the right map by itself, start a fresh trail every raid and show how much raid time is left. Only the map name and game mode are kept. |
+| **The game's log files** (optional, off until you turn it on) | `Battlestate Games\Escape from Tarkov\Logs` | Which map is loading, when a raid starts and whether you're playing PvP or PvE. Rastro uses that to switch to the right map by itself, start a fresh trail every raid and show how much raid time is left. Only the map name and game mode are kept. It also reads the trader messages, to tick off the quests you accept, hand in or fail. |
 
 So in practice: you press your screenshot key in game, and a second later your arrow moves on the map.
 
@@ -129,6 +128,14 @@ Each player still runs Rastro on their own PC and takes their own screenshots: t
 - Hover anything for a card with what it is, how far it is, which floor it's on and what clicking does.
 - Your own points: right-click the map to save loot spots, danger areas, stashes or quest locations. They're stored in game coordinates, so they survive reinstalling a map.
 
+**Quests**
+- Every quest in your language, with what you're on, what you can start next and, for the rest, exactly what's missing: your level or the quests that come first. Filter by trader, map or Kappa, or search quests, objectives and items.
+- **Quests follow the game.** With raid detection on, the quests you accept, hand in or fail are ticked off by themselves from the game logs, PvP and PvE apart. The first time, Rastro reads every launch the game has kept, so mid-wipe you're caught up at once. No logs? *Catch up* by picking the last quest you did for each trader.
+- Every quest shows its trader, its picture and its rewards: experience, reputation, items, and the trader offers and crafts it unlocks.
+- Your open objectives on the map, honest about the data: a badge for a precise place, the real outline for an area, and small dots for the places an item *can* spawn. Click one and Rastro guides you there, like an extract. Spot a wrong one? *Wrong spot?* reports it in one click.
+- **Raid plan** in the *Quests* panel: tick what you're doing this raid and the map shows only that, numbered along the shortest route, with what to bring. *Next* shows the next objective in big; *To hand in* lists what's ready.
+- Quests by trader, like in the game, with your Kappa and Lightkeeper progress, the map where you get the most done, and *Items*: what your quests still ask for, so you don't sell it.
+
 **Keys**
 - The *Locks* layer shows every door, container and car trunk that needs a key. Locks that need power have a yellow outline.
 - Click a lock to see which key opens it, the cheapest place to buy it and its best sell price.
@@ -149,7 +156,7 @@ Each player still runs Rastro on their own PC and takes their own screenshots: t
 - Switches to the right map when a raid loads, resets your trail and marks at the start of each raid, and shows the time left. Reads the game's log files, as described in [How it works](#how-it-works).
 
 **Everything else**
-- 16 languages, the same ones tarkov.dev supports: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe and 中文. Item, map and extract names follow your language too.
+- 16 languages, the same ones tarkov.dev supports: Čeština, Deutsch, English, Español, Français, Magyar, Italiano, 日本語, 한국어, Polski, Português, Română, Русский, Slovenčina, Türkçe and 中文. Item, map and extract names follow your language too. Change it and Rastro offers to bring your maps, prices and quests over.
 - PvP and PvE data, picked automatically from the game logs or by hand.
 - Optional update notifications and a *What's new* page after every update.
 - Keyboard shortcuts for everything, and a command palette (`Ctrl+K`).
@@ -202,9 +209,9 @@ After updating, Rastro shows what changed. The full history is in *Settings → 
 | Action | How |
 |---|---|
 | Update your position | Take a screenshot in game |
-| Switch section (Map, Market, Ammo) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3` |
+| Switch section (Map, Market, Ammo, Quests) | `Ctrl+1`, `Ctrl+2`, `Ctrl+3`, `Ctrl+4` |
 | Command palette | `Ctrl+K` |
-| Extracts, points, party and maps panels | `1`, `2`, `3`, `4` |
+| Extracts, points, party, maps and quests panels | `1`, `2`, `3`, `4`, `5` |
 | New raid (clear trail and marks) | `N` |
 | Fit the whole map / follow your position | `F` / `G` |
 | Zoom | `+` / `-` or the mouse wheel |
@@ -215,7 +222,7 @@ After updating, Rastro shows what changed. The full history is in *Settings → 
 
 ### Where your data lives
 
-Settings, your points, downloaded maps and the price cache are kept in one folder, separate from the `.exe`:
+Settings, your points, your quest progress, downloaded maps and the price and quest caches are kept in one folder, separate from the `.exe`:
 
 | System | Folder |
 |---|---|
@@ -259,6 +266,7 @@ Rastro has no account, no telemetry and no ads. The interface talks only to the 
 | Always | Nothing outside your PC |
 | You download maps from tarkov.dev | `raw.githubusercontent.com`, `json.tarkov.dev` and, as a fallback, `api.tarkov.dev` |
 | You download or refresh prices | `json.tarkov.dev`, plus `assets.tarkov.dev` for item icons |
+| You download or refresh quests | `json.tarkov.dev` and, as a fallback, `api.tarkov.dev`, plus `assets.tarkov.dev` for pictures |
 | You import a map pack from a URL | Only the address you enter (HTTPS only, never internal addresses) |
 | You host or join a party | Directly to your teammates' PCs |
 | Once per launch, if you said yes to update checks (or when you press *Check now*) | `api.github.com`, to read the latest version number. Nothing about you is sent. |
@@ -308,7 +316,7 @@ Honest feedback is the most valuable thing you can give a beta. Tell us what's c
 Rastro would not exist without **[tarkov.dev](https://tarkov.dev)**, the open-source Escape from Tarkov database maintained by the **[The Hideout](https://github.com/the-hideout)** community. tarkov.dev began as [tarkov-tools](https://github.com/kokarn/tarkov-tools) by **Oskar Risberg ([@kokarn](https://github.com/kokarn))** and was revived and opened up by The Hideout's contributors. Rastro uses:
 
 - **Maps:** the SVG maps from [the-hideout/tarkov-dev-svg-maps](https://github.com/the-hideout/tarkov-dev-svg-maps) by tarkov.dev's contributors, licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Their authors don't allow the maps to be used in cheats or software that gives an unfair advantage, such as radars. Maps are downloaded by you and never redistributed with Rastro, and each installed map keeps its credits and license.
-- **Data:** extracts, transits, switches, containers, locks, items, prices and translations from the tarkov.dev API and its data files.
+- **Data:** extracts, transits, switches, containers, locks, items, prices, quests and translations from the tarkov.dev API and its data files.
 - **Marker icons:** from [tarkov-dev](https://github.com/the-hideout/tarkov-dev) (`public/maps/interactive`), MIT License, © 2019 Oskar Risberg.
 - **Item icons** belong to Battlestate Games and are only cached locally for display.
 

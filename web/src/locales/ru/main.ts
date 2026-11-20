@@ -34,6 +34,7 @@ const main: Main = {
     extracts: "Выходы",
     party: "Группа",
     maps: "Карты",
+    quests: "Задания",
     collapse: "Скрыть панель",
   },
   extracts: {
@@ -169,6 +170,7 @@ const main: Main = {
     switch: "Рубильники",
     loot: "Контейнеры",
     lock: "Замки",
+    quests: "Задания",
   },
   tarkovdev: {
     title: "tarkov.dev",

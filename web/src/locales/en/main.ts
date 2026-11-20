@@ -26,6 +26,7 @@ const main: Main = {
     extracts: "Extracts",
     party: "Party",
     maps: "Maps",
+    quests: "Quests",
     collapse: "Hide panel",
   },
   extracts: {
@@ -161,6 +162,7 @@ const main: Main = {
     switch: "Switches",
     loot: "Containers",
     lock: "Locks",
+    quests: "Quests",
   },
   tarkovdev: {
     title: "tarkov.dev",

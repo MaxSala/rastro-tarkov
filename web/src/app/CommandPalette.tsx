@@ -46,7 +46,10 @@ export function CommandPalette() {
     <dialog
       ref={ref}
       aria-label={t.top.commands}
-      onClose={() => openDialog(null)}
+      onClose={() => {
+        // A command may have opened another dialog already: only clear our own.
+        if (useApp.getState().dialog === "palette") openDialog(null);
+      }}
       onCancel={(e) => {
         e.preventDefault();
         openDialog(null);

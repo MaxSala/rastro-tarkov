@@ -26,6 +26,7 @@ const main: Main = {
     extracts: "脱出地点",
     party: "パーティー",
     maps: "マップ",
+    quests: "タスク",
     collapse: "パネルを隠す",
   },
   extracts: {
@@ -161,6 +162,7 @@ const main: Main = {
     switch: "スイッチ",
     loot: "コンテナ",
     lock: "鍵穴",
+    quests: "タスク",
   },
   tarkovdev: {
     title: "tarkov.dev",

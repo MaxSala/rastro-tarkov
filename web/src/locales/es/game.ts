@@ -2,9 +2,9 @@
 // El resto de idiomas se tipan contra estos archivos: una clave que falte o sobre no compila.
 const game = {
   tab: "Juego",
-  enable: "Detectar mapa y raid automáticamente",
+  enable: "Detectar mapa, raid y misiones automáticamente",
   enableHint:
-    "Lee los logs que escribe el juego en tu PC. Cambia solo de mapa, empieza una raid nueva y muestra el tiempo de raid. Solo se usan el nombre del mapa y el modo; nada se guarda ni se comparte.",
+    "Lee los logs que el juego escribe en tu PC. Cambia de mapa solo, empieza una raid nueva, muestra el tiempo de raid y marca las misiones que aceptas, entregas o fallas. Solo se usan el mapa, el modo y los identificadores de misión; no se guarda ni se comparte nada más.",
   folder: "Carpeta de logs del juego",
   folderHint: "Vacío = la de la instalación por defecto (Battlestate Games\\Escape from Tarkov\\Logs).",
   apply: "Guardar carpeta",
