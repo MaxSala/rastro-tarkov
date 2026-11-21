@@ -171,6 +171,7 @@ const main: Main = {
     loot: "Контейнеры",
     lock: "Замки",
     quests: "Задания",
+    bosses: "Боссы",
   },
   tarkovdev: {
     title: "tarkov.dev",

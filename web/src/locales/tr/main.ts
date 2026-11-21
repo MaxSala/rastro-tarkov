@@ -162,6 +162,7 @@ const main: Main = {
     loot: "Kaplar",
     lock: "Kilitler",
     quests: "Görevler",
+    bosses: "Bosslar",
   },
   tarkovdev: {
     title: "tarkov.dev",

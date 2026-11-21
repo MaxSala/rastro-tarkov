@@ -170,6 +170,7 @@ const main: Main = {
     loot: "Containere",
     lock: "Încuietori",
     quests: "Misiuni",
+    bosses: "Boși",
   },
   tarkovdev: {
     title: "tarkov.dev",

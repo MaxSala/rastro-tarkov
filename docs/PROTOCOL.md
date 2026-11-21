@@ -54,6 +54,7 @@ Limits: 64 KiB per incoming message and 4 sockets at a time.
 | `questObjective` | `objectiveId`, `count` | How much of an objective is done (`0` clears it). For simple objectives the count is `0` or `1`. |
 | `questsLevel` | `level` (1–79) | Your PMC level in the current mode. |
 | `questsFaction` | `faction`: `any`, `usec` or `bear` | Your faction, which hides the other faction's quests. |
+| `hideoutLevel` | `stationId` (24 hex), `level` (0–10) | Level built of a hideout station in the current mode; 0 clears it. |
 | `questsCompleteBefore` | `questId` | Marks every quest that has to be completed before this one as completed. |
 | `questsReset` | | Clears the quest progress of the current mode. |
 | `questsReadLogs` | | Reads the quest history in the game logs again (raid detection must be on, or the reply is the user message `logsOff`). |
@@ -81,6 +82,7 @@ Everything the interface draws, already projected to pixels on the active map:
 - `market`: `{ state: empty | loading | ready | error, fetchedAt, count, mode, lang, error }`. Every `error` field in the view (watcher, party, market, quests, tarkovdev) is a user message, described below. The interface fetches `/api/market` again whenever `fetchedAt` changes.
 - `quests`: `{ state: empty | loading | ready | error, fetchedAt, count, mode, lang, error, logs }`, like `market`. `logs` is `{ enabled, scanning, known, sessions }`: whether quests follow the game logs, whether the history is being read, how many quests the logs know about in this mode and how many launches were read. The interface fetches `/api/quests` again whenever `fetchedAt` changes.
 - `questMarkers`: open objectives of your active quests on the active map, plus the previewed quest's: `[{ id, quest, objective, px, py, distanceM, floor?, focus?, outline?, kind }]`. `outline` is the zone's area in map pixels, when the objective has one. `kind` says how precise the spot is: `exact` (a place), `area` (anywhere inside the outline) or `candidate` (one of the places an item can spawn). Spots that project outside the map image are left out. `id` (`qo-<objective>-<n>`) is also a guide target for `selectExtract`, and guidance falls back to it like an extract.
+- `bosses`: where bosses can appear on the active map, for the current game mode: `{ markers: [{ id, boss, zone, chance, zoneChance, px, py, floor?, points, escorts, time?, triggered }], list: [{ name, chance, time?, triggered }] }`. One marker per spawn zone, at its most central spawn point; `points` are every spawn point of the zone in map pixels. `chance` is the boss's chance on the map and `zoneChance` the zone's when it comes (0–1). `time` is the second of the raid it arrives at, when it doesn't come at the start; `triggered` means something on the map has to be activated first. `list` has one line per boss, zones or not, likeliest first. Empty until the quest data is downloaded.
 - `languageData`: `{ outdated: [{ kind: maps | prices | quests, lang }], auto }`. What was downloaded in another language than the current one (`lang` is `null` for maps installed by an earlier build), and whether to update it on its own (`auto`: `true`, `false` or `null` when not asked yet).
 
 ### Other messages
@@ -92,7 +94,7 @@ Everything the interface draws, already projected to pixels on the active map:
 | `logs { lines }` | Reply to `getLogs`. |
 | `interfaces { list: [{ name, ip }] }` | Reply to `listInterfaces`. |
 | `notice { level: "info" \| "error", code, arg?, text }` | A user message to show as a toast. |
-| `questProgress { progress }` | Your quest progress in the current mode: `{ mode, level, faction, quests: { id: status }, objectives: { id: count }, revision }`. Sent on connect and whenever it or the game mode changes. |
+| `questProgress { progress }` | Your quest progress in the current mode: `{ mode, level, faction, quests: { id: status }, objectives: { id: count }, hideout: { stationId: level }, revision }`. Sent on connect and whenever it or the game mode changes. |
 
 ## User messages
 
@@ -114,7 +116,7 @@ Every request needs the `x-rastro-token` header. `POST` requests also need a mat
 | `GET /api/packs/{id}/image` | Optional `?floor=<id>` | The pack's image (allowlisted by manifest). For layered SVGs, that floor at full strength, the base floor dimmed and the other floors faint. |
 | `GET /api/icons/{name}` | | A marker icon (PNG) from the fixed list, if downloaded. |
 | `GET /api/market` | | The processed catalog `{ mode, lang, fetchedAt, items }` for the current mode and language, or 404 if it hasn't been downloaded. |
-| `GET /api/quests` | | The processed quests `{ mode, lang, fetchedAt, traders, quests }` for the current mode and language, or 404 if they haven't been downloaded. Traders carry `image` (the id of their portrait); quests carry `rewards` and `image` (whether tarkov.dev has its picture), and each objective spot its `kind` (`exact`, `area`, `candidate`). |
+| `GET /api/quests` | | The processed quests `{ mode, lang, fetchedAt, traders, quests, hideout, bosses }` for the current mode and language, or 404 if they haven't been downloaded. Traders carry `image` (the id of their portrait); quests carry `rewards` and `image` (whether tarkov.dev has its picture), and each objective spot its `kind` (`exact`, `area`, `candidate`). `hideout` lists the stations with what each level asks for (`items`, `stations`, `traders`, `skills`, `seconds`); `bosses` the boss spawns of every map with their zones and points in game coordinates. Both are empty in data downloaded before 0.7.0. |
 | `GET /api/tarkov-image/{id}` | | A trader's portrait or a quest's picture (24-hex id), from the cache or from `assets.tarkov.dev`. `204 No Content` when there isn't one. |
 | `GET /api/key-locations/{id}` | | `[{ mapId, mapName, count }]`: installed maps with locks for that key (24-hex item ID). |
 | `GET /api/item-icon/{id}` | | An item icon (24-hex item ID), from the cache or from `assets.tarkov.dev`. `204 No Content` when there isn't one (offline or unknown item). |

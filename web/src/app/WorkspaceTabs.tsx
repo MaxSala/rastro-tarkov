@@ -1,4 +1,4 @@
-import { Coins, ListChecks, Map as MapIcon, Target } from "lucide-react";
+import { Coins, ListChecks, Map as MapIcon, Target, Warehouse } from "lucide-react";
 import { t } from "../locales";
 import { cn } from "../lib/cn";
 import { iconSm } from "../lib/icons";
@@ -11,9 +11,10 @@ const items: { id: Workspace; Icon: typeof MapIcon; key: string }[] = [
   { id: "market", Icon: Coins, key: "2" },
   { id: "ammo", Icon: Target, key: "3" },
   { id: "quests", Icon: ListChecks, key: "4" },
+  { id: "hideout", Icon: Warehouse, key: "5" },
 ];
 
-/** Secciones de la app. Ctrl+1/2/3/4 desde cualquier sitio. */
+/** Secciones de la app. Ctrl+1…5 desde cualquier sitio. */
 export function WorkspaceTabs() {
   const current = useApp((s) => s.workspace);
   const setWorkspace = useApp((s) => s.setWorkspace);

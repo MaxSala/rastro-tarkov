@@ -121,6 +121,11 @@ pub enum ClientMsg {
     QuestsFaction {
         faction: crate::quests::Faction,
     },
+    /// Level built of a hideout station (0: not built).
+    HideoutLevel {
+        station_id: String,
+        level: u8,
+    },
     /// Marks every quest leading to this one as completed.
     QuestsCompleteBefore {
         quest_id: String,

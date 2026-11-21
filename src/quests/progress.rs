@@ -14,6 +14,9 @@ const MAX_QUESTS: usize = 5000;
 const MAX_OBJECTIVES: usize = 20_000;
 pub const MAX_LEVEL: u8 = 79;
 const MAX_COUNT: u32 = 100_000;
+const MAX_STATIONS: usize = 64;
+/// Highest hideout level a station can have.
+pub const MAX_STATION_LEVEL: u8 = 10;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -50,11 +53,19 @@ pub struct ModeProgress {
     pub quests: BTreeMap<String, Record>,
     /// How many times each objective has been done. Absent: not started.
     pub objectives: BTreeMap<String, u32>,
+    /// Level built of each hideout station, by station id. Absent: not built.
+    pub hideout: BTreeMap<String, u8>,
 }
 
 impl Default for ModeProgress {
     fn default() -> Self {
-        Self { level: 1, faction: Faction::Any, quests: BTreeMap::new(), objectives: BTreeMap::new() }
+        Self {
+            level: 1,
+            faction: Faction::Any,
+            quests: BTreeMap::new(),
+            objectives: BTreeMap::new(),
+            hideout: BTreeMap::new(),
+        }
     }
 }
 
@@ -79,6 +90,11 @@ pub enum Event {
     },
     SetLevel(u8),
     SetFaction(Faction),
+    /// Level built of a hideout station; 0 clears it.
+    SetStation {
+        station: String,
+        level: u8,
+    },
     /// Several quests completed at once (everything before a quest).
     CompleteAll(Vec<String>),
     /// What the game logs say, with when it happened. Whatever was set later wins, by hand or not.
@@ -112,6 +128,10 @@ fn sanitize(p: &mut ModeProgress) {
     }
     while p.objectives.len() > MAX_OBJECTIVES {
         p.objectives.pop_last();
+    }
+    p.hideout.retain(|k, v| valid(k) && (1..=MAX_STATION_LEVEL).contains(v));
+    while p.hideout.len() > MAX_STATIONS {
+        p.hideout.pop_last();
     }
 }
 
@@ -185,6 +205,18 @@ impl ProgressStore {
             }
             Event::SetLevel(level) => p.level = level.clamp(1, MAX_LEVEL),
             Event::SetFaction(f) => p.faction = f,
+            Event::SetStation { station, level } => {
+                if !valid(&station) || level > MAX_STATION_LEVEL {
+                    return Err("invalid station");
+                }
+                if level == 0 {
+                    p.hideout.remove(&station);
+                } else if p.hideout.len() < MAX_STATIONS || p.hideout.contains_key(&station) {
+                    p.hideout.insert(station, level);
+                } else {
+                    return Err("too many stations");
+                }
+            }
             Event::CompleteAll(list) => {
                 if !list.iter().all(|q| valid(q)) {
                     return Err("invalid quest id");

@@ -8,6 +8,7 @@ const tools: Tools = {
     market: "Piac",
     ammo: "Lőszer",
     quests: "Küldetések",
+    hideout: "Rejtekhely",
     goTo: (name: string) => `Ugrás: ${name}`,
     refresh: "Árak frissítése",
   },

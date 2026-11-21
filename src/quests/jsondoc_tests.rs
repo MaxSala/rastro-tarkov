@@ -56,7 +56,16 @@ fn docs() -> Docs {
     let traders_loc = serde_json::json!({ "data": { format!("{PRAPOR} Nickname"): "Prapor" } });
     let maps = serde_json::json!({ "data": { "maps": { CUSTOMS: { "id": CUSTOMS, "normalizedName": "customs" } } } });
     let b = |v: serde_json::Value| serde_json::to_vec(&v).unwrap_or_default();
-    Docs { tasks: b(tasks), tasks_locale: b(loc), traders: b(traders), traders_locale: b(traders_loc), maps: b(maps) }
+    Docs {
+        tasks: b(tasks),
+        tasks_locale: b(loc),
+        traders: b(traders),
+        traders_locale: b(traders_loc),
+        maps: b(maps),
+        maps_locale: vec![],
+        hideout: vec![],
+        hideout_locale: vec![],
+    }
 }
 
 #[test]

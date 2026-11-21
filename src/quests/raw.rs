@@ -13,6 +13,10 @@ pub struct Response {
 pub struct Data {
     #[serde(default)]
     pub tasks: Vec<Option<RawTask>>,
+    #[serde(default, rename = "hideoutStations")]
+    pub hideout_stations: Option<Vec<Option<super::hideout::RawStation>>>,
+    #[serde(default)]
+    pub maps: Option<Vec<Option<super::bosses::RawMap>>>,
 }
 
 #[derive(Deserialize, Default)]

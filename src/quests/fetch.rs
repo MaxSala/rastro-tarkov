@@ -168,6 +168,10 @@ async fn from_json(mode: &str, lang: &str, names: Option<ItemNames>) -> AppResul
         traders: get(&format!("{BASE}{mode}/traders"), 4 << 20).await?,
         traders_locale: get(&format!("{BASE}{mode}/traders_{lang}"), 4 << 20).await.unwrap_or_default(),
         maps: get(&format!("{BASE}{mode}/maps"), 32 << 20).await?,
+        // Extras: if one fails, the quests still arrive.
+        maps_locale: get(&format!("{BASE}{mode}/maps_{lang}"), 8 << 20).await.unwrap_or_default(),
+        hideout: get(&format!("{BASE}{mode}/hideout"), 8 << 20).await.unwrap_or_default(),
+        hideout_locale: get(&format!("{BASE}{mode}/hideout_{lang}"), 4 << 20).await.unwrap_or_default(),
     };
     let names_doc = match names {
         Some(_) => None,

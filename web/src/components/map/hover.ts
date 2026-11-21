@@ -5,7 +5,7 @@ import { t } from "../../locales";
 import { floorName } from "../../lib/mapText";
 
 export type Tone =
-  "pmc" | "scav" | "shared" | "transit" | "switch" | "loot" | "lock" | "point" | "peer" | "quest";
+  "pmc" | "scav" | "shared" | "transit" | "switch" | "loot" | "lock" | "point" | "peer" | "quest" | "boss";
 
 export interface Hover {
   tone: Tone;

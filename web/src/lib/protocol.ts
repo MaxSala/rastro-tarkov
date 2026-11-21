@@ -1,6 +1,7 @@
 // Espejo de los mensajes del WebSocket. Fuente de verdad: src/protocol.rs (ClientMsg, ServerMsg)
 // y src/view.rs (View) en el backend. Todo lo que llega se valida con zod antes de usarse.
 import { z } from "zod";
+import { bossesViewSchema } from "./bossProtocol";
 import { LANGS, type Lang } from "../locales";
 import { languageDataSchema } from "./languageData";
 import { userMsgSchema } from "./msg";
@@ -177,6 +178,7 @@ export const viewSchema = z.object({
   quests: questsStatusSchema,
   languageData: languageDataSchema,
   questMarkers: z.array(questMarkerSchema).max(400),
+  bosses: bossesViewSchema,
 });
 
 const iconName = z.string().regex(/^[a-z0-9_-]{1,48}$/);

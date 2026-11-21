@@ -7,6 +7,7 @@ const tools = {
     market: "Mercado",
     ammo: "Munición",
     quests: "Misiones",
+    hideout: "Escondite",
     goTo: (name: string) => `Ir a ${name}`,
     refresh: "Actualizar precios",
   },

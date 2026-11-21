@@ -101,3 +101,26 @@ fn a_broken_or_hostile_file_is_cleaned_up() {
     assert_eq!(p.objectives.len(), 1);
     let _ = std::fs::remove_file(&path);
 }
+
+#[test]
+fn hideout_levels_are_kept_per_mode_and_checked() {
+    let (_path, mut s) = store();
+    let gen = "5d3b396e33c48f02b81cd9f3".to_owned();
+    assert_eq!(s.apply(GameMode::Pve, Event::SetStation { station: gen.clone(), level: 2 }), Ok(true));
+    assert_eq!(s.get(GameMode::Pve).hideout.get(&gen), Some(&2));
+    assert!(s.get(GameMode::Regular).hideout.is_empty(), "each mode has its own hideout");
+    assert!(s.apply(GameMode::Pve, Event::SetStation { station: "nope".into(), level: 1 }).is_err());
+    assert!(s.apply(GameMode::Pve, Event::SetStation { station: gen.clone(), level: 11 }).is_err());
+    assert_eq!(s.apply(GameMode::Pve, Event::SetStation { station: gen.clone(), level: 0 }), Ok(true));
+    assert!(s.get(GameMode::Pve).hideout.is_empty(), "0 clears it");
+}
+
+#[test]
+fn a_hand_edited_hideout_is_cleaned_on_load() {
+    let path = tmp();
+    let json = r#"{"pve":{"hideout":{"5d3b396e33c48f02b81cd9f3":3,"bad":1,"5d388e97081959000a123acf":99}}}"#;
+    std::fs::write(&path, json).expect("write");
+    let s = ProgressStore::load(&path);
+    let _ = std::fs::remove_file(&path);
+    assert_eq!(s.get(GameMode::Pve).hideout.len(), 1);
+}

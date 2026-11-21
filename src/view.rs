@@ -37,6 +37,8 @@ pub struct View {
     pub language_data: crate::langdata::LanguageData,
     /// Open objectives of your active quests on the map shown.
     pub quest_markers: Vec<crate::quests::view::QuestMarker>,
+    /// Where bosses can appear on the map shown, and the list of them.
+    pub bosses: crate::quests::bossview::BossesView,
 }
 
 #[derive(Debug, Serialize)]
@@ -174,6 +176,7 @@ pub fn build(app: &App) -> View {
         quests: Default::default(),
         language_data: Default::default(),
         quest_markers: Vec::new(),
+        bosses: Default::default(),
     };
     if let Some(pack) = &pack {
         let m = &pack.manifest;
@@ -285,6 +288,7 @@ pub fn build(app: &App) -> View {
     v.language_data = app.language_data();
     if let Some(p) = &pack {
         v.quest_markers = crate::quests::view::markers(app, p, me);
+        v.bosses = crate::quests::bossview::view(app, p);
     }
     v
 }

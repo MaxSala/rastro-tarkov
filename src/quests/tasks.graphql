@@ -15,4 +15,11 @@ objectives { id type description optional maps { normalizedName }
 }
 finishRewards { traderStanding { trader { name } standing } items { item { id name } count }
 offerUnlock { trader { name } level item { id name } } skillLevelReward { name level } traderUnlock { name }
-craftUnlock { level rewardItems { item { id name } count } } } } }
+craftUnlock { level rewardItems { item { id name } count } } } }
+hideoutStations(lang: {lang}, gameMode: {mode}) { id name normalizedName
+levels { level constructionTime itemRequirements { item { id name } count attributes { type name value } }
+stationLevelRequirements { station { id } level } traderRequirements { trader { name } requirementType value }
+skillRequirements { name level } } }
+maps(lang: {lang}, gameMode: {mode}) { normalizedName
+bosses { boss { id name } spawnChance spawnTime spawnTrigger escorts { boss { name } } spawnLocations { spawnKey name chance } }
+spawns { zoneName position { x y z } categories } } }

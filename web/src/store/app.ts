@@ -3,12 +3,12 @@ import type { FolderCheck, Interface, MarkerKind, MarkerView, View } from "../li
 import { loadPrefs, savePrefs, type Prefs } from "../lib/prefs";
 
 export type Connection = "connecting" | "open" | "offline" | "no-token" | "expired";
-export type Workspace = "map" | "market" | "ammo" | "quests";
+export type Workspace = "map" | "market" | "ammo" | "quests" | "hideout";
 const WS_KEY = "rastro.workspace";
 function loadWorkspace(): Workspace {
   try {
     const v = localStorage.getItem(WS_KEY);
-    if (v === "market" || v === "ammo" || v === "quests") return v;
+    if (v === "market" || v === "ammo" || v === "quests" || v === "hideout") return v;
   } catch {
     /* sin almacenamiento */
   }
@@ -29,7 +29,7 @@ export interface ContextMenu {
 
 /** Punto en edición: nuevo (con px/py) o existente (con id). */
 export type PointDraft = { mode: "new"; px: number; py: number } | { mode: "edit"; id: string };
-export type LayerId = "extracts" | MarkerKind | "quests";
+export type LayerId = "extracts" | MarkerKind | "quests" | "bosses";
 
 const LAYERS_KEY = "rastro.layers";
 const HIDDEN_KEY = "rastro.hiddenGroups";
@@ -42,7 +42,15 @@ function loadHidden(): string[] {
   }
 }
 function loadLayers(): Record<LayerId, boolean> {
-  const base = { extracts: true, transit: true, switch: false, loot: false, lock: false, quests: true };
+  const base = {
+    extracts: true,
+    transit: true,
+    switch: false,
+    loot: false,
+    lock: false,
+    quests: true,
+    bosses: true,
+  };
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(LAYERS_KEY) ?? "{}");
     if (saved && typeof saved === "object") {

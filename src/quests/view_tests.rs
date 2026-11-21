@@ -31,6 +31,8 @@ fn db() -> QuestDb {
         lang: "en".into(),
         fetched_at: 0,
         traders: vec![],
+        hideout: vec![],
+        bosses: vec![],
         quests: vec![Quest {
             id: Q.into(),
             name: "Checking".into(),

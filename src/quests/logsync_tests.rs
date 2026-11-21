@@ -35,6 +35,8 @@ fn db() -> QuestDb {
         lang: "en".into(),
         fetched_at: 0,
         traders: vec![],
+        hideout: vec![],
+        bosses: vec![],
         quests: vec![quest(A, 1, &[]), quest(B, 5, &[A]), quest(C, 12, &[B])],
     }
 }

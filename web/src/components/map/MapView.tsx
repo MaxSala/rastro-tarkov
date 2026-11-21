@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { t } from "../../locales";
 import type { View } from "../../lib/protocol";
 import { send } from "../../lib/socket";
@@ -10,7 +10,8 @@ import { Skeleton } from "../ui/skeleton";
 import { drawDynamic, drawExtracts, drawMarkers, drawPoints } from "./draw";
 import { mapRef } from "./mapRef";
 import { declutter, toLatLng } from "./markers";
-import { drawLocks, lockPoints } from "./locks";
+import { drawLocks, useLockFocus } from "./locks";
+import { drawBosses } from "./bosses";
 import { useAutoCatalog } from "../market/DataGate";
 import { useMapImage } from "./useMapImage";
 import { NO_FLOORS, type FloorCtx } from "./hover";
@@ -23,6 +24,7 @@ const LAYERS = [
   "base",
   "trail",
   "markers",
+  "bosses",
   "extracts",
   "points",
   "quests",
@@ -38,6 +40,9 @@ export function MapView({ active }: { active: ActiveMap }) {
   const groups = useRef<Record<string, L.LayerGroup>>({});
   const canvas = useRef<L.Canvas | null>(null);
   const fit = useRef({ userMoved: false });
+  const userFlew = useCallback(() => {
+    fit.current.userMoved = true;
+  }, []);
   const [nonce, setNonce] = useState(0);
   const floorChoice = useApp((s) => s.floors[active.id] ?? "auto");
   const floor = floorChoice === "auto" ? active.autoFloor : floorChoice;
@@ -230,20 +235,18 @@ export function MapView({ active }: { active: ActiveMap }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- la clave serializada resume las dependencias
   }, [questKey, questDb, questFocus, active.id, image.status]);
 
-  // Al resaltar una llave (desde el Mercado o la tarjeta), encuadrar sus cerraduras una vez.
-  const fitted = useRef("");
+  useLockFocus(map, active.id, focusKey, mapMarkers, userFlew);
+
+  // Bosses: where each one can appear on this map, under the quests.
+  const bossKey = JSON.stringify([view?.bosses.markers, layerOn.bosses, floors]);
   useEffect(() => {
-    const m = map.current;
-    if (!m || !focusKey || !mapMarkers || mapMarkers.mapId !== active.id) return;
-    const id = `${active.id}:${focusKey}`;
-    if (fitted.current === id) return;
-    const pts = lockPoints(mapMarkers.list, focusKey);
-    if (pts.length === 0) return;
-    fitted.current = id;
-    fit.current.userMoved = true;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    m.flyToBounds(L.latLngBounds(pts), { padding: [120, 120], maxZoom: 1, animate: !reduce, duration: 0.6 });
-  }, [focusKey, mapMarkers, active.id]);
+    const g = groups.current.bosses;
+    if (!g) return;
+    g.clearLayers();
+    const list = useApp.getState().view?.bosses.markers;
+    if (layerOn.bosses && list && image.status === "ready") drawBosses(g, list, floors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- la clave serializada resume las dependencias
+  }, [bossKey, image.status]);
 
   const dynamicKey = JSON.stringify([
     theme,

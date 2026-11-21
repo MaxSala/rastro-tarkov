@@ -47,6 +47,10 @@ This list covers the main components. The complete dependency trees, with every 
 
 - **Reading quest progress from the game logs** (`src/gamelog/questlog.rs`, `history.rs`): the format of the trader messages in `push-notifications` logs, telling PvP and PvE characters apart, and ordering launch folders by date were learned from [tarkov-map-companion](https://github.com/Battleroid/tarkov-map-companion) by Casey Weed, MIT License, Copyright (c) 2026 Casey Weed. Rastro's code is its own; no code was copied.
 - **What to bring into a raid** (`web/src/lib/questPlanning.ts`): the rule that only marked, planted and used items go into your rig follows the same project's `TaskRequirements`.
+- **Time in Tarkov** (`web/src/lib/tarkovTime.ts`): real time × 7 on Moscow time, the right side 12 hours ahead, as in [tarkov-time](https://github.com/adamburgess/tarkov-time) by Adam Burgess, MIT License. Rastro's code is its own.
+- **Armored train timings** (same file): arriving between 20 and 15 minutes before the end of the raid and staying 7 minutes, as stated on the Reserve and Lighthouse pages of the [Escape from Tarkov wiki](https://escapefromtarkov.fandom.com/). Only the facts are used; no text was copied.
+- **Hideout and boss data formats** (`src/quests/hideout.rs`, `bosses.rs`): the shape of `json.tarkov.dev`'s `hideout` and `maps` files was learned from the tarkov.dev client and [tarkov-data-manager](https://github.com/the-hideout/tarkov-data-manager) (both MIT). No code was copied.
+- **Boss skull icon** (`web/src/components/map/bosses.ts`): the *Skull* icon from [Lucide](https://lucide.dev), ISC License, already used by the interface through `lucide-react`.
 
 ### Demo map
 
@@ -64,7 +68,7 @@ Rastro does not ship any of the following. They are downloaded only when the use
 - **Map calibration and floors** from `src/data/maps.json` in [the-hideout/tarkov-dev](https://github.com/the-hideout/tarkov-dev).
 - **Marker icons** from `public/maps/interactive` in [the-hideout/tarkov-dev](https://github.com/the-hideout/tarkov-dev), MIT License, Copyright (c) 2019 Oskar Risberg. Rastro's container-to-icon table (`src/tarkovdev/icons.rs`) follows the one in `src/pages/map/map-images.mjs` of the same project.
 - **Extracts, transits, switches, containers and locks** from the public tarkov.dev API and data files.
-- **Item catalog, quests, traders and translations** from `json.tarkov.dev`, the same source the tarkov.dev website uses (or its GraphQL API as a fallback). The data format was learned by reading the tarkov.dev client (MIT); no code was copied.
+- **Item catalog, quests, traders, hideout stations, boss spawns and translations** from `json.tarkov.dev`, the same source the tarkov.dev website uses (or its GraphQL API as a fallback). The data format was learned by reading the tarkov.dev client (MIT); no code was copied.
 
 ### Item icons, trader portraits and quest pictures
 

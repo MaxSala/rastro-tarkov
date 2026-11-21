@@ -58,6 +58,11 @@ impl App {
         self.quest_event(Event::SetFaction(faction))
     }
 
+    /// Level built of a hideout station (0: not built).
+    pub fn hideout_level(&self, station: String, level: u8) -> AppResult<()> {
+        self.quest_event(Event::SetStation { station: station.to_ascii_lowercase(), level })
+    }
+
     /// Marks everything that leads to `quest` as completed (for players who start using Rastro
     /// halfway through a wipe).
     pub fn quests_complete_before(&self, quest: &str) -> AppResult<()> {
@@ -135,6 +140,8 @@ mod tests {
             lang: "en".into(),
             fetched_at: 0,
             traders: vec![],
+            hideout: vec![],
+            bosses: vec![],
             quests: vec![
                 quest("a", &[]),
                 quest("b", &[("a", "complete")]),

@@ -53,6 +53,8 @@ export const progressSchema = z.object({
   faction: z.enum(["any", "usec", "bear"]),
   quests: z.record(hexId, z.enum(["active", "completed", "failed"])),
   objectives: z.record(hexId, z.number().int().min(0).max(100_000)),
+  /** Level built of each hideout station (src/quests/progress.rs). */
+  hideout: z.record(hexId, z.number().int().min(1).max(10)).default({}),
   revision: z.number().int(),
 });
 
@@ -67,6 +69,7 @@ export type QuestClientMsg =
   | { type: "questObjective"; objectiveId: string; count: number }
   | { type: "questsLevel"; level: number }
   | { type: "questsFaction"; faction: Faction }
+  | { type: "hideoutLevel"; stationId: string; level: number }
   | { type: "questsCompleteBefore"; questId: string }
   | { type: "questsReset" }
   | { type: "questsReadLogs" }

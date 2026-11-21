@@ -1,6 +1,7 @@
 // Capa de cerraduras. Cada una lleva el id de su llave; el nombre y el precio salen del catálogo
 // del Mercado si está descargado. Clic: tarjeta de la llave. Con una llave resaltada, el resto se atenúa.
 import L from "leaflet";
+import { useEffect, useRef, type RefObject } from "react";
 import { itemById, type Catalog } from "../../lib/catalog";
 import type { MarkerView } from "../../lib/protocol";
 import { t } from "../../locales";
@@ -95,4 +96,28 @@ export function drawLocks(
 /** Puntos de las cerraduras de una llave, para encuadrarlas al resaltarla. */
 export function lockPoints(list: MarkerView[], key: string): L.LatLng[] {
   return list.filter((m) => m.kind === "lock" && m.key === key).map((m) => toLatLng(m.px, m.py));
+}
+
+/** With a key highlighted (from the Market or its card), frame its locks once. */
+export function useLockFocus(
+  map: RefObject<L.Map | null>,
+  mapId: string,
+  focusKey: string | null,
+  markers: { mapId: string; list: MarkerView[] } | null,
+  /** Called when it moves the view, so it isn't framed back on its own. */
+  onFly: () => void,
+): void {
+  const fitted = useRef("");
+  useEffect(() => {
+    const m = map.current;
+    if (!m || !focusKey || !markers || markers.mapId !== mapId) return;
+    const id = `${mapId}:${focusKey}`;
+    if (fitted.current === id) return;
+    const pts = lockPoints(markers.list, focusKey);
+    if (pts.length === 0) return;
+    fitted.current = id;
+    onFly();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    m.flyToBounds(L.latLngBounds(pts), { padding: [120, 120], maxZoom: 1, animate: !reduce, duration: 0.6 });
+  }, [map, focusKey, markers, mapId, onFly]);
 }

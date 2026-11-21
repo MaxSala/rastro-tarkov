@@ -31,7 +31,7 @@ export function buildCommands(view: View | null): Command[] {
     run: () => s.setWorkspace(w),
   });
   const cmds: Command[] = [
-    ...(["map", "market", "ammo", "quests"] as const).filter((w) => w !== s.workspace).map(go),
+    ...(["map", "market", "ammo", "quests", "hideout"] as const).filter((w) => w !== s.workspace).map(go),
     { id: "refresh-prices", label: t.workspace.refresh, run: refreshMarket },
     { id: "refresh-quests", label: t.quests.data.refresh, run: refreshQuests },
     { id: "new-raid", label: t.palette.newRaid, shortcut: "N", run: () => send({ type: "newRaid" }) },

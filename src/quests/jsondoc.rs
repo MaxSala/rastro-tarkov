@@ -17,13 +17,18 @@ pub struct Docs {
     pub traders: Vec<u8>,
     pub traders_locale: Vec<u8>,
     pub maps: Vec<u8>,
+    /// Texts of the maps file (boss and zone names). May be empty.
+    pub maps_locale: Vec<u8>,
+    /// The hideout and its texts. May be empty: the quests don't need them.
+    pub hideout: Vec<u8>,
+    pub hideout_locale: Vec<u8>,
 }
 
 /// Item id → name in the player's language, from the market catalog or `items_{lang}`.
 pub type ItemNames = HashMap<String, String>;
 
 /// `data.<key>` (or `<key>`, or the root) as a list of entries, whether an object or an array.
-fn entries<'a>(doc: &'a Value, key: &str) -> Vec<&'a Value> {
+pub(super) fn entries<'a>(doc: &'a Value, key: &str) -> Vec<&'a Value> {
     let root = doc.get("data").unwrap_or(doc);
     match root.get(key).unwrap_or(root) {
         Value::Object(o) => o.values().collect(),
@@ -46,7 +51,7 @@ fn list<'a>(v: &'a Value, k: &str) -> impl Iterator<Item = &'a Value> {
 }
 
 /// Translated text for a key; a key with no translation is only kept if it reads like a text.
-fn tr(loc: &Locale, key: Option<&str>) -> String {
+pub(super) fn tr(loc: &Locale, key: Option<&str>) -> String {
     let Some(key) = key else { return String::new() };
     if let Some(t) = loc.get(key) {
         return t.clone();
@@ -188,7 +193,8 @@ fn parse(bytes: &[u8], what: &str) -> Result<Value, String> {
     serde_json::from_slice(bytes).map_err(|e| format!("invalid {what} document: {e}"))
 }
 
-/// The static documents → `{ "data": { "tasks": [...] } }`, as the GraphQL API would answer.
+/// The static documents → `{ "data": { "tasks", "hideoutStations", "maps" } }`, as the
+/// GraphQL API would answer.
 pub fn to_graphql(docs: &Docs, items: &ItemNames) -> Result<Value, String> {
     let tasks = parse(&docs.tasks, "tasks")?;
     let maps_doc = parse(&docs.maps, "maps")?;
@@ -207,12 +213,18 @@ pub fn to_graphql(docs: &Docs, items: &ItemNames) -> Result<Value, String> {
         .into_iter()
         .filter_map(|q| Some((s(q, "id")?.to_owned(), tr(&loc, s(q, "name")))))
         .collect();
+    let trader_names: HashMap<String, String> = traders.iter().map(|(id, (_, n))| (id.clone(), n.clone())).collect();
     let ctx = Ctx { maps, traders, loc: &loc, items, quest_items };
     let out: Vec<Value> = entries(&tasks, "tasks").into_iter().map(|t| ctx.task(t)).collect();
     if out.is_empty() {
         return Err("the tasks document has no tasks".into());
     }
-    Ok(json!({ "data": { "tasks": out } }))
+    let bosses = super::bosses::from_json(&maps_doc, &parse_locale(&docs.maps_locale));
+    // A broken hideout file only costs the hideout.
+    let hideout = serde_json::from_slice::<Value>(&docs.hideout).map_or(Value::Array(Vec::new()), |doc| {
+        super::hideout::from_json(&doc, &parse_locale(&docs.hideout_locale), items, &trader_names)
+    });
+    Ok(json!({ "data": { "tasks": out, "hideoutStations": hideout, "maps": bosses } }))
 }
 
 /// Trader id → (normalizedName, translated name).

@@ -2,6 +2,18 @@
 
 All notable changes to Rastro. Each version lists what was added, changed and fixed; the newest is at the top.
 
+## [0.7.0] - 2026-11-21
+
+### Added
+- Hideout. A new Hideout section (`Ctrl+5`): set the level of each station and Rastro shows what the next one asks for: items (found in raid when it matters), other stations, trader loyalty, skills and build time. Station requirements turn green as your hideout meets them. Levels are saved on your PC, separately for PvP and PvE.
+- *Items* now adds up your quests and your hideout: what both still ask for, by item, for the next level of each station or for every level still to build. The Market's item card says which stations still need it, next to the quests.
+- Bosses on the map. A new *Bosses* layer shows where each boss can appear, with the chance of meeting it in that spot. Hover one for the zone, its escorts and when it arrives; click it to see every spawn point of the zone. Chances follow your game mode, since PvP and PvE differ.
+- Raid clock. The chip in the top bar shows the time in Tarkov on both sides while you're in the menu, so you can pick day or night before queueing. In a raid it shows the time left and, from your last screenshot, the time in your raid. Click it for the details: when the raid ends, the armored train window on Reserve and Lighthouse, and the bosses of the map with their chances.
+
+### Changed
+- The hideout and the bosses come with the quest data, in the same download and the same per-mode cache. Data downloaded with an earlier version works as before; download it again to get the hideout and the bosses.
+- The chip in the top bar is now a button and stays visible on the map outside raids.
+
 ## [0.6.2] - 2026-11-20
 
 ### Added

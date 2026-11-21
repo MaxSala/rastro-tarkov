@@ -8,6 +8,7 @@ const tools: Tools = {
     market: "Pazar",
     ammo: "Mühimmat",
     quests: "Görevler",
+    hideout: "Sığınak",
     goTo: (name: string) => `${name} bölümüne git`,
     refresh: "Fiyatları güncelle",
   },

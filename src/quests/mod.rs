@@ -1,11 +1,15 @@
 //! Quests: tarkov.dev's task data (downloaded only when the player asks) and the player's own
-//! progress, kept per game mode on this PC.
+//! progress, kept per game mode on this PC. The same download brings the hideout and the bosses,
+//! which share the per-mode data and the cache.
 //!
 //! Progress changes arrive as [`progress::Event`]s with a [`progress::Source`]: the interface and
 //! the game logs (see [`logsync`]) feed the same store.
 
 pub mod actions;
+pub mod bosses;
+pub mod bossview;
 pub mod fetch;
+pub mod hideout;
 pub mod jsondoc;
 pub mod logsync;
 pub mod objectives;
@@ -28,6 +32,12 @@ pub struct QuestDb {
     pub fetched_at: u64,
     pub traders: Vec<TraderRef>,
     pub quests: Vec<Quest>,
+    /// Hideout stations. Empty in caches written before 0.7.0.
+    #[serde(default)]
+    pub hideout: Vec<hideout::Station>,
+    /// Where bosses can appear, per map. Empty in caches written before 0.7.0.
+    #[serde(default)]
+    pub bosses: Vec<bosses::Boss>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

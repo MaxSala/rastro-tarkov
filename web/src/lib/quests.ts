@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { create } from "zustand";
 import { api } from "./api";
+import { stationSchema } from "./hideoutSchema";
 import { spotKindSchema, type Progress } from "./questProtocol";
 import { useApp } from "../store/app";
 
@@ -82,6 +83,8 @@ const dbSchema = z.object({
   fetchedAt: z.number().int(),
   traders: z.array(z.object({ id: slug, name, image: hexId.nullable().optional() })).max(64),
   quests: z.array(questSchema).max(3000),
+  /** Missing in data downloaded before 0.7.0: the Hideout section asks to download again. */
+  hideout: z.array(stationSchema).max(64).default([]),
 });
 
 export type QuestDb = z.infer<typeof dbSchema>;

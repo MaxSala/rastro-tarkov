@@ -162,6 +162,7 @@ const main = {
     loot: "Contenedores",
     lock: "Cerraduras",
     quests: "Misiones",
+    bosses: "Jefes",
   },
   tarkovdev: {
     title: "tarkov.dev",

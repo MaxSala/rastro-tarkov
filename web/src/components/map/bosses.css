@@ -1,0 +1,63 @@
+/* Boss zones: a dark badge with a red skull, so it never reads as a quest (amber) or an extract,
+   and the chance of meeting the boss there right under it. */
+.rt-boss {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: 1px;
+  border-radius: 50%;
+  background: #1a0f0f;
+  color: var(--danger);
+  box-shadow:
+    0 0 0 1.5px var(--danger),
+    0 1px 4px rgb(0 0 0 / 60%);
+  scale: var(--rt-scale, 1);
+  transition:
+    scale 140ms ease,
+    opacity 160ms ease;
+}
+.rt-boss svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.rt-boss-c {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 2px;
+  translate: -50% 0;
+  padding: 0 3px;
+  border-radius: 3px;
+  background: rgb(0 0 0 / 70%);
+  color: #fff;
+  font: 600 9px/13px var(--font-mono, ui-monospace, monospace);
+  white-space: nowrap;
+}
+.rt-boss[data-off="true"] {
+  opacity: 0.35;
+}
+.leaflet-marker-icon:hover .rt-boss {
+  scale: calc(var(--rt-scale, 1) * 1.2);
+}
+.rt-boss-pt {
+  stroke: var(--danger);
+  stroke-width: 1.5;
+  fill: var(--danger);
+  fill-opacity: 0.35;
+}
+.rt-card[data-tone="boss"] .rt-card-dot {
+  background: var(--danger);
+  border-radius: 50%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rt-boss {
+    transition: none;
+  }
+}

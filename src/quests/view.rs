@@ -42,6 +42,7 @@ pub struct ProgressView {
     pub faction: Faction,
     pub quests: BTreeMap<String, Status>,
     pub objectives: BTreeMap<String, u32>,
+    pub hideout: BTreeMap<String, u8>,
     pub revision: u64,
 }
 
@@ -155,6 +156,7 @@ pub fn progress_view(app: &App) -> ProgressView {
         faction: p.faction,
         quests: p.quests.iter().map(|(k, r)| (k.clone(), r.status)).collect(),
         objectives: p.objectives.clone(),
+        hideout: p.hideout.clone(),
         revision: q.progress.revision,
     }
 }

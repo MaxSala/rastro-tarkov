@@ -163,6 +163,7 @@ const main: Main = {
     loot: "Contêineres",
     lock: "Fechaduras",
     quests: "Missões",
+    bosses: "Chefes",
   },
   tarkovdev: {
     title: "tarkov.dev",

@@ -120,7 +120,8 @@ pub fn parse_value(v: serde_json::Value, mode: &str, lang: &str, at: u64) -> Res
 }
 
 fn build(resp: Response, mode: &str, lang: &str, fetched_at: u64) -> Result<QuestDb, String> {
-    let tasks: Vec<RawTask> = resp.data.map(|d| d.tasks).unwrap_or_default().into_iter().flatten().collect();
+    let (tasks, stations, maps) = resp.data.map_or_else(Default::default, |d| (d.tasks, d.hideout_stations, d.maps));
+    let tasks: Vec<RawTask> = tasks.into_iter().flatten().collect();
     let mut quests: Vec<Quest> = Vec::new();
     for q in tasks.iter().filter_map(quest) {
         if quests.len() < MAX_QUESTS && quests.iter().all(|x| x.id != q.id) {
@@ -131,7 +132,15 @@ fn build(resp: Response, mode: &str, lang: &str, fetched_at: u64) -> Result<Ques
         return Err("the answer contains no quests".into());
     }
     let traders = traders(&tasks, &quests);
-    Ok(QuestDb { mode: mode.to_owned(), lang: lang.to_owned(), fetched_at, traders, quests })
+    Ok(QuestDb {
+        mode: mode.to_owned(),
+        lang: lang.to_owned(),
+        fetched_at,
+        traders,
+        quests,
+        hideout: super::hideout::stations(&stations.unwrap_or_default()),
+        bosses: super::bosses::bosses(&maps.unwrap_or_default()),
+    })
 }
 
 #[cfg(test)]

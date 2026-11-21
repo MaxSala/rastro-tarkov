@@ -9,6 +9,7 @@ const tools: Tools = {
     market: "Trh",
     ammo: "Munícia",
     quests: "Úlohy",
+    hideout: "Úkryt",
     goTo: (name: string) => `Prejsť na: ${name}`,
     refresh: "Aktualizovať ceny",
   },

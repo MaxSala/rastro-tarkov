@@ -194,6 +194,7 @@ fn handle(app: &std::sync::Arc<App>, msg: ClientMsg) -> Option<ServerMsg> {
         ClientMsg::QuestObjective { objective_id, count } => app.quest_objective(objective_id, count).map(|()| None),
         ClientMsg::QuestsLevel { level } => app.quests_level(level).map(|()| None),
         ClientMsg::QuestsFaction { faction } => app.quests_faction(faction).map(|()| None),
+        ClientMsg::HideoutLevel { station_id, level } => app.hideout_level(station_id, level).map(|()| None),
         ClientMsg::QuestsCompleteBefore { quest_id } => app.quests_complete_before(&quest_id).map(|()| None),
         ClientMsg::QuestsReset => app.quests_reset().map(|()| None),
         ClientMsg::QuestsReadLogs => app.rescan_quest_logs().map(|()| None),

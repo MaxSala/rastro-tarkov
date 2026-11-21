@@ -9,7 +9,7 @@ Every idea here has to fit the project's ground rule: Rastro only reads files th
 These are the big features we want to build next.
 
 - **Squad quests.** In a party, see your teammates' pending quests on the same map, so the squad can plan one route that helps everyone.
-- **Hideout tracker.** Every hideout upgrade, what it needs and which items you still have to keep, linked to their prices in the Market.
+- **Crafts and barters.** What to craft in your hideout for the best profit per hour, from the prices you already download.
 
 ## Map
 
@@ -36,6 +36,7 @@ These are the big features we want to build next.
 
 ## Released
 
+- **0.7.0**: hideout tracker with what each level needs, items to keep for quests and hideout together, bosses on the map with their chances (PvP and PvE), raid clock with Tarkov time, time left and the armored train.
 - **0.6.2**: quests follow the game logs (with the history), catch-up per trader, raid plan with route and kit, next objective, hand-in list, items to keep, honest quest spots (exact, area, possible spawns), quests by trader with Kappa and Lightkeeper progress.
 - **0.6.0**: quest tracker: every quest in your language with its trader, picture and rewards, what's next and why the rest is locked, your active objectives on the map with guidance and their real areas, the items your quests need in the Market, and maps, prices and quests that follow your language.
 - **0.5.0**: floor switcher with dimming of other floors, hover cards on the map, clearer explanation of what Rastro reads.
