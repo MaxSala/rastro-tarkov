@@ -1,0 +1,34 @@
+/* The guide wears Rastro's colours: graphite greys and a single amber accent, as in the app. */
+:root {
+  --sl-font: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --sl-font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --sl-color-accent-low: #3a2a10;
+  --sl-color-accent: #f0a43a;
+  --sl-color-accent-high: #ffd59a;
+  --sl-color-white: #ededed;
+  --sl-color-gray-1: #d4d4d4;
+  --sl-color-gray-2: #b4b4b4;
+  --sl-color-gray-3: #8f8f8f;
+  --sl-color-gray-4: #4d4d4d;
+  --sl-color-gray-5: #303030;
+  --sl-color-gray-6: #1f1f1f;
+  --sl-color-black: #0e0e0e;
+}
+:root[data-theme="light"] {
+  --sl-color-accent-low: #f6e3c6;
+  --sl-color-accent: #9a5a00;
+  --sl-color-accent-high: #4d2d00;
+  --sl-color-white: #141414;
+  --sl-color-gray-1: #262626;
+  --sl-color-gray-2: #474747;
+  --sl-color-gray-3: #666666;
+  --sl-color-gray-4: #a3a3a3;
+  --sl-color-gray-5: #d6d6d6;
+  --sl-color-gray-6: #ebebeb;
+  --sl-color-gray-7: #f3f3f3;
+  --sl-color-black: #ffffff;
+}
+.sl-markdown-content table img {
+  border-radius: 6px;
+  border: 1px solid var(--sl-color-gray-5);
+}

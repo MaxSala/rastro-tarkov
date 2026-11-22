@@ -1,0 +1,802 @@
+[
+ {
+  "slug": "",
+  "lang": "en",
+  "label": "English",
+  "nav": [
+   "Features",
+   "Docs",
+   "What's new"
+  ],
+  "title": "Your raid, on your second monitor.",
+  "pitchLead": "Rastro is a live map of your raid for your second monitor.",
+  "pitchRest": "Take a screenshot in game and your position appears, with the way to every extract. Your quests, your hideout, the bosses and your squad, on the same screen, without alt-tabbing.",
+  "pitch2": "It never touches the game: it only reads files Tarkov already writes to your disk. Free, open source, made by players for players.",
+  "download": "Download Rastro for Windows",
+  "sub": "Free and open source · No installer · No account · Nothing to configure",
+  "platform": "Windows 10 and 11, 64-bit",
+  "source": "Source on GitHub",
+  "docs": "Read the guide",
+  "heroAlt": "Customs in raid: your position, a raid plan with its route, the bosses and the time left.",
+  "fileTitle": "This is all it reads",
+  "fileBody": "Every time Tarkov saves a screenshot, the game writes your position into the file name. Rastro reads that name. It doesn't open the image, touch the game, read its memory or watch its network traffic.",
+  "parts": [
+   "When it was taken",
+   "Where you are",
+   "Which way you face",
+   "Time in the raid"
+  ],
+  "logs": "Optionally, it also reads the text logs the game writes, to know which map you're on and when a raid starts.",
+  "tiles": [
+   [
+    "Play as a squad",
+    "Everyone on the same map, encrypted PC to PC. No server, no account."
+   ],
+   [
+    "Quests that follow the game",
+    "Ticked off from the game logs, with every open objective on the map."
+   ],
+   [
+    "Hideout",
+    "What each next level needs, and which items not to sell."
+   ],
+   [
+    "Bosses on the map",
+    "Where each boss can spawn and the chance it's there, PvP and PvE."
+   ],
+   [
+    "Raid clock",
+    "Time left, Tarkov time on both sides and the armored train window."
+   ],
+   [
+    "Prices and ammo",
+    "Flea and trader prices, keys and every round, searched offline."
+   ]
+  ],
+  "start": "Get started",
+  "steps": [
+   "**Download** `Rastro-windows-x64.exe` and run it. There's nothing to install.",
+   "**Follow the short setup.** It finds your screenshots folder and downloads the maps from tarkov.dev.",
+   "**Take a screenshot in game.** Your arrow appears on the map."
+  ],
+  "leanTitle": "Under the hood",
+  "lean": [
+   [
+    "Small and light",
+    "A native app written in Rust. One .exe, no installer, and it barely uses CPU."
+   ],
+   [
+    "Open source",
+    "MIT license. Every release is built from the public code by GitHub Actions."
+   ],
+   [
+    "Private",
+    "No account, no ads, no telemetry. It only listens on your own PC."
+   ],
+   [
+    "Squad without servers",
+    "Friends connect PC to PC, encrypted end to end."
+   ],
+   [
+    "Works offline",
+    "Maps, quests and prices are downloaded once and searched on your PC."
+   ],
+   [
+    "16 languages",
+    "The same languages tarkov.dev supports, for the app and its data."
+   ]
+  ],
+  "communityTitle": "From the community, for the community",
+  "communityBody": "Rastro is free and will stay free: no ads, no premium tier, no catch. What comes next is decided by the players who use it, through their ideas, bug reports and translations.",
+  "discord": "Join the Discord",
+  "credit": "Maps, quests and prices come from tarkov.dev, the community project that makes tools like this possible.",
+  "mapsCredit": "Map imagery by the tarkov.dev contributors, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov is a trademark of Battlestate Games. Rastro is not affiliated with or endorsed by Battlestate Games or tarkov.dev.",
+  "langLabel": "Language",
+  "docsTitles": [
+   "Features",
+   "Guide",
+   "Questions and safety"
+  ]
+ },
+ {
+  "slug": "es",
+  "lang": "es",
+  "label": "Español",
+  "nav": [
+   "Funciones",
+   "Guía",
+   "Novedades"
+  ],
+  "title": "Tu raid, en tu segundo monitor.",
+  "pitchLead": "Rastro es un mapa en directo de tu raid para tu segundo monitor.",
+  "pitchRest": "Haz una captura en el juego y aparece tu posición, con el camino a cada extracción. Tus misiones, tu escondite, los jefes y tu squad, en la misma pantalla, sin hacer alt-tab.",
+  "pitch2": "Nunca toca el juego: solo lee archivos que Tarkov ya escribe en tu disco. Gratis, de código abierto, hecho por jugadores para jugadores.",
+  "download": "Descargar Rastro para Windows",
+  "sub": "Gratis y de código abierto · Sin instalador · Sin cuenta · Nada que configurar",
+  "platform": "Windows 10 y 11, 64 bits",
+  "source": "Código en GitHub",
+  "docs": "Leer la guía",
+  "heroAlt": "Customs en raid: tu posición, un plan de raid con su ruta, los jefes y el tiempo restante.",
+  "fileTitle": "Esto es todo lo que lee",
+  "fileBody": "Cada vez que Tarkov guarda una captura, el juego escribe tu posición en el nombre del archivo. Rastro lee ese nombre. No abre la imagen, no toca el juego, no lee su memoria ni mira su tráfico de red.",
+  "parts": [
+   "Cuándo se hizo",
+   "Dónde estás",
+   "Hacia dónde miras",
+   "Hora en la raid"
+  ],
+  "logs": "Si quieres, también lee los logs de texto que escribe el juego, para saber en qué mapa estás y cuándo empieza la raid.",
+  "tiles": [
+   [
+    "Juega en squad",
+    "Todos en el mismo mapa, cifrado de PC a PC. Sin servidor ni cuentas."
+   ],
+   [
+    "Misiones que siguen al juego",
+    "Se marcan solas desde los logs, con cada objetivo pendiente en el mapa."
+   ],
+   [
+    "Escondite",
+    "Qué pide el siguiente nivel de cada módulo y qué no debes vender."
+   ],
+   [
+    "Jefes en el mapa",
+    "Dónde puede aparecer cada jefe y con qué probabilidad, en PvP y PvE."
+   ],
+   [
+    "Reloj de raid",
+    "Tiempo restante, hora en Tarkov a cada lado y la ventana del tren blindado."
+   ],
+   [
+    "Precios y munición",
+    "Precios del mercadillo y de comerciantes, llaves y cada bala, sin conexión."
+   ]
+  ],
+  "start": "Empieza",
+  "steps": [
+   "**Descarga** `Rastro-windows-x64.exe` y ábrelo. No hay nada que instalar.",
+   "**Sigue la guía breve.** Encuentra tu carpeta de capturas y descarga los mapas de tarkov.dev.",
+   "**Haz una captura en el juego.** Tu flecha aparece en el mapa."
+  ],
+  "leanTitle": "Por dentro",
+  "lean": [
+   [
+    "Pequeña y ligera",
+    "Una app nativa escrita en Rust. Un solo .exe, sin instalador, y casi no usa CPU."
+   ],
+   [
+    "Código abierto",
+    "Licencia MIT. Cada versión la compila GitHub Actions a partir del código público."
+   ],
+   [
+    "Privada",
+    "Sin cuenta, sin anuncios, sin telemetría. Solo escucha en tu propio PC."
+   ],
+   [
+    "Squad sin servidores",
+    "Tus amigos se conectan de PC a PC, con cifrado de extremo a extremo."
+   ],
+   [
+    "Funciona sin conexión",
+    "Mapas, misiones y precios se descargan una vez y se buscan en tu PC."
+   ],
+   [
+    "16 idiomas",
+    "Los mismos idiomas que tarkov.dev, para la app y sus datos."
+   ]
+  ],
+  "communityTitle": "De la comunidad, para la comunidad",
+  "communityBody": "Rastro es gratis y lo seguirá siendo: sin anuncios, sin versión premium, sin trampa. Lo que viene después lo deciden los jugadores que la usan, con sus ideas, sus reportes de bugs y sus traducciones.",
+  "discord": "Únete al Discord",
+  "credit": "Los mapas, las misiones y los precios vienen de tarkov.dev, el proyecto comunitario que hace posibles herramientas como esta.",
+  "mapsCredit": "Mapas de los colaboradores de tarkov.dev, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov es una marca de Battlestate Games. Rastro no está afiliado ni respaldado por Battlestate Games ni por tarkov.dev.",
+  "langLabel": "Idioma",
+  "docsTitles": [
+   "Funciones",
+   "Guía",
+   "Preguntas y seguridad"
+  ]
+ },
+ {
+  "slug": "de",
+  "lang": "de",
+  "label": "Deutsch",
+  "nav": [
+   "Funktionen",
+   "Anleitung",
+   "Neuigkeiten"
+  ],
+  "title": "Dein Raid, auf deinem zweiten Monitor.",
+  "pitchLead": "Rastro ist eine Live-Karte deines Raids für den zweiten Monitor.",
+  "pitchRest": "Mach im Spiel einen Screenshot und deine Position erscheint, mit dem Weg zu jedem Ausgang. Deine Quests, dein Versteck, die Bosse und dein Squad, auf demselben Bildschirm, ohne Alt-Tab.",
+  "pitch2": "Es fasst das Spiel nie an: Es liest nur Dateien, die Tarkov ohnehin auf deine Festplatte schreibt. Kostenlos, Open Source, von Spielern für Spieler.",
+  "download": "Rastro für Windows herunterladen",
+  "sub": "Kostenlos und Open Source · Kein Installer · Kein Konto · Nichts einzurichten",
+  "platform": "Windows 10 und 11, 64 Bit",
+  "source": "Code auf GitHub",
+  "docs": "Anleitung lesen",
+  "heroAlt": "Customs im Raid: deine Position, ein Raid-Plan mit Route, die Bosse und die verbleibende Zeit.",
+  "fileTitle": "Mehr liest es nicht",
+  "fileBody": "Jedes Mal, wenn Tarkov einen Screenshot speichert, schreibt das Spiel deine Position in den Dateinamen. Rastro liest diesen Namen. Es öffnet das Bild nicht, fasst das Spiel nicht an, liest weder seinen Speicher noch seinen Netzwerkverkehr.",
+  "parts": [
+   "Wann er gemacht wurde",
+   "Wo du bist",
+   "Wohin du schaust",
+   "Uhrzeit im Raid"
+  ],
+  "logs": "Optional liest es auch die Text-Logs des Spiels, um die Karte und den Raid-Start zu erkennen.",
+  "tiles": [
+   [
+    "Im Squad spielen",
+    "Alle auf derselben Karte, verschlüsselt von PC zu PC. Kein Server, kein Konto."
+   ],
+   [
+    "Quests, die dem Spiel folgen",
+    "Aus den Spiel-Logs abgehakt, mit jedem offenen Ziel auf der Karte."
+   ],
+   [
+    "Versteck",
+    "Was die nächste Stufe jedes Moduls braucht und was du nicht verkaufen solltest."
+   ],
+   [
+    "Bosse auf der Karte",
+    "Wo jeder Boss spawnen kann und wie wahrscheinlich, in PvP und PvE."
+   ],
+   [
+    "Raid-Uhr",
+    "Verbleibende Zeit, Tarkov-Zeit auf beiden Seiten und das Panzerzug-Fenster."
+   ],
+   [
+    "Preise und Munition",
+    "Flohmarkt- und Händlerpreise, Schlüssel und jede Patrone, offline durchsuchbar."
+   ]
+  ],
+  "start": "Loslegen",
+  "steps": [
+   "**Lade** `Rastro-windows-x64.exe` herunter und starte es. Es gibt nichts zu installieren.",
+   "**Folge der kurzen Einrichtung.** Sie findet deinen Screenshot-Ordner und lädt die Karten von tarkov.dev.",
+   "**Mach im Spiel einen Screenshot.** Dein Pfeil erscheint auf der Karte."
+  ],
+  "leanTitle": "Unter der Haube",
+  "lean": [
+   [
+    "Klein und leicht",
+    "Eine native App in Rust. Eine .exe, kein Installer, und sie braucht kaum CPU."
+   ],
+   [
+    "Open Source",
+    "MIT-Lizenz. Jede Version wird von GitHub Actions aus dem öffentlichen Code gebaut."
+   ],
+   [
+    "Privat",
+    "Kein Konto, keine Werbung, keine Telemetrie. Sie lauscht nur auf deinem eigenen PC."
+   ],
+   [
+    "Squad ohne Server",
+    "Freunde verbinden sich direkt von PC zu PC, Ende-zu-Ende-verschlüsselt."
+   ],
+   [
+    "Funktioniert offline",
+    "Karten, Quests und Preise werden einmal geladen und auf deinem PC durchsucht."
+   ],
+   [
+    "16 Sprachen",
+    "Dieselben Sprachen wie tarkov.dev, für die App und ihre Daten."
+   ]
+  ],
+  "communityTitle": "Von der Community, für die Community",
+  "communityBody": "Rastro ist kostenlos und bleibt es: keine Werbung, keine Premium-Version, kein Haken. Was als Nächstes kommt, entscheiden die Spieler mit ihren Ideen, Fehlerberichten und Übersetzungen.",
+  "discord": "Zum Discord",
+  "credit": "Karten, Quests und Preise stammen von tarkov.dev, dem Community-Projekt, das Tools wie dieses erst möglich macht.",
+  "mapsCredit": "Kartenbilder von den tarkov.dev-Mitwirkenden, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov ist eine Marke von Battlestate Games. Rastro steht in keiner Verbindung zu Battlestate Games oder tarkov.dev und wird von ihnen nicht unterstützt.",
+  "langLabel": "Sprache",
+  "docsTitles": [
+   "Funktionen",
+   "Anleitung",
+   "Fragen und Sicherheit"
+  ]
+ },
+ {
+  "slug": "fr",
+  "lang": "fr",
+  "label": "Français",
+  "nav": [
+   "Fonctionnalités",
+   "Guide",
+   "Nouveautés"
+  ],
+  "title": "Votre raid, sur votre second écran.",
+  "pitchLead": "Rastro est une carte en direct de votre raid pour votre second écran.",
+  "pitchRest": "Faites une capture en jeu et votre position apparaît, avec le chemin vers chaque extraction. Vos quêtes, votre planque, les boss et votre escouade, sur le même écran, sans alt-tab.",
+  "pitch2": "Il ne touche jamais au jeu : il lit seulement des fichiers que Tarkov écrit déjà sur votre disque. Gratuit, open source, fait par des joueurs pour des joueurs.",
+  "download": "Télécharger Rastro pour Windows",
+  "sub": "Gratuit et open source · Sans installateur · Sans compte · Rien à configurer",
+  "platform": "Windows 10 et 11, 64 bits",
+  "source": "Code sur GitHub",
+  "docs": "Lire le guide",
+  "heroAlt": "Customs en raid : votre position, un plan de raid avec son itinéraire, les boss et le temps restant.",
+  "fileTitle": "C'est tout ce qu'il lit",
+  "fileBody": "Chaque fois que Tarkov enregistre une capture, le jeu écrit votre position dans le nom du fichier. Rastro lit ce nom. Il n'ouvre pas l'image, ne touche pas au jeu, ne lit ni sa mémoire ni son trafic réseau.",
+  "parts": [
+   "Quand elle a été prise",
+   "Où vous êtes",
+   "Où vous regardez",
+   "Heure dans le raid"
+  ],
+  "logs": "En option, il lit aussi les journaux texte du jeu, pour savoir sur quelle carte vous êtes et quand le raid commence.",
+  "tiles": [
+   [
+    "Jouer en escouade",
+    "Tout le monde sur la même carte, chiffré de PC à PC. Sans serveur ni compte."
+   ],
+   [
+    "Des quêtes qui suivent le jeu",
+    "Cochées depuis les journaux du jeu, avec chaque objectif en cours sur la carte."
+   ],
+   [
+    "Planque",
+    "Ce que demande le prochain niveau de chaque module, et ce qu'il ne faut pas vendre."
+   ],
+   [
+    "Boss sur la carte",
+    "Où chaque boss peut apparaître et avec quelle probabilité, en PvP et PvE."
+   ],
+   [
+    "Horloge de raid",
+    "Temps restant, heure de Tarkov des deux côtés et fenêtre du train blindé."
+   ],
+   [
+    "Prix et munitions",
+    "Prix du marché et des marchands, clés et chaque munition, consultables hors ligne."
+   ]
+  ],
+  "start": "Pour commencer",
+  "steps": [
+   "**Téléchargez** `Rastro-windows-x64.exe` et lancez-le. Rien à installer.",
+   "**Suivez la courte configuration.** Elle trouve votre dossier de captures et télécharge les cartes de tarkov.dev.",
+   "**Faites une capture en jeu.** Votre flèche apparaît sur la carte."
+  ],
+  "leanTitle": "Sous le capot",
+  "lean": [
+   [
+    "Petit et léger",
+    "Une application native écrite en Rust. Un seul .exe, sans installation, et presque aucun CPU utilisé."
+   ],
+   [
+    "Open source",
+    "Licence MIT. Chaque version est compilée par GitHub Actions à partir du code public."
+   ],
+   [
+    "Privé",
+    "Sans compte, sans pub, sans télémétrie. Il n'écoute que sur votre propre PC."
+   ],
+   [
+    "Escouade sans serveur",
+    "Vos amis se connectent de PC à PC, chiffré de bout en bout."
+   ],
+   [
+    "Fonctionne hors ligne",
+    "Cartes, quêtes et prix sont téléchargés une fois puis consultés sur votre PC."
+   ],
+   [
+    "16 langues",
+    "Les mêmes langues que tarkov.dev, pour l'application et ses données."
+   ]
+  ],
+  "communityTitle": "Par la communauté, pour la communauté",
+  "communityBody": "Rastro est gratuit et le restera : pas de pub, pas de version premium, pas d'arnaque. La suite est décidée par les joueurs qui l'utilisent, avec leurs idées, leurs rapports de bugs et leurs traductions.",
+  "discord": "Rejoindre le Discord",
+  "credit": "Les cartes, les quêtes et les prix viennent de tarkov.dev, le projet communautaire qui rend possibles des outils comme celui-ci.",
+  "mapsCredit": "Cartes des contributeurs de tarkov.dev, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov est une marque de Battlestate Games. Rastro n'est ni affilié à Battlestate Games ou à tarkov.dev, ni soutenu par eux.",
+  "langLabel": "Langue",
+  "docsTitles": [
+   "Fonctionnalités",
+   "Guide",
+   "Questions et sécurité"
+  ]
+ },
+ {
+  "slug": "pl",
+  "lang": "pl",
+  "label": "Polski",
+  "nav": [
+   "Funkcje",
+   "Przewodnik",
+   "Nowości"
+  ],
+  "title": "Twój rajd na drugim monitorze.",
+  "pitchLead": "Rastro to mapa twojego rajdu na żywo, na drugi monitor.",
+  "pitchRest": "Zrób zrzut ekranu w grze, a pojawi się twoja pozycja z drogą do każdej ewakuacji. Twoje zadania, kryjówka, bossowie i drużyna na jednym ekranie, bez alt-taba.",
+  "pitch2": "Nigdy nie dotyka gry: czyta tylko pliki, które Tarkov i tak zapisuje na dysku. Darmowy, open source, tworzony przez graczy dla graczy.",
+  "download": "Pobierz Rastro dla Windows",
+  "sub": "Darmowy i open source · Bez instalatora · Bez konta · Nic do konfiguracji",
+  "platform": "Windows 10 i 11, 64 bity",
+  "source": "Kod na GitHubie",
+  "docs": "Przeczytaj przewodnik",
+  "heroAlt": "Customs w rajdzie: twoja pozycja, plan rajdu z trasą, bossowie i pozostały czas.",
+  "fileTitle": "Tylko to czyta",
+  "fileBody": "Za każdym razem, gdy Tarkov zapisuje zrzut ekranu, gra wpisuje twoją pozycję w nazwę pliku. Rastro czyta tę nazwę. Nie otwiera obrazu, nie dotyka gry, nie czyta jej pamięci ani ruchu sieciowego.",
+  "parts": [
+   "Kiedy go zrobiono",
+   "Gdzie jesteś",
+   "Gdzie patrzysz",
+   "Godzina w rajdzie"
+  ],
+  "logs": "Opcjonalnie czyta też tekstowe logi gry, żeby wiedzieć, na jakiej jesteś mapie i kiedy zaczyna się rajd.",
+  "tiles": [
+   [
+    "Graj w drużynie",
+    "Wszyscy na jednej mapie, szyfrowane z PC do PC. Bez serwera i bez konta."
+   ],
+   [
+    "Zadania, które idą za grą",
+    "Odhaczane z logów gry, z każdym otwartym celem na mapie."
+   ],
+   [
+    "Kryjówka",
+    "Czego wymaga następny poziom każdego modułu i czego nie sprzedawać."
+   ],
+   [
+    "Bossowie na mapie",
+    "Gdzie może pojawić się każdy boss i z jaką szansą, w PvP i PvE."
+   ],
+   [
+    "Zegar rajdu",
+    "Pozostały czas, czas w Tarkowie po obu stronach i okno pociągu pancernego."
+   ],
+   [
+    "Ceny i amunicja",
+    "Ceny z pchlego targu i od handlarzy, klucze i każdy nabój, offline."
+   ]
+  ],
+  "start": "Zaczynamy",
+  "steps": [
+   "**Pobierz** `Rastro-windows-x64.exe` i uruchom. Nie trzeba nic instalować.",
+   "**Przejdź krótką konfigurację.** Znajdzie folder zrzutów i pobierze mapy z tarkov.dev.",
+   "**Zrób zrzut ekranu w grze.** Twoja strzałka pojawi się na mapie."
+  ],
+  "leanTitle": "Pod maską",
+  "lean": [
+   [
+    "Mała i lekka",
+    "Natywna aplikacja w Rust. Jeden plik .exe, bez instalatora, prawie nie używa CPU."
+   ],
+   [
+    "Open source",
+    "Licencja MIT. Każde wydanie buduje GitHub Actions z publicznego kodu."
+   ],
+   [
+    "Prywatna",
+    "Bez konta, reklam i telemetrii. Nasłuchuje tylko na twoim komputerze."
+   ],
+   [
+    "Drużyna bez serwerów",
+    "Znajomi łączą się z PC do PC, z szyfrowaniem end-to-end."
+   ],
+   [
+    "Działa offline",
+    "Mapy, zadania i ceny pobierasz raz i przeszukujesz na swoim komputerze."
+   ],
+   [
+    "16 języków",
+    "Te same języki co tarkov.dev, dla aplikacji i jej danych."
+   ]
+  ],
+  "communityTitle": "Od społeczności, dla społeczności",
+  "communityBody": "Rastro jest darmowe i takie zostanie: bez reklam, bez wersji premium, bez haczyków. O tym, co dalej, decydują gracze, którzy z niego korzystają, swoimi pomysłami, zgłoszeniami błędów i tłumaczeniami.",
+  "discord": "Dołącz do Discorda",
+  "credit": "Mapy, zadania i ceny pochodzą z tarkov.dev, społecznościowego projektu, dzięki któremu takie narzędzia mogą istnieć.",
+  "mapsCredit": "Mapy autorstwa współtwórców tarkov.dev, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov jest znakiem towarowym Battlestate Games. Rastro nie jest powiązany z Battlestate Games ani tarkov.dev, ani przez nie wspierany.",
+  "langLabel": "Język",
+  "docsTitles": [
+   "Funkcje",
+   "Przewodnik",
+   "Pytania i bezpieczeństwo"
+  ]
+ },
+ {
+  "slug": "pt-br",
+  "lang": "pt-BR",
+  "label": "Português",
+  "nav": [
+   "Recursos",
+   "Guia",
+   "Novidades"
+  ],
+  "title": "Sua raid, no seu segundo monitor.",
+  "pitchLead": "Rastro é um mapa ao vivo da sua raid para o segundo monitor.",
+  "pitchRest": "Tire uma captura no jogo e sua posição aparece, com o caminho para cada extração. Suas missões, seu esconderijo, os chefes e seu esquadrão, na mesma tela, sem alt-tab.",
+  "pitch2": "Nunca mexe no jogo: só lê arquivos que o Tarkov já grava no seu disco. Gratuito, código aberto, feito por jogadores para jogadores.",
+  "download": "Baixar o Rastro para Windows",
+  "sub": "Gratuito e de código aberto · Sem instalador · Sem conta · Nada para configurar",
+  "platform": "Windows 10 e 11, 64 bits",
+  "source": "Código no GitHub",
+  "docs": "Ler o guia",
+  "heroAlt": "Customs na raid: sua posição, um plano de raid com a rota, os chefes e o tempo restante.",
+  "fileTitle": "Isto é tudo o que ele lê",
+  "fileBody": "Toda vez que o Tarkov salva uma captura, o jogo escreve sua posição no nome do arquivo. O Rastro lê esse nome. Ele não abre a imagem, não mexe no jogo, não lê a memória nem o tráfego de rede.",
+  "parts": [
+   "Quando foi tirada",
+   "Onde você está",
+   "Para onde você olha",
+   "Hora na raid"
+  ],
+  "logs": "Se você quiser, ele também lê os logs de texto do jogo, para saber em que mapa você está e quando a raid começa.",
+  "tiles": [
+   [
+    "Jogue em esquadrão",
+    "Todos no mesmo mapa, criptografado de PC para PC. Sem servidor, sem conta."
+   ],
+   [
+    "Missões que seguem o jogo",
+    "Marcadas pelos logs do jogo, com cada objetivo pendente no mapa."
+   ],
+   [
+    "Esconderijo",
+    "O que o próximo nível de cada módulo pede e o que não vender."
+   ],
+   [
+    "Chefes no mapa",
+    "Onde cada chefe pode surgir e a chance de estar lá, em PvP e PvE."
+   ],
+   [
+    "Relógio da raid",
+    "Tempo restante, hora em Tarkov dos dois lados e a janela do trem blindado."
+   ],
+   [
+    "Preços e munição",
+    "Preços do mercado e dos comerciantes, chaves e cada munição, offline."
+   ]
+  ],
+  "start": "Comece",
+  "steps": [
+   "**Baixe** `Rastro-windows-x64.exe` e abra. Não há nada para instalar.",
+   "**Siga a configuração rápida.** Ela encontra sua pasta de capturas e baixa os mapas do tarkov.dev.",
+   "**Tire uma captura no jogo.** Sua seta aparece no mapa."
+  ],
+  "leanTitle": "Por dentro",
+  "lean": [
+   [
+    "Pequeno e leve",
+    "Um app nativo escrito em Rust. Um único .exe, sem instalador, e quase não usa CPU."
+   ],
+   [
+    "Código aberto",
+    "Licença MIT. Cada versão é compilada pelo GitHub Actions a partir do código público."
+   ],
+   [
+    "Privado",
+    "Sem conta, sem anúncios, sem telemetria. Só escuta no seu próprio PC."
+   ],
+   [
+    "Esquadrão sem servidores",
+    "Seus amigos se conectam de PC para PC, com criptografia de ponta a ponta."
+   ],
+   [
+    "Funciona offline",
+    "Mapas, missões e preços são baixados uma vez e consultados no seu PC."
+   ],
+   [
+    "16 idiomas",
+    "Os mesmos idiomas do tarkov.dev, para o app e seus dados."
+   ]
+  ],
+  "communityTitle": "Da comunidade, para a comunidade",
+  "communityBody": "O Rastro é gratuito e vai continuar assim: sem anúncios, sem versão premium, sem pegadinha. O que vem depois é decidido pelos jogadores que usam, com suas ideias, relatos de bugs e traduções.",
+  "discord": "Entrar no Discord",
+  "credit": "Mapas, missões e preços vêm do tarkov.dev, o projeto comunitário que torna ferramentas como esta possíveis.",
+  "mapsCredit": "Mapas dos colaboradores do tarkov.dev, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov é uma marca da Battlestate Games. O Rastro não é afiliado nem endossado pela Battlestate Games ou pelo tarkov.dev.",
+  "langLabel": "Idioma",
+  "docsTitles": [
+   "Recursos",
+   "Guia",
+   "Perguntas e segurança"
+  ]
+ },
+ {
+  "slug": "ru",
+  "lang": "ru",
+  "label": "Русский",
+  "nav": [
+   "Возможности",
+   "Руководство",
+   "Что нового"
+  ],
+  "title": "Ваш рейд на втором мониторе.",
+  "pitchLead": "Rastro — живая карта вашего рейда для второго монитора.",
+  "pitchRest": "Сделайте скриншот в игре, и появится ваша позиция с путём к каждому выходу. Задания, убежище, боссы и ваш отряд на одном экране, без Alt+Tab.",
+  "pitch2": "Он никогда не трогает игру: только читает файлы, которые Tarkov и так пишет на диск. Бесплатно, с открытым кодом, от игроков для игроков.",
+  "download": "Скачать Rastro для Windows",
+  "sub": "Бесплатно и с открытым кодом · Без установщика · Без аккаунта · Ничего не нужно настраивать",
+  "platform": "Windows 10 и 11, 64 бита",
+  "source": "Код на GitHub",
+  "docs": "Читать руководство",
+  "heroAlt": "Таможня в рейде: ваша позиция, план рейда с маршрутом, боссы и оставшееся время.",
+  "fileTitle": "Вот всё, что он читает",
+  "fileBody": "Каждый раз, когда Tarkov сохраняет скриншот, игра записывает вашу позицию в имя файла. Rastro читает это имя. Он не открывает изображение, не трогает игру, не читает её память и сетевой трафик.",
+  "parts": [
+   "Когда сделан",
+   "Где вы",
+   "Куда смотрите",
+   "Время в рейде"
+  ],
+  "logs": "По желанию он также читает текстовые логи игры, чтобы знать карту и момент начала рейда.",
+  "tiles": [
+   [
+    "Играйте отрядом",
+    "Все на одной карте, шифрование от ПК к ПК. Без сервера и аккаунтов."
+   ],
+   [
+    "Задания следуют за игрой",
+    "Отмечаются по логам игры, каждая открытая цель на карте."
+   ],
+   [
+    "Убежище",
+    "Что нужно для следующего уровня каждого модуля и что не продавать."
+   ],
+   [
+    "Боссы на карте",
+    "Где может появиться каждый босс и с какой вероятностью, в PvP и PvE."
+   ],
+   [
+    "Часы рейда",
+    "Оставшееся время, время в Таркове с обеих сторон и окно бронепоезда."
+   ],
+   [
+    "Цены и патроны",
+    "Цены барахолки и торговцев, ключи и все патроны, без интернета."
+   ]
+  ],
+  "start": "Как начать",
+  "steps": [
+   "**Скачайте** `Rastro-windows-x64.exe` и запустите. Устанавливать ничего не нужно.",
+   "**Пройдите короткую настройку.** Она найдёт папку скриншотов и скачает карты с tarkov.dev.",
+   "**Сделайте скриншот в игре.** Ваша стрелка появится на карте."
+  ],
+  "leanTitle": "Как это устроено",
+  "lean": [
+   [
+    "Маленький и лёгкий",
+    "Нативное приложение на Rust. Один .exe, без установщика, почти не нагружает процессор."
+   ],
+   [
+    "Открытый код",
+    "Лицензия MIT. Каждую версию собирает GitHub Actions из публичного кода."
+   ],
+   [
+    "Приватно",
+    "Без аккаунта, рекламы и телеметрии. Слушает только на вашем ПК."
+   ],
+   [
+    "Отряд без серверов",
+    "Друзья подключаются напрямую с ПК на ПК, со сквозным шифрованием."
+   ],
+   [
+    "Работает офлайн",
+    "Карты, задания и цены скачиваются один раз и ищутся на вашем ПК."
+   ],
+   [
+    "16 языков",
+    "Те же языки, что и у tarkov.dev, для приложения и данных."
+   ]
+  ],
+  "communityTitle": "От сообщества — для сообщества",
+  "communityBody": "Rastro бесплатен и останется бесплатным: без рекламы, без премиум-версии, без подвоха. Что будет дальше, решают игроки — своими идеями, отчётами об ошибках и переводами.",
+  "discord": "Зайти в Discord",
+  "credit": "Карты, задания и цены берутся с tarkov.dev — проекта сообщества, благодаря которому такие инструменты вообще возможны.",
+  "mapsCredit": "Карты от участников tarkov.dev, CC BY-NC-SA 4.0.",
+  "footer": "Escape from Tarkov — товарный знак Battlestate Games. Rastro не связан с Battlestate Games или tarkov.dev и не одобрен ими.",
+  "langLabel": "Язык",
+  "docsTitles": [
+   "Возможности",
+   "Руководство",
+   "Вопросы и безопасность"
+  ]
+ },
+ {
+  "slug": "zh-cn",
+  "lang": "zh-CN",
+  "label": "中文",
+  "nav": [
+   "功能",
+   "指南",
+   "更新内容"
+  ],
+  "title": "把你的战局放到第二块屏幕上。",
+  "pitchLead": "Rastro 是放在第二块屏幕上的实时战局地图。",
+  "pitchRest": "在游戏里截一张图，你的位置就会出现，并显示通往每个撤离点的路线。任务、藏身处、首领和你的小队，都在同一块屏幕上，无需 Alt+Tab。",
+  "pitch2": "它从不触碰游戏：只读取塔科夫本来就写入磁盘的文件。免费、开源，由玩家为玩家打造。",
+  "download": "下载 Windows 版 Rastro",
+  "sub": "免费开源 · 无需安装 · 无需账号 · 无需配置",
+  "platform": "Windows 10 和 11，64 位",
+  "source": "GitHub 上的源码",
+  "docs": "阅读指南",
+  "heroAlt": "海关战局中：你的位置、带路线的战局计划、首领和剩余时间。",
+  "fileTitle": "它读取的就只有这些",
+  "fileBody": "塔科夫每次保存截图时，游戏都会把你的位置写进文件名。Rastro 只读取这个文件名。它不打开图片，不触碰游戏，不读取游戏内存，也不监听网络流量。",
+  "parts": [
+   "截图时间",
+   "你的位置",
+   "你的朝向",
+   "战局内时间"
+  ],
+  "logs": "你也可以选择让它读取游戏写入的文本日志，以便知道你在哪张地图、战局何时开始。",
+  "tiles": [
+   [
+    "小队一起玩",
+    "所有人在同一张地图上，PC 到 PC 端到端加密。无需服务器和账号。"
+   ],
+   [
+    "跟随游戏的任务",
+    "根据游戏日志自动勾选，每个未完成目标都显示在地图上。"
+   ],
+   [
+    "藏身处",
+    "每个设施下一级需要什么，以及哪些物品不能卖。"
+   ],
+   [
+    "地图上的首领",
+    "每个首领可能出现的位置和概率，区分 PvP 与 PvE。"
+   ],
+   [
+    "战局时钟",
+    "剩余时间、两侧的塔科夫时间和装甲列车的时间窗口。"
+   ],
+   [
+    "价格与弹药",
+    "跳蚤市场和商人价格、钥匙和所有弹药，离线可查。"
+   ]
+  ],
+  "start": "快速开始",
+  "steps": [
+   "**下载** `Rastro-windows-x64.exe` 并运行，无需安装。",
+   "**完成简短设置。** 它会找到你的截图文件夹，并从 tarkov.dev 下载地图。",
+   "**在游戏里截图。** 你的箭头就会出现在地图上。"
+  ],
+  "leanTitle": "技术细节",
+  "lean": [
+   [
+    "小巧轻量",
+    "用 Rust 编写的原生应用。只有一个 .exe，无需安装，几乎不占 CPU。"
+   ],
+   [
+    "开源",
+    "MIT 许可证。每个版本都由 GitHub Actions 从公开代码构建。"
+   ],
+   [
+    "注重隐私",
+    "无需账号，没有广告，没有遥测。只在你自己的电脑上监听。"
+   ],
+   [
+    "无服务器的小队",
+    "好友之间 PC 到 PC 直连，端到端加密。"
+   ],
+   [
+    "离线可用",
+    "地图、任务和价格只需下载一次，在你的电脑上即可搜索。"
+   ],
+   [
+    "16 种语言",
+    "与 tarkov.dev 相同的语言，应用和数据都支持。"
+   ]
+  ],
+  "communityTitle": "来自社区，服务社区",
+  "communityBody": "Rastro 免费，并将一直免费：没有广告，没有高级版，没有套路。接下来做什么，由使用它的玩家通过想法、错误报告和翻译来决定。",
+  "discord": "加入 Discord",
+  "credit": "地图、任务和价格数据来自 tarkov.dev，正是这个社区项目让此类工具成为可能。",
+  "mapsCredit": "地图图像由 tarkov.dev 贡献者提供，CC BY-NC-SA 4.0。",
+  "footer": "Escape from Tarkov 是 Battlestate Games 的商标。Rastro 与 Battlestate Games 或 tarkov.dev 无关，也未获其认可。",
+  "langLabel": "语言",
+  "docsTitles": [
+   "功能",
+   "指南",
+   "常见问题与安全"
+  ]
+ }
+]

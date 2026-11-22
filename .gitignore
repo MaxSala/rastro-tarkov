@@ -29,3 +29,10 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Web (site/): dependencias, compilación y contenido generado desde docs/
+/site/node_modules
+/site/dist
+/site/.astro
+/site/src/content/docs
+/site/public/images

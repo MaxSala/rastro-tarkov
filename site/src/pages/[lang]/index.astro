@@ -1,0 +1,11 @@
+---
+import Landing from "../../components/Landing.astro";
+import all from "../../i18n/landing.json";
+
+export function getStaticPaths() {
+  return all.filter((l) => l.slug).map((l) => ({ params: { lang: l.slug } }));
+}
+const { lang } = Astro.params;
+---
+
+<Landing slug={lang} />
