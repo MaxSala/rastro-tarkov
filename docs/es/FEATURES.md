@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="../../README.es.md">Volver al README</a> · <b>Funciones</b> · <a href="GUIDE.md">Guía</a> · <a href="FAQ.md">Preguntas y seguridad</a>
+  <a href="https://maxsala.github.io/rastro-tarkov/es/docs/features/">Web</a> · <a href="../../README.es.md">Volver al README</a> · <b>Funciones</b> · <a href="GUIDE.md">Guía</a> · <a href="FAQ.md">Preguntas y seguridad</a>
 </p>
 
 # Funciones

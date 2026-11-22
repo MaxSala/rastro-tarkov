@@ -35,6 +35,10 @@ https://github.com/MaxSala/rastro-tarkov/releases/latest/download/Rastro-windows
 
 6. **Check the release page** once: the notes, `Rastro-windows-x64.exe` and `SHA256SUMS.txt` should all be there.
 
+## The website
+
+Nothing to do: the website is published on its own by `.github/workflows/site.yml` whenever `site/`, `docs/` or `CHANGELOG.md` change on `main`, so the new changelog entry appears on the site with the release commit. Its download button always points to the latest release.
+
 ## If something goes wrong
 
 - **The build failed.** Nothing is published. Open the run in *Actions* to see which step failed, fix it, and move the tag to the fixed commit:

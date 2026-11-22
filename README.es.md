@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest"><img src="https://img.shields.io/github/v/release/MaxSala/rastro-tarkov?label=%C3%9Altima%20versi%C3%B3n&color=f0a43a" alt="Última versión"></a>
+  <a href="https://maxsala.github.io/rastro-tarkov/es/"><img src="https://img.shields.io/badge/Website-maxsala.github.io-f0a43a" alt="Website"></a>
   <img src="https://img.shields.io/badge/Estado-Beta%20p%C3%BAblica-f0a43a" alt="Beta pública">
   <a href="https://github.com/MaxSala/rastro-tarkov/stargazers"><img src="https://img.shields.io/github/stars/MaxSala/rastro-tarkov?label=Estrellas&color=f0a43a&logo=github" alt="Estrellas en GitHub"></a>
   <a href="https://discord.gg/H4pRxGBGDb"><img src="https://img.shields.io/badge/Discord-%C3%9Anete%20a%20la%20comunidad-5865F2?logo=discord&logoColor=white" alt="Únete al Discord"></a>
@@ -21,7 +22,8 @@
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest/download/Rastro-windows-x64.exe">⬇ Descargar Rastro para Windows</a>
 </h3>
 
-<p align="center">Gratis y de código abierto · Sin instalador · Sin cuenta · Nada que configurar</p>
+<p align="center">Gratis y de código abierto · Sin instalador · Sin cuenta · Nada que configurar<br>
+  Web y guía completa: <a href="https://maxsala.github.io/rastro-tarkov/es/"><b>maxsala.github.io/rastro-tarkov</b></a></p>
 
 ---
 
@@ -57,10 +59,10 @@ La respuesta completa, el aviso de Windows SmartScreen y cómo comprobar el arch
 
 ## Más información
 
-**[Funciones](docs/es/FEATURES.md)** · **[Guía: instalación, atajos y datos](docs/es/GUIDE.md)** · **[Preguntas y seguridad](docs/es/FAQ.md)** · **[Hoja de ruta](docs/ROADMAP.md)** · **[Novedades](CHANGELOG.md)** · **[Contribuir](CONTRIBUTING.md)**
+**[Web](https://maxsala.github.io/rastro-tarkov/es/)** · **[Funciones](docs/es/FEATURES.md)** · **[Guía: instalación, atajos y datos](docs/es/GUIDE.md)** · **[Preguntas y seguridad](docs/es/FAQ.md)** · **[Hoja de ruta](docs/ROADMAP.md)** · **[Novedades](CHANGELOG.md)** · **[Contribuir](CONTRIBUTING.md)**
 
 > [!TIP]
-> Rastro está en beta pública y la comunidad decide qué viene después. **[⭐ Dale una estrella](https://github.com/MaxSala/rastro-tarkov/stargazers)** y **[únete al Discord](https://discord.gg/H4pRxGBGDb)**: son cinco segundos y ayuda mucho.
+> Rastro está en beta pública y lo construyen los jugadores que lo usan. Comparte ideas y reporta bugs en [Discord](https://discord.gg/H4pRxGBGDb) o en las [issues](https://github.com/MaxSala/rastro-tarkov/issues). Si te resulta útil, una ⭐ en GitHub ayuda a que otros jugadores lo encuentren.
 
 ---
 

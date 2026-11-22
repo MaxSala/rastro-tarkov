@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest"><img src="https://img.shields.io/github/v/release/MaxSala/rastro-tarkov?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC&color=f0a43a" alt="最新版本"></a>
+  <a href="https://maxsala.github.io/rastro-tarkov/zh-cn/"><img src="https://img.shields.io/badge/Website-maxsala.github.io-f0a43a" alt="Website"></a>
   <img src="https://img.shields.io/badge/%E7%8A%B6%E6%80%81-%E5%85%AC%E5%BC%80%E6%B5%8B%E8%AF%95-f0a43a" alt="公开测试">
   <a href="https://github.com/MaxSala/rastro-tarkov/stargazers"><img src="https://img.shields.io/github/stars/MaxSala/rastro-tarkov?label=Star&color=f0a43a&logo=github" alt="GitHub Star"></a>
   <a href="https://discord.gg/H4pRxGBGDb"><img src="https://img.shields.io/badge/Discord-%E5%8A%A0%E5%85%A5%E7%A4%BE%E5%8C%BA-5865F2?logo=discord&logoColor=white" alt="加入 Discord"></a>
@@ -21,7 +22,8 @@
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest/download/Rastro-windows-x64.exe">⬇ 下载 Windows 版 Rastro</a>
 </h3>
 
-<p align="center">免费开源 · 无需安装 · 无需账号 · 无需配置</p>
+<p align="center">免费开源 · 无需安装 · 无需账号 · 无需配置<br>
+  官网与完整指南： <a href="https://maxsala.github.io/rastro-tarkov/zh-cn/"><b>maxsala.github.io/rastro-tarkov</b></a></p>
 
 ---
 
@@ -57,10 +59,10 @@
 
 ## 了解更多
 
-**[功能](docs/zh-CN/FEATURES.md)** · **[指南：安装、快捷键和数据](docs/zh-CN/GUIDE.md)** · **[常见问题与安全](docs/zh-CN/FAQ.md)** · **[路线图](docs/ROADMAP.md)** · **[更新内容](CHANGELOG.md)** · **[参与贡献](CONTRIBUTING.md)**
+**[官网](https://maxsala.github.io/rastro-tarkov/zh-cn/)** · **[功能](docs/zh-CN/FEATURES.md)** · **[指南：安装、快捷键和数据](docs/zh-CN/GUIDE.md)** · **[常见问题与安全](docs/zh-CN/FAQ.md)** · **[路线图](docs/ROADMAP.md)** · **[更新内容](CHANGELOG.md)** · **[参与贡献](CONTRIBUTING.md)**
 
 > [!TIP]
-> Rastro 正处于公开测试阶段，接下来做什么由社区决定。**[⭐ 给仓库点星](https://github.com/MaxSala/rastro-tarkov/stargazers)**，**[加入 Discord](https://discord.gg/H4pRxGBGDb)**：只要五秒，却很有帮助。
+> Rastro 正处于公开测试阶段，由使用它的玩家共同塑造。欢迎在 [Discord](https://discord.gg/H4pRxGBGDb) 或 [issues](https://github.com/MaxSala/rastro-tarkov/issues) 中分享想法、报告问题。如果它对你有用，在 GitHub 上点个 ⭐ 能帮助更多玩家发现它。
 
 ---
 

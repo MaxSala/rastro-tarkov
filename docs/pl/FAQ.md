@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="../../README.pl.md">Powrót do README</a> · <a href="FEATURES.md">Funkcje</a> · <a href="GUIDE.md">Przewodnik</a> · <b>Pytania i bezpieczeństwo</b>
+  <a href="https://maxsala.github.io/rastro-tarkov/pl/docs/faq/">Strona</a> · <a href="../../README.pl.md">Powrót do README</a> · <a href="FEATURES.md">Funkcje</a> · <a href="GUIDE.md">Przewodnik</a> · <b>Pytania i bezpieczeństwo</b>
 </p>
 
 # Pytania i bezpieczeństwo

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="../../README.md">Back to the README</a> · <a href="FEATURES.md">Features</a> · <b>Guide</b> · <a href="FAQ.md">Questions and safety</a>
+  <a href="https://maxsala.github.io/rastro-tarkov/docs/guide/">Website</a> · <a href="../../README.md">Back to the README</a> · <a href="FEATURES.md">Features</a> · <b>Guide</b> · <a href="FAQ.md">Questions and safety</a>
 </p>
 
 # Guide

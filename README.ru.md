@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest"><img src="https://img.shields.io/github/v/release/MaxSala/rastro-tarkov?label=%D0%92%D0%B5%D1%80%D1%81%D0%B8%D1%8F&color=f0a43a" alt="Последняя версия"></a>
+  <a href="https://maxsala.github.io/rastro-tarkov/ru/"><img src="https://img.shields.io/badge/Website-maxsala.github.io-f0a43a" alt="Website"></a>
   <img src="https://img.shields.io/badge/%D0%A1%D1%82%D0%B0%D1%82%D1%83%D1%81-%D0%9F%D1%83%D0%B1%D0%BB%D0%B8%D1%87%D0%BD%D0%B0%D1%8F%20%D0%B1%D0%B5%D1%82%D0%B0-f0a43a" alt="Публичная бета">
   <a href="https://github.com/MaxSala/rastro-tarkov/stargazers"><img src="https://img.shields.io/github/stars/MaxSala/rastro-tarkov?label=%D0%97%D0%B2%D1%91%D0%B7%D0%B4%D1%8B&color=f0a43a&logo=github" alt="Звёзды на GitHub"></a>
   <a href="https://discord.gg/H4pRxGBGDb"><img src="https://img.shields.io/badge/Discord-%D0%A1%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D1%81%D1%82%D0%B2%D0%BE-5865F2?logo=discord&logoColor=white" alt="Наш Discord"></a>
@@ -21,7 +22,8 @@
   <a href="https://github.com/MaxSala/rastro-tarkov/releases/latest/download/Rastro-windows-x64.exe">⬇ Скачать Rastro для Windows</a>
 </h3>
 
-<p align="center">Бесплатно и с открытым кодом · Без установщика · Без аккаунта · Ничего не нужно настраивать</p>
+<p align="center">Бесплатно и с открытым кодом · Без установщика · Без аккаунта · Ничего не нужно настраивать<br>
+  Сайт и полное руководство: <a href="https://maxsala.github.io/rastro-tarkov/ru/"><b>maxsala.github.io/rastro-tarkov</b></a></p>
 
 ---
 
@@ -57,10 +59,10 @@
 
 ## Подробнее
 
-**[Возможности](docs/ru/FEATURES.md)** · **[Руководство: установка, горячие клавиши и данные](docs/ru/GUIDE.md)** · **[Вопросы и безопасность](docs/ru/FAQ.md)** · **[Планы](docs/ROADMAP.md)** · **[Что нового](CHANGELOG.md)** · **[Как помочь](CONTRIBUTING.md)**
+**[Сайт](https://maxsala.github.io/rastro-tarkov/ru/)** · **[Возможности](docs/ru/FEATURES.md)** · **[Руководство: установка, горячие клавиши и данные](docs/ru/GUIDE.md)** · **[Вопросы и безопасность](docs/ru/FAQ.md)** · **[Планы](docs/ROADMAP.md)** · **[Что нового](CHANGELOG.md)** · **[Как помочь](CONTRIBUTING.md)**
 
 > [!TIP]
-> Rastro в открытой бете, и что будет дальше, решает сообщество. **[⭐ Поставьте звезду](https://github.com/MaxSala/rastro-tarkov/stargazers)** и **[заходите в Discord](https://discord.gg/H4pRxGBGDb)**: пять секунд, а помогает очень.
+> Rastro в открытой бете, и его развивают игроки, которые им пользуются. Делитесь идеями и сообщайте об ошибках в [Discord](https://discord.gg/H4pRxGBGDb) или в [issues](https://github.com/MaxSala/rastro-tarkov/issues). Если он вам полезен, ⭐ на GitHub поможет другим игрокам его найти.
 
 ---
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="../../README.zh-CN.md">返回 README</a> · <a href="FEATURES.md">功能</a> · <a href="GUIDE.md">指南</a> · <b>常见问题与安全</b>
+  <a href="https://maxsala.github.io/rastro-tarkov/zh-cn/docs/faq/">官网</a> · <a href="../../README.zh-CN.md">返回 README</a> · <a href="FEATURES.md">功能</a> · <a href="GUIDE.md">指南</a> · <b>常见问题与安全</b>
 </p>
 
 # 常见问题与安全

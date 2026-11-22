@@ -56,6 +56,10 @@ This list covers the main components. The complete dependency trees, with every 
 
 - `assets/demo/` was made for this project and is released under CC0-1.0. It is an invented map and does not represent any real Escape from Tarkov location.
 
+## Website
+
+The website in `site/` is not part of the application. It is built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build) (MIT License), with search by [Pagefind](https://pagefind.app) (MIT License), and uses the same Geist typefaces (SIL Open Font License 1.1). Its full list of dependencies is in `site/package-lock.json`.
+
 ## Downloaded by the user, not bundled
 
 Rastro does not ship any of the following. They are downloaded only when the user asks for them, and each keeps its own license.

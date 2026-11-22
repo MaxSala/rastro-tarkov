@@ -96,6 +96,10 @@ Generated with `getrandom` in `src/main.rs`. It travels in the URL fragment (`#t
 - `src/logs.rs`: 2,000 lines in memory, plus `rastro.log`, rewritten on each start and capped at 5 MB. Neither ever contains the session key or the party code.
 - `src/setup.rs`: checking a screenshots folder only lists file names (at most 20,000) and never opens a file.
 
+### Website
+
+The website (`site/`, published on GitHub Pages) is static: no server, no forms, no accounts, no cookies, no analytics and no third-party scripts or fonts. The landing page sets a Content-Security-Policy that only allows its own files. Every download link points to the latest release on GitHub, so the `.exe` always comes from the public build in GitHub Actions and is never hosted anywhere else.
+
 ### Code
 
 `#![forbid(unsafe_code)]`. Clippy's `unwrap_used`, `expect_used`, `panic` and `indexing_slicing` lints are denied (`Cargo.toml`). An error in one connection ends that connection, never the server.

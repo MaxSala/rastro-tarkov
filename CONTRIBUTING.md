@@ -2,7 +2,7 @@
 
 Thanks for wanting to help. Rastro is a young project with a long [roadmap](docs/ROADMAP.md), and every fix, translation, test or idea moves it forward.
 
-Not a developer? You can still help a lot: report bugs, suggest features, review a translation or help other players. Everything starts on the **[Rastro Discord](https://discord.gg/H4pRxGBGDb)**. To join the team as a moderator, translator, tester or developer, open a *Join the team* ticket there.
+Not a developer? You can still help a lot: report bugs, suggest features, review a translation, improve the guide or help other players. Everything starts on the **[Rastro Discord](https://discord.gg/H4pRxGBGDb)**. To join the team as a moderator, translator, tester or developer, open a *Join the team* ticket there.
 
 ## Before you start
 
@@ -45,8 +45,10 @@ cargo run -- --dev                 # terminal 2: backend; opens the browser with
 src/          Rust backend: screenshot watcher, local server, map packs, party, market, game logs
 web/          Interface: React, TypeScript, Leaflet and Tailwind
   src/locales/  One folder per language
+site/         Website: landing page and guide (Astro and Starlight), published on GitHub Pages
 assets/       Logo, app icon and the demo map
-docs/         Security model, protocol, map pack format, roadmap and release process
+docs/         The user guide in eight languages, plus the security model, protocol,
+              map pack format, roadmap and release process
 ```
 
 Technical documentation lives in `docs/`: [security model](docs/SECURITY.md), [interface protocol](docs/PROTOCOL.md), [map pack format](docs/MAP_PACK.md), [roadmap](docs/ROADMAP.md) and [release process](docs/RELEASING.md).
@@ -72,9 +74,21 @@ In the pull request, explain what changes for the player and how you tested it. 
 
 ## Translations
 
-Each language lives in `web/src/locales/<code>/` (`main.ts`, `game.ts` and `tools.ts`) and is type-checked against the Spanish files, so a missing key won't compile.
+Each language lives in `web/src/locales/<code>/` (`main.ts`, `game.ts`, `tools.ts`, `quests.ts` and `world.ts`) and is type-checked against the Spanish files, so a missing key won't compile.
 
 To fix a translation, edit the file and open a pull request, or point it out on [Discord](https://discord.gg/H4pRxGBGDb). Spanish and English are reviewed; the other 14 languages still need a native speaker to check them, so any help there is very welcome.
+
+## The guide and the website
+
+The user guide is written once, in `docs/<language>/` (`FEATURES.md`, `GUIDE.md` and `FAQ.md`). GitHub shows those files as they are, and the [website](https://maxsala.github.io/rastro-tarkov/) builds its guide from them, so a fix there reaches both. The landing page lives in `site/src/`; its text, in eight languages, is in `site/src/i18n/landing.json`.
+
+To preview the website (Node.js 22.23 or newer):
+
+```sh
+cd site && npm ci && npm run dev    # http://localhost:4321/rastro-tarkov/
+```
+
+Changes to `site/`, `docs/` or `CHANGELOG.md` on `main` are published automatically. More in [site/README.md](site/README.md).
 
 ## Releases
 
