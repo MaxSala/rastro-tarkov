@@ -1,0 +1,277 @@
+/* The landing page's sections: hero, the file name, the feature tabs, getting started. */
+
+/* Hero */
+.hero {
+  position: relative;
+  padding-top: 64px;
+}
+.contours {
+  position: absolute;
+  inset: -64px 0 auto;
+  height: 900px;
+  background: var(--contours) center top / 1600px auto no-repeat;
+  opacity: 0.075;
+  mask-image: radial-gradient(70% 60% at 60% 30%, #000 20%, transparent 80%);
+  pointer-events: none;
+}
+.hero-copy {
+  position: relative;
+}
+.hero h1 {
+  max-width: 13ch;
+  margin-top: 22px;
+  font-size: clamp(46px, 7.6vw, 96px);
+  font-weight: 620;
+  letter-spacing: -0.028em;
+  line-height: 0.98;
+}
+.lead {
+  max-width: 58ch;
+  margin: 24px 0 0;
+  color: var(--soft);
+  font-size: 19px;
+}
+.lead strong {
+  color: var(--chalk);
+  font-weight: 560;
+}
+.lead.quiet {
+  margin-top: 12px;
+  color: var(--fog);
+  font-size: 17px;
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 22px 0 0;
+  padding: 0;
+  color: var(--fog);
+  font-size: 14px;
+  list-style: none;
+}
+.facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.facts li::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--rule-strong);
+}
+
+/* The app, framed like a map sheet: tick marks along the edges, every fifth one longer. */
+.stage {
+  position: relative;
+  margin-top: 56px;
+}
+.sheet {
+  position: relative;
+  padding: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--deck), var(--night));
+}
+.sheet::before {
+  --tick: repeating-linear-gradient(90deg, var(--rule-strong) 0 1px, transparent 1px 32px);
+  --tick-y: repeating-linear-gradient(0deg, var(--rule-strong) 0 1px, transparent 1px 32px);
+  content: "";
+  position: absolute;
+  inset: 0 24px;
+  background:
+    var(--tick) top / 100% 6px no-repeat,
+    var(--tick) bottom / 100% 6px no-repeat;
+  pointer-events: none;
+}
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 24px 0;
+  background:
+    repeating-linear-gradient(0deg, var(--rule-strong) 0 1px, transparent 1px 32px) left / 6px 100% no-repeat,
+    repeating-linear-gradient(0deg, var(--rule-strong) 0 1px, transparent 1px 32px) right / 6px 100% no-repeat;
+  pointer-events: none;
+}
+.window {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-radius: 10px;
+  box-shadow:
+    0 40px 90px -30px rgb(0 0 0 / 0.75),
+    0 0 0 1px rgb(0 0 0 / 0.4);
+}
+.ping {
+  position: absolute;
+  left: 58.06%;
+  top: 69.7%;
+  width: 0;
+  height: 0;
+}
+.ping i {
+  position: absolute;
+  left: -40px;
+  top: -40px;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--amber);
+  border-radius: 50%;
+  opacity: 0;
+}
+.fix {
+  position: absolute;
+  left: calc(58.06% + 22px);
+  top: calc(69.7% - 42px);
+  padding: 4px 8px;
+  border: 1px solid rgb(240 164 58 / 0.5);
+  border-radius: 6px;
+  background: rgb(12 21 23 / 0.88);
+  color: var(--amber);
+  font: 500 12.5px var(--mono);
+  white-space: nowrap;
+}
+.toast {
+  position: absolute;
+  right: -28px;
+  bottom: 64px;
+  display: flex;
+  gap: 12px;
+  width: min(400px, 46%);
+  padding: 14px 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 12px;
+  background: rgb(21 37 41 / 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 60px -18px rgb(0 0 0 / 0.8);
+}
+.toast-icon {
+  margin-top: 2px;
+  color: var(--amber);
+}
+.toast-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 560;
+}
+.toast-file {
+  margin: 6px 0 0;
+  color: var(--fog);
+  font: 12.5px/1.55 var(--mono);
+  word-break: break-all;
+}
+.toast-file .seg {
+  color: var(--soft);
+}
+.toast-file .seg-1 {
+  border-radius: 3px;
+  color: var(--amber);
+  background: rgb(240 164 58 / 0.16);
+  box-shadow: 0 0 0 2px rgb(240 164 58 / 0.16);
+}
+
+/* The one moment on load: the page settles, the screenshot is saved, its position lands. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy > * {
+    animation: rise 0.9s var(--ease) both;
+  }
+  .hero-copy > :nth-child(2) {
+    animation-delay: 0.06s;
+  }
+  .hero-copy > :nth-child(3) {
+    animation-delay: 0.14s;
+  }
+  .hero-copy > :nth-child(n + 4) {
+    animation-delay: 0.22s;
+  }
+  .sheet {
+    animation: sheet-in 1.3s var(--ease) 0.3s both;
+  }
+  /* The script holds the screenshot part until the window is in view (see landing.ts). */
+  .sheet {
+    --base: 1.3s;
+  }
+  .sheet[data-armed] {
+    --base: 0.5s;
+  }
+  .sheet[data-armed]:not([data-in]) :is(.toast, .toast-file > span, .ping i, .fix) {
+    animation-play-state: paused;
+  }
+  .toast {
+    animation: toast-in 0.7s var(--ease) calc(var(--base) + 0.2s) both;
+  }
+  .toast-file > span {
+    animation: part-in 0.3s ease calc(var(--base) + 0.65s + var(--i) * 0.09s) both;
+  }
+  .toast-file .seg-1 {
+    animation:
+      part-in 0.3s ease calc(var(--base) + 0.65s + var(--i) * 0.09s) both,
+      mark 0.5s ease calc(var(--base) + 1.45s) both;
+  }
+  .ping i {
+    animation: ring 3.2s var(--ease) calc(var(--base) + 1.7s) infinite;
+  }
+  .ping i + i {
+    animation-delay: calc(var(--base) + 2.2s);
+  }
+  .fix {
+    animation: fix-in 0.5s var(--ease) calc(var(--base) + 1.85s) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ping i {
+    opacity: 0.6;
+    transform: scale(0.55);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: perspective(1800px) rotateX(9deg) translateY(56px) scale(0.97);
+  }
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(28px, 6px) scale(0.98);
+  }
+}
+@keyframes part-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes mark {
+  from {
+    color: var(--soft);
+    background: transparent;
+    box-shadow: none;
+  }
+}
+@keyframes ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.2);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+@keyframes fix-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

@@ -1,0 +1,74 @@
+---
+// The opening: what Rastro is, the download, and the app itself. The screenshot plays the one
+// thing Rastro does, once, on load: a screenshot is saved, its name is read, the position lands
+// on the map. Pure CSS, so it also runs where scripts are blocked; reduced motion shows the end.
+import { FILE, VERSION, links, type Texts } from "./data";
+
+interface Props {
+  t: Texts;
+}
+const { t } = Astro.props;
+const l = links(t.slug);
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="contours" aria-hidden="true"></div>
+  <div class="wrap hero-copy">
+    {
+      VERSION && (
+        <a class="release" href={l.docs("changelog")}>
+          <span class="release-dot" aria-hidden="true" />
+          <span>{t.beta}</span>
+          <span class="release-version">v{VERSION}</span>
+        </a>
+      )
+    }
+    <h1 id="hero-title">{t.title}</h1>
+    <p class="lead"><strong>{t.pitchLead}</strong> {t.pitchRest}</p>
+    <p class="lead quiet">{t.pitch2}</p>
+    <div class="actions">
+      <a class="button primary large" href={l.download}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M2.5 13.5h11" />
+        </svg>
+        {t.download}
+      </a>
+      <a class="button large" href={l.docs("guide")}>{t.docs}</a>
+    </div>
+    <ul class="facts">
+      <li>{t.platform}</li>
+      {t.sub.split(" · ").map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+
+  <div class="wrap stage">
+    <div class="sheet">
+      <figure class="window">
+        <img src={l.img("hero")} alt={t.heroAlt} width="1600" height="1000" fetchpriority="high" />
+        <span class="ping" aria-hidden="true"><i></i><i></i></span>
+        <span class="fix" aria-hidden="true" translate="no">X 218.0 · Z 136.0</span>
+      </figure>
+      <div class="toast" aria-hidden="true">
+        <svg class="toast-icon" viewBox="0 0 20 20" width="18" height="18">
+          <path d="M3 6.5h3l1.4-2h5.2l1.4 2h3v9H3z" />
+          <circle cx="10" cy="11" r="2.8" />
+        </svg>
+        <div class="toast-body">
+          <p class="toast-title">{t.toast}</p>
+          <p class="toast-file" translate="no">
+            {
+              FILE.map((f, i) =>
+                f.part === undefined ? (
+                  <span class="sep" style={`--i:${i}`}>{f.text}</span>
+                ) : (
+                  <span class={`seg seg-${f.part}`} style={`--i:${i}`}>{f.text}</span>
+                ),
+              )
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+    <p class="caption">{t.heroAlt}</p>
+  </div>
+</section>

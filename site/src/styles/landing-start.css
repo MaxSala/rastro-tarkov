@@ -1,0 +1,215 @@
+/* Getting started, under the hood, and the layout on smaller screens. */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.steps li {
+  position: relative;
+}
+.steps li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 52px;
+  right: -20px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rule-strong), transparent);
+}
+.step-n {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border: 1px solid rgb(240 164 58 / 0.55);
+  border-radius: 50%;
+  background: rgb(240 164 58 / 0.08);
+  color: var(--amber);
+  font-size: 15px;
+  font-weight: 600;
+}
+.steps p {
+  max-width: 34ch;
+  margin: 18px 0 0;
+  color: var(--soft);
+  font-size: 17px;
+}
+.steps strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--chalk);
+  font-size: 19px;
+  font-stretch: 85%;
+  font-weight: 600;
+}
+.start .actions {
+  margin-top: 44px;
+}
+.platform {
+  color: var(--fog);
+  font-size: 14px;
+}
+
+.lean dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 48px;
+  margin: 40px 0 0;
+}
+.lean dl > div {
+  padding: 26px 0 6px;
+  border-top: 1px solid var(--rule);
+}
+.lean dt {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 18px;
+  font-stretch: 85%;
+  font-weight: 600;
+}
+.lean dt svg {
+  color: var(--amber);
+}
+.lean dd {
+  margin: 8px 0 0;
+  color: var(--fog);
+  font-size: 15.5px;
+}
+
+.caption {
+  margin: 16px 0 0;
+  color: var(--fog);
+  font-size: 14px;
+}
+.more {
+  display: inline-block;
+  margin-top: 36px;
+  color: var(--amber);
+  font-weight: 500;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1px;
+}
+.more:hover {
+  color: var(--amber-hi);
+}
+
+@media (max-width: 1240px) {
+  .toast {
+    right: 24px;
+  }
+}
+@media (max-width: 960px) {
+  .reads-head,
+  .features-head,
+  .reads-foot {
+    grid-template-columns: 1fr;
+  }
+  .showcase[data-ready] {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .showcase[data-ready] .tabs {
+    display: flex;
+    gap: 6px;
+    margin-inline: -16px;
+    padding: 0 16px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs button {
+    flex: none;
+    padding: 10px 14px;
+  }
+  .tabs [aria-selected="true"] .tab-line {
+    display: none;
+  }
+  .showcase[data-ready] figcaption {
+    display: grid;
+  }
+  .showcase[data-ready] figcaption .tab-title {
+    display: none;
+  }
+  .lean dl {
+    grid-template-columns: 1fr 1fr;
+  }
+  .foot-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .foot-brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 760px) {
+  .top nav {
+    display: none;
+  }
+  .hero {
+    padding-top: 48px;
+  }
+  .stage {
+    margin-top: 48px;
+  }
+  .sheet {
+    padding: 8px;
+    border-radius: 14px;
+  }
+  .sheet::before,
+  .sheet::after {
+    display: none;
+  }
+  .toast {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin: 10px 0 0;
+  }
+  .fix {
+    display: none;
+  }
+  .reads,
+  .features,
+  .start,
+  .lean {
+    padding-top: 104px;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 37px 1fr;
+    gap: 16px;
+  }
+  .steps li::after {
+    display: none;
+  }
+  .steps p {
+    margin-top: 6px;
+  }
+  .never,
+  .lean dl {
+    grid-template-columns: 1fr;
+  }
+  .community {
+    margin-top: 104px;
+    padding-block: 88px;
+  }
+}
+@media (max-width: 420px) {
+  .lang summary {
+    padding: 0 6px;
+  }
+  .top-row {
+    gap: 12px;
+  }
+  .button.large {
+    width: 100%;
+    justify-content: center;
+  }
+}

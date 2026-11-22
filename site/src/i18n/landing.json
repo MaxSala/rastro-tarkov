@@ -97,7 +97,24 @@
    "Features",
    "Guide",
    "Questions and safety"
-  ]
+  ],
+  "beta": "Public beta",
+  "toast": "Screenshot saved",
+  "neverTitle": "What it never does",
+  "never": [
+   "Open, edit or upload your screenshots",
+   "Touch the game or its process",
+   "Read the game's memory",
+   "Watch your network traffic"
+  ],
+  "featuresLead": "Everything you'd alt-tab for, on one screen.",
+  "community": "Community",
+  "project": "Project",
+  "bug": "Report a bug",
+  "license": "MIT license",
+  "downloadShort": "Download",
+  "startHere": "Start here",
+  "reference": "Reference"
  },
  {
   "slug": "es",
@@ -197,7 +214,24 @@
    "Funciones",
    "Guía",
    "Preguntas y seguridad"
-  ]
+  ],
+  "beta": "Beta pública",
+  "toast": "Captura guardada",
+  "neverTitle": "Lo que nunca hace",
+  "never": [
+   "Abrir, editar o subir tus capturas",
+   "Tocar el juego o su proceso",
+   "Leer la memoria del juego",
+   "Mirar tu tráfico de red"
+  ],
+  "featuresLead": "Todo aquello para lo que harías alt-tab, en una sola pantalla.",
+  "community": "Comunidad",
+  "project": "Proyecto",
+  "bug": "Informar de un error",
+  "license": "Licencia MIT",
+  "downloadShort": "Descargar",
+  "startHere": "Empieza aquí",
+  "reference": "Referencia"
  },
  {
   "slug": "de",
@@ -297,7 +331,24 @@
    "Funktionen",
    "Anleitung",
    "Fragen und Sicherheit"
-  ]
+  ],
+  "beta": "Öffentliche Beta",
+  "toast": "Screenshot gespeichert",
+  "neverTitle": "Was es nie tut",
+  "never": [
+   "Deine Screenshots öffnen, bearbeiten oder hochladen",
+   "Das Spiel oder seinen Prozess anfassen",
+   "Den Speicher des Spiels lesen",
+   "Deinen Netzwerkverkehr mitlesen"
+  ],
+  "featuresLead": "Alles, wofür du sonst Alt-Tab drückst, auf einem Bildschirm.",
+  "community": "Community",
+  "project": "Projekt",
+  "bug": "Fehler melden",
+  "license": "MIT-Lizenz",
+  "downloadShort": "Herunterladen",
+  "startHere": "Erste Schritte",
+  "reference": "Referenz"
  },
  {
   "slug": "fr",
@@ -397,7 +448,24 @@
    "Fonctionnalités",
    "Guide",
    "Questions et sécurité"
-  ]
+  ],
+  "beta": "Bêta publique",
+  "toast": "Capture enregistrée",
+  "neverTitle": "Ce qu'il ne fait jamais",
+  "never": [
+   "Ouvrir, modifier ou envoyer vos captures",
+   "Toucher au jeu ou à son processus",
+   "Lire la mémoire du jeu",
+   "Surveiller votre trafic réseau"
+  ],
+  "featuresLead": "Tout ce pour quoi vous feriez alt-tab, sur un seul écran.",
+  "community": "Communauté",
+  "project": "Projet",
+  "bug": "Signaler un bug",
+  "license": "Licence MIT",
+  "downloadShort": "Télécharger",
+  "startHere": "Pour commencer",
+  "reference": "Référence"
  },
  {
   "slug": "pl",
@@ -497,7 +565,24 @@
    "Funkcje",
    "Przewodnik",
    "Pytania i bezpieczeństwo"
-  ]
+  ],
+  "beta": "Publiczna beta",
+  "toast": "Zapisano zrzut ekranu",
+  "neverTitle": "Czego nigdy nie robi",
+  "never": [
+   "Nie otwiera, nie edytuje i nie wysyła twoich zrzutów",
+   "Nie dotyka gry ani jej procesu",
+   "Nie czyta pamięci gry",
+   "Nie podgląda twojego ruchu sieciowego"
+  ],
+  "featuresLead": "Wszystko, po co robisz alt-taba, na jednym ekranie.",
+  "community": "Społeczność",
+  "project": "Projekt",
+  "bug": "Zgłoś błąd",
+  "license": "Licencja MIT",
+  "downloadShort": "Pobierz",
+  "startHere": "Na start",
+  "reference": "Dokumentacja"
  },
  {
   "slug": "pt-br",
@@ -597,7 +682,24 @@
    "Recursos",
    "Guia",
    "Perguntas e segurança"
-  ]
+  ],
+  "beta": "Beta pública",
+  "toast": "Captura salva",
+  "neverTitle": "O que ele nunca faz",
+  "never": [
+   "Abrir, editar ou enviar suas capturas",
+   "Mexer no jogo ou no processo dele",
+   "Ler a memória do jogo",
+   "Observar seu tráfego de rede"
+  ],
+  "featuresLead": "Tudo o que faria você dar alt-tab, em uma só tela.",
+  "community": "Comunidade",
+  "project": "Projeto",
+  "bug": "Relatar um bug",
+  "license": "Licença MIT",
+  "downloadShort": "Baixar",
+  "startHere": "Comece aqui",
+  "reference": "Referência"
  },
  {
   "slug": "ru",
@@ -697,7 +799,24 @@
    "Возможности",
    "Руководство",
    "Вопросы и безопасность"
-  ]
+  ],
+  "beta": "Открытая бета",
+  "toast": "Скриншот сохранён",
+  "neverTitle": "Чего он никогда не делает",
+  "never": [
+   "Не открывает, не меняет и не загружает ваши скриншоты",
+   "Не трогает игру и её процесс",
+   "Не читает память игры",
+   "Не следит за сетевым трафиком"
+  ],
+  "featuresLead": "Всё, ради чего вы нажимаете Alt+Tab, на одном экране.",
+  "community": "Сообщество",
+  "project": "Проект",
+  "bug": "Сообщить об ошибке",
+  "license": "Лицензия MIT",
+  "downloadShort": "Скачать",
+  "startHere": "С чего начать",
+  "reference": "Справка"
  },
  {
   "slug": "zh-cn",
@@ -797,6 +916,23 @@
    "功能",
    "指南",
    "常见问题与安全"
-  ]
+  ],
+  "beta": "公开测试版",
+  "toast": "截图已保存",
+  "neverTitle": "它绝不会做的事",
+  "never": [
+   "打开、修改或上传你的截图",
+   "触碰游戏或其进程",
+   "读取游戏内存",
+   "监视你的网络流量"
+  ],
+  "featuresLead": "原本需要 Alt+Tab 才能看的东西，都在一块屏幕上。",
+  "community": "社区",
+  "project": "项目",
+  "bug": "报告问题",
+  "license": "MIT 许可证",
+  "downloadShort": "下载",
+  "startHere": "从这里开始",
+  "reference": "参考"
  }
 ]

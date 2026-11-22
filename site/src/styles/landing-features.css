@@ -1,0 +1,294 @@
+/* The file name, the feature tabs, getting started and under the hood. */
+.reads,
+.features,
+.start,
+.lean {
+  padding-top: 150px;
+}
+.reads-head,
+.features-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 24px 64px;
+}
+.reads-head .body,
+.features-head .body {
+  margin: 0;
+}
+
+/* The file name, part by part. Colours are the map's: sand, amber, water and extract green. */
+.file-card {
+  margin-top: 52px;
+  padding: clamp(22px, 4vw, 44px);
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  background:
+    linear-gradient(rgb(42 69 74 / 0.22) 1px, transparent 1px) -1px -1px / 48px 48px,
+    linear-gradient(90deg, rgb(42 69 74 / 0.22) 1px, transparent 1px) -1px -1px / 48px 48px,
+    var(--deck);
+}
+.seg-0 {
+  --c: var(--sand);
+}
+.seg-1 {
+  --c: var(--amber);
+}
+.seg-2 {
+  --c: var(--water);
+}
+.seg-3 {
+  --c: var(--extract);
+}
+.file {
+  margin: 0;
+  color: var(--fog);
+  font: 400 clamp(17px, 2.5vw, 31px) / 1.75 var(--mono);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+}
+.file .seg {
+  padding-bottom: 4px;
+  border-radius: 4px;
+  color: var(--chalk);
+  background: linear-gradient(var(--c), var(--c)) left bottom / 100% 2px no-repeat;
+  transition:
+    background-size 0.7s var(--ease),
+    background-color 0.2s,
+    opacity 0.2s;
+}
+.file .seg-1 {
+  color: var(--amber);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  margin: 28px 0 0;
+  padding: 0;
+  color: var(--soft);
+  font-size: 15px;
+  list-style: none;
+}
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: default;
+  transition:
+    opacity 0.5s,
+    color 0.2s;
+}
+.legend li::before {
+  content: "";
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--c);
+}
+.file-card[data-armed] .seg {
+  background-size: 0 2px;
+}
+.file-card[data-armed] .legend li {
+  opacity: 0.25;
+}
+.file-card[data-in] .seg {
+  background-size: 100% 2px;
+  transition-delay: calc(var(--k) * 0.28s);
+}
+.file-card[data-in] .legend li {
+  opacity: 1;
+  transition-delay: calc(var(--k) * 0.28s + 0.2s);
+}
+.file-card:has(.legend li:hover) .file .seg {
+  opacity: 0.3;
+  transition-delay: 0s;
+}
+.file-card:has(.legend .seg-0:hover) .file .seg-0,
+.file-card:has(.legend .seg-1:hover) .file .seg-1,
+.file-card:has(.legend .seg-2:hover) .file .seg-2,
+.file-card:has(.legend .seg-3:hover) .file .seg-3 {
+  opacity: 1;
+  background-color: color-mix(in srgb, var(--c) 16%, transparent);
+}
+.legend li:hover {
+  color: var(--chalk);
+}
+.reads-foot {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: start;
+  gap: 32px 64px;
+  margin-top: 56px;
+}
+.never {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 28px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.never li {
+  display: flex;
+  gap: 11px;
+  color: var(--soft);
+  font-size: 16px;
+  line-height: 1.45;
+}
+.never svg {
+  margin-top: 2px;
+  color: #e2735f;
+}
+.reads-foot .body {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+/* Feature tabs */
+.showcase {
+  margin-top: 52px;
+}
+.tabs {
+  display: none;
+}
+.panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+}
+.panel {
+  margin: 0;
+}
+.crop {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-radius: 12px;
+  background: var(--deck);
+}
+.crop img {
+  position: absolute;
+  left: var(--fx);
+  top: var(--fy);
+  width: var(--fw);
+  max-width: none;
+}
+.panel figcaption {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+}
+.tab-title {
+  color: var(--chalk);
+  font-size: 17px;
+  font-weight: 560;
+}
+.tab-line {
+  color: var(--fog);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.showcase[data-ready] {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.showcase[data-ready] .tabs {
+  position: relative;
+  display: grid;
+  gap: 4px;
+}
+.tabs button {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.tabs button:hover {
+  background: rgb(21 37 41 / 0.55);
+}
+.tabs .tab-title {
+  color: var(--soft);
+  transition: color 0.2s;
+}
+.tabs .tab-line {
+  display: none;
+}
+.tabs [aria-selected="true"] {
+  border-color: var(--rule);
+  background: var(--deck);
+}
+.tabs [aria-selected="true"] .tab-title {
+  color: var(--chalk);
+}
+.tabs [aria-selected="true"] .tab-line {
+  display: block;
+  animation: part-in 0.4s ease;
+}
+.tab-progress {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.showcase[data-auto][data-visible] [aria-selected="true"] .tab-progress {
+  animation: progress 6.5s linear forwards;
+}
+.showcase[data-auto]:hover .tab-progress {
+  animation-play-state: paused;
+}
+@keyframes progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+.showcase[data-ready] .panels {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.showcase[data-ready] .panel {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.45s ease,
+    visibility 0s linear 0.45s;
+}
+.showcase[data-ready] .panel[data-active] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+.showcase[data-ready] .crop {
+  box-shadow: 0 34px 80px -34px rgb(0 0 0 / 0.8);
+}
+.showcase[data-ready] .crop img {
+  transform: scale(1.04);
+  transform-origin: 50% 40%;
+  transition: transform 1.1s var(--ease);
+}
+.showcase[data-ready] .panel[data-active] .crop img {
+  transform: none;
+}
+.showcase[data-ready] figcaption {
+  display: none;
+}

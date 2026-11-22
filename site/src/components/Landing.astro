@@ -1,54 +1,32 @@
 ---
 // The landing page, the same in every language. Text comes from src/i18n/landing.json (built from
 // the READMEs' translations); screenshots from docs/images, copied by scripts/sync-docs.mjs.
-import "@fontsource-variable/geist";
-import "@fontsource-variable/geist-mono";
+// Each section is its own component in ./landing; this file is the page around them.
+import "@fontsource-variable/ibm-plex-sans/wdth.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
 import "../styles/landing.css";
+import "../styles/landing-sections.css";
+import "../styles/landing-features.css";
+import "../styles/landing-start.css";
+import "../styles/landing-footer.css";
+import Hero from "./landing/Hero.astro";
+import Reads from "./landing/Reads.astro";
+import Showcase from "./landing/Showcase.astro";
+import Start from "./landing/Start.astro";
+import Footer from "./landing/Footer.astro";
+import { DISCORD, GITHUB, links, pick } from "./landing/data";
 import all from "../i18n/landing.json";
 
 interface Props {
   slug: string;
 }
-const { slug } = Astro.props;
-const t = all.find((l) => l.slug === slug) ?? all[0]!;
-const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-const home = (s: string) => `${base}${s ? `${s}/` : ""}`;
-const docs = (page: string) => `${home(t.slug)}docs/${page}/`;
-const img = (name: string) => `${base}images/${name}.png`;
-const DOWNLOAD = "https://github.com/MaxSala/rastro-tarkov/releases/latest/download/Rastro-windows-x64.exe";
-const GITHUB = "https://github.com/MaxSala/rastro-tarkov";
-const DISCORD = "https://discord.gg/H4pRxGBGDb";
+const t = pick(Astro.props.slug);
+const l = links(t.slug);
 const description = `${t.pitchLead} ${t.pitchRest}`;
-const ogImage = new URL(img("social-preview"), Astro.site).href;
+const ogImage = new URL(l.img("social-preview"), Astro.site).href;
 // The credit names tarkov.dev once, as a link.
 const credit = t.credit.split("tarkov.dev");
-const tiles = ["squad", "quests", "hideout", "bosses", "clock", "market"];
-
-// "**bold** and `code`" from the shared texts, as plain segments: nothing is injected as HTML.
-type Seg = { text: string; kind: "plain" | "bold" | "code" };
-function rich(s: string): Seg[] {
-  return s
-    .split(/(\*\*[^*]+\*\*|`[^`]+`)/)
-    .filter(Boolean)
-    .map((p) =>
-      p.startsWith("**")
-        ? { text: p.slice(2, -2), kind: "bold" }
-        : p.startsWith("`")
-          ? { text: p.slice(1, -1), kind: "code" }
-          : { text: p, kind: "plain" },
-    );
-}
-// A real screenshot name, split into what each part means.
-const file = [
-  { text: "2026-11-21[19-38]", part: 0 },
-  { text: "_" },
-  { text: "218.0, 1.0, 136.0", part: 1 },
-  { text: "_" },
-  { text: "0.0, 0.81915, 0.0, -0.57358", part: 2 },
-  { text: "_" },
-  { text: "13.27", part: 3 },
-  { text: " (0).png" },
-];
 ---
 
 <!doctype html>
@@ -57,154 +35,83 @@ const file = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0c1517" />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; base-uri 'self'; form-action 'none'"
     />
     <title>Rastro · {t.title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-    <link rel="canonical" href={new URL(home(t.slug), Astro.site).href} />
-    {all.map((l) => <link rel="alternate" hreflang={l.lang} href={new URL(home(l.slug), Astro.site).href} />)}
+    <link rel="icon" type="image/svg+xml" href={`${l.base}favicon.svg`} />
+    <link rel="canonical" href={new URL(l.home(t.slug), Astro.site).href} />
+    {all.map((o) => <link rel="alternate" hreflang={o.lang} href={new URL(l.home(o.slug), Astro.site).href} />)}
+    <meta property="og:type" content="website" />
     <meta property="og:title" content={`Rastro · ${t.title}`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
-  <body>
-    <header class="top wrap">
-      <a class="brand" href={home(t.slug)}>
-        <img src={`${base}favicon.svg`} alt="" width="28" height="28" />
-        Rastro
-      </a>
-      <nav aria-label="Rastro">
-        <a href={docs("features")}>{t.nav[0]}</a>
-        <a href={docs("guide")}>{t.nav[1]}</a>
-        <a href={docs("changelog")}>{t.nav[2]}</a>
-        <a href={GITHUB}>GitHub</a>
-      </nav>
-      <details class="lang">
-        <summary aria-label={t.langLabel}>{t.label}</summary>
-        <ul>
-          {
-            all.map((l) => (
-              <li>
-                <a href={home(l.slug)} lang={l.lang} aria-current={l.slug === t.slug ? "page" : undefined}>
-                  {l.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </details>
+  <body style={`--contours:url("${l.base}contours.svg")`}>
+    <header class="top">
+      <div class="wrap top-row">
+        <a class="brand" href={l.home(t.slug)}>
+          <img src={`${l.base}favicon.svg`} alt="" width="26" height="26" />
+          Rastro
+        </a>
+        <nav aria-label="Rastro">
+          <a href={l.docs("features")}>{t.nav[0]}</a>
+          <a href={l.docs("guide")}>{t.nav[1]}</a>
+          <a href={l.docs("changelog")}>{t.nav[2]}</a>
+          <a href={GITHUB}>GitHub</a>
+        </nav>
+        <details class="lang" data-menu>
+          <summary aria-label={t.langLabel}>
+            <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.25" />
+              <path d="M1.75 8h12.5M8 1.75c1.8 1.9 2.6 3.9 2.6 6.25S9.8 12.35 8 14.25C6.2 12.35 5.4 10.35 5.4 8S6.2 3.65 8 1.75Z" />
+            </svg>
+            {t.label}
+          </summary>
+          <ul>
+            {
+              all.map((o) => (
+                <li>
+                  <a href={l.home(o.slug)} lang={o.lang} aria-current={o.slug === t.slug ? "page" : undefined}>
+                    {o.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </details>
+        <a class="button primary small-button" href={l.download}>{t.downloadShort}</a>
+      </div>
     </header>
 
     <main>
-      <section class="hero wrap">
-        <h1>{t.title}</h1>
-        <p class="lead"><strong>{t.pitchLead}</strong> {t.pitchRest}</p>
-        <p class="lead muted">{t.pitch2}</p>
-        <div class="actions">
-          <a class="button primary" href={DOWNLOAD}>{t.download}</a>
-          <a class="button" href={GITHUB}>{t.source}</a>
+      <Hero t={t} />
+      <Reads t={t} />
+      <Showcase t={t} />
+      <Start t={t} />
+
+      <section class="community" aria-labelledby="community">
+        <div class="wrap community-inner">
+          <h2 id="community">{t.communityTitle}</h2>
+          <p class="body">{t.communityBody}</p>
+          <div class="actions">
+            <a class="button primary" href={DISCORD}>{t.discord}</a>
+            <a class="button" href={GITHUB}>{t.source}</a>
+          </div>
+          <p class="credit">
+            {credit[0]}<a href="https://tarkov.dev">tarkov.dev</a>{credit.slice(1).join("tarkov.dev")}
+          </p>
         </div>
-        <ul class="facts small muted">
-          <li>{t.platform}</li>
-          {t.sub.split(" · ").map((f) => <li>{f}</li>)}
-        </ul>
-      </section>
-      <figure class="shot wrap">
-        <img src={img("hero")} alt={t.heroAlt} width="1600" height="1000" />
-        <figcaption>{t.heroAlt}</figcaption>
-      </figure>
-
-      <section class="reads wrap" aria-labelledby="reads">
-        <h2 id="reads">{t.fileTitle}</h2>
-        <p class="body">{t.fileBody}</p>
-        <p class="file" translate="no">
-          {
-            file.map((f) =>
-              f.part === undefined ? (
-                <span class="sep">{f.text}</span>
-              ) : (
-                <span class={`seg seg-${f.part}`}>{f.text}</span>
-              ),
-            )
-          }
-        </p>
-        <ol class="legend">{t.parts.map((p, i) => <li class={`seg-${i}`}>{p}</li>)}</ol>
-        <p class="body muted">{t.logs}</p>
-      </section>
-
-      <section class="features wrap" aria-labelledby="features">
-        <h2 id="features">{t.nav[0]}</h2>
-        <ul class="tiles">
-          {
-            t.tiles.map(([title, line], i) => (
-              <li>
-                <img src={img(tiles[i]!)} alt={title} width="1600" height="1000" loading="lazy" />
-                <h3>{title}</h3>
-                <p class="muted">{line}</p>
-              </li>
-            ))
-          }
-        </ul>
-        <p><a class="more" href={docs("features")}>{t.docs}</a></p>
-      </section>
-
-      <section class="start wrap" aria-labelledby="start">
-        <h2 id="start">{t.start}</h2>
-        <ol class="steps">
-          {
-            t.steps.map((s) => (
-              <li>
-                {rich(s).map((g) =>
-                  g.kind === "bold" ? <strong>{g.text}</strong> : g.kind === "code" ? <code>{g.text}</code> : g.text,
-                )}
-              </li>
-            ))
-          }
-        </ol>
-        <a class="button primary" href={DOWNLOAD}>{t.download}</a>
-      </section>
-
-      <section class="lean wrap" aria-labelledby="lean">
-        <h2 id="lean">{t.leanTitle}</h2>
-        <dl>
-          {
-            t.lean.map(([k, v]) => (
-              <div>
-                <dt>{k}</dt>
-                <dd class="muted">{v}</dd>
-              </div>
-            ))
-          }
-        </dl>
-      </section>
-
-      <section class="community wrap" aria-labelledby="community">
-        <h2 id="community">{t.communityTitle}</h2>
-        <p class="body">{t.communityBody}</p>
-        <div class="actions">
-          <a class="button primary" href={DISCORD}>{t.discord}</a>
-          <a class="button" href={GITHUB}>{t.source}</a>
-        </div>
-        <p class="body muted">
-          {credit[0]}<a href="https://tarkov.dev">tarkov.dev</a>{credit.slice(1).join("tarkov.dev")}
-        </p>
       </section>
     </main>
 
-    <footer class="wrap small muted">
-      <p>{t.mapsCredit}</p>
-      <p>{t.footer}</p>
-      <p>
-        <a href={`${GITHUB}/blob/main/LICENSE`}>MIT</a>
-        {" · "}
-        <a href={`${GITHUB}/blob/main/NOTICE.md`}>NOTICE</a>
-        {" · "}
-        <a href={docs("faq")}>{t.docsTitles[2]}</a>
-      </p>
-    </footer>
+    <Footer t={t} />
+    <script>
+      import "../scripts/landing";
+    </script>
   </body>
 </html>

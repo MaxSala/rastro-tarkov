@@ -1,0 +1,60 @@
+---
+// Why Rastro is safe, shown rather than claimed: the exact file name it reads, part by part, and
+// the short list of things it never does. Hovering a part of the legend lights it up in the name.
+import { FILE, type Texts } from "./data";
+
+interface Props {
+  t: Texts;
+}
+const { t } = Astro.props;
+---
+
+<section class="reads" aria-labelledby="reads">
+  <div class="wrap">
+    <div class="reads-head">
+      <h2 id="reads">{t.fileTitle}</h2>
+      <p class="body">{t.fileBody}</p>
+    </div>
+    <div class="file-card" data-reveal>
+      <p class="file" translate="no">
+        {
+          FILE.map((f) =>
+            f.part === undefined ? (
+              <span class="sep">{f.text}</span>
+            ) : (
+              <span class={`seg seg-${f.part}`} style={`--k:${f.part}`}>{f.text}</span>
+            ),
+          )
+        }
+      </p>
+      <ol class="legend">
+        {
+          t.parts.map((p, i) => (
+            <li class={`seg-${i}`} style={`--k:${i}`}>
+              {p}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    <div class="reads-foot">
+      <div>
+        <h3>{t.neverTitle}</h3>
+        <ul class="never">
+          {
+            t.never.map((n) => (
+              <li>
+                <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                  <circle cx="8" cy="8" r="6.25" />
+                  <path d="m3.6 12.4 8.8-8.8" />
+                </svg>
+                {n}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <p class="body quiet">{t.logs}</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,72 @@
+---
+// Getting started (a real sequence, so it is numbered) and what is under the hood.
+import { links, rich, type Texts } from "./data";
+
+interface Props {
+  t: Texts;
+}
+const { t } = Astro.props;
+const l = links(t.slug);
+
+// One small line icon per "under the hood" point, in the same order as the texts.
+const ICONS = [
+  "M5 2.5h6v11H5zM7 5h2M2.5 5.5v5M13.5 5.5v5", // small and light: a slim binary
+  "M5.5 4.5 2 8l3.5 3.5M10.5 4.5 14 8l-3.5 3.5M9 3 7 13", // open source
+  "M4 7.5h8v6H4zM5.75 7.5V5.25a2.25 2.25 0 0 1 4.5 0V7.5", // private
+  "M4 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM5.8 8.1l4.4-2.2M5.8 9.9l4.4 2.2", // peer to peer
+  "M2.5 10.5a3 3 0 0 1 2.4-2.95A4 4 0 0 1 12.6 6.6 2.75 2.75 0 0 1 13 12H5M2 2l12 12", // offline
+  "M8 1.75a6.25 6.25 0 1 0 0 12.5 6.25 6.25 0 0 0 0-12.5ZM1.75 8h12.5M8 1.75c1.8 1.9 2.6 3.9 2.6 6.25S9.8 12.35 8 14.25C6.2 12.35 5.4 10.35 5.4 8S6.2 3.65 8 1.75Z", // languages
+];
+---
+
+<section class="start" aria-labelledby="start">
+  <div class="wrap">
+    <h2 id="start">{t.start}</h2>
+    <ol class="steps">
+      {
+        t.steps.map((s, i) => (
+          <li>
+            <span class="step-n" aria-hidden="true">
+              {i + 1}
+            </span>
+            <p>
+              {rich(s).map((g) =>
+                g.kind === "bold" ? <strong>{g.text}</strong> : g.kind === "code" ? <code>{g.text}</code> : g.text,
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="actions">
+      <a class="button primary large" href={l.download}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M2.5 13.5h11" />
+        </svg>
+        {t.download}
+      </a>
+      <span class="platform">{t.platform}</span>
+    </div>
+  </div>
+</section>
+
+<section class="lean" aria-labelledby="lean">
+  <div class="wrap">
+    <h2 id="lean">{t.leanTitle}</h2>
+    <dl>
+      {
+        t.lean.map(([k, v], i) => (
+          <div>
+            <dt>
+              <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
+                <path d={ICONS[i]} />
+              </svg>
+              {k}
+            </dt>
+            <dd>{v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

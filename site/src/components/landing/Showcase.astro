@@ -1,0 +1,81 @@
+---
+// The features, one at a time, at a size where the app can actually be read: each tab frames the
+// part of its screenshot that matters. Without scripts it is a plain list of all six.
+import { links, type Texts } from "./data";
+
+interface Props {
+  t: Texts;
+}
+const { t } = Astro.props;
+const l = links(t.slug);
+
+// Screenshot and the region to frame, in pixels of the 1600×1000 image (always 16:10).
+const SHOTS = [
+  { img: "squad", x: 40, y: 90, w: 1120 },
+  { img: "quests", x: 40, y: 40, w: 1120 },
+  { img: "hideout", x: 0, y: 50, w: 1100 },
+  { img: "bosses", x: 480, y: 240, w: 900 },
+  { img: "clock", x: 700, y: 20, w: 900 },
+  { img: "market", x: 600, y: 40, w: 1000 },
+];
+const frame = ({ x, y, w }: (typeof SHOTS)[number]) =>
+  `--fw:${((1600 / w) * 100).toFixed(2)}%;--fx:${((-x / w) * 100).toFixed(2)}%;--fy:${((-y / (w * 0.625)) * 100).toFixed(2)}%`;
+---
+
+<section class="features" aria-labelledby="features">
+  <div class="wrap">
+    <div class="features-head">
+      <h2 id="features">{t.nav[0]}</h2>
+      <p class="body">{t.featuresLead}</p>
+    </div>
+    <div class="showcase" data-showcase>
+      <div class="tabs" role="tablist" aria-label={t.nav[0]}>
+        {
+          t.tiles.map(([title, line], i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${i}`}
+              aria-controls={`panel-${i}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              <span class="tab-title">{title}</span>
+              <span class="tab-line">{line}</span>
+              <span class="tab-progress" aria-hidden="true" />
+            </button>
+          ))
+        }
+      </div>
+      <div class="panels">
+        {
+          SHOTS.map((s, i) => (
+            <figure
+              class="panel"
+              role="tabpanel"
+              id={`panel-${i}`}
+              aria-labelledby={`tab-${i}`}
+              data-active={i === 0 ? "" : undefined}
+            >
+              <div class="crop" style={frame(s)}>
+                <img
+                  src={l.img(s.img)}
+                  alt={t.tiles[i]![0]}
+                  width="1600"
+                  height="1000"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+              <figcaption>
+                <span class="tab-title">{t.tiles[i]![0]}</span>
+                <span class="tab-line">{t.tiles[i]![1]}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+    <a class="more" href={l.docs("features")}>{t.docs}</a>
+  </div>
+</section>

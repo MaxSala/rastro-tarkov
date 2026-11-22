@@ -1,0 +1,69 @@
+---
+// The footer: where to go next, then the credits and the trademark notice.
+import { DISCORD, GITHUB, links, type Texts } from "./data";
+
+interface Props {
+  t: Texts;
+}
+const { t } = Astro.props;
+const l = links(t.slug);
+const cols: [string, [string, string][]][] = [
+  [
+    "Rastro",
+    [
+      [t.downloadShort, l.download],
+      [t.docsTitles[0]!, l.docs("features")],
+      [t.docsTitles[1]!, l.docs("guide")],
+      [t.nav[2]!, l.docs("changelog")],
+    ],
+  ],
+  [
+    t.community,
+    [
+      ["Discord", DISCORD],
+      ["GitHub", GITHUB],
+      [t.bug, `${GITHUB}/issues`],
+    ],
+  ],
+  [
+    t.project,
+    [
+      [t.docsTitles[2]!, l.docs("faq")],
+      [t.license, `${GITHUB}/blob/main/LICENSE`],
+      ["NOTICE", `${GITHUB}/blob/main/NOTICE.md`],
+    ],
+  ],
+];
+---
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href={l.home(t.slug)}>
+          <img src={`${l.base}favicon.svg`} alt="" width="26" height="26" />
+          Rastro
+        </a>
+        <p>{t.communityTitle}</p>
+      </div>
+      {
+        cols.map(([head, items]) => (
+          <nav aria-label={head}>
+            <h2>{head}</h2>
+            <ul>
+              {items.map(([label, href]) => (
+                <li>
+                  <a href={href}>{label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+    <div class="foot-legal">
+      <p>{t.mapsCredit}</p>
+      <p>{t.footer}</p>
+    </div>
+  </div>
+</footer>

@@ -58,7 +58,7 @@ This list covers the main components. The complete dependency trees, with every 
 
 ## Website
 
-The website in `site/` is not part of the application. It is built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build) (MIT License), with search by [Pagefind](https://pagefind.app) (MIT License), and uses the same Geist typefaces (SIL Open Font License 1.1). Its full list of dependencies is in `site/package-lock.json`.
+The website in `site/` is not part of the application. It is built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build) (MIT License), with search by [Pagefind](https://pagefind.app) (MIT License), and uses IBM Plex Sans and IBM Plex Mono by IBM (SIL Open Font License 1.1, via `@fontsource-variable/ibm-plex-sans` and `@fontsource/ibm-plex-mono`). Its full list of dependencies is in `site/package-lock.json`.
 
 ## Downloaded by the user, not bundled
 

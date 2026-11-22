@@ -44,6 +44,19 @@ function convert(md) {
   let body = md.replace(/^<p align="center">[\s\S]*?<\/p>\s*/, "");
   const title = (body.match(/^# (.+)$/m) ?? [, "Rastro"])[1].trim();
   body = body.replace(/^# .+\n+/m, "");
+  // A line that is only bold text ("**Map**", "**Is it safe?**") is a heading on the site, so it
+  // shows in the page's table of contents.
+  body = body.replace(/^\*\*([^*\n]+)\*\*[ \t]*$/gm, "### $1");
+  // The screenshot table GitHub needs becomes a grid of figures, each opening the full image.
+  body = body.replace(/<table>[\s\S]*?<\/table>/g, (table) => {
+    const cells = [...table.matchAll(/<img src="([^"]+)" alt="([^"]*)">\s*<br>\s*<sub>([\s\S]*?)<\/sub>/g)];
+    if (!cells.length) return table;
+    const figs = cells.map(
+      ([, src, alt, caption]) =>
+        `<figure><a href="${src}"><img src="${src}" alt="${alt}" width="1600" height="1000" loading="lazy"></a><figcaption>${caption}</figcaption></figure>`,
+    );
+    return `<div class="gallery">${figs.join("")}</div>`;
+  });
   body = body.replace(/\]\(([^)\s]+)\)/g, (_, t) => `](${link(t)})`);
   body = body.replace(/(href|src)="([^"]+)"/g, (_, a, t) => `${a}="${link(t)}"`);
   return `---\ntitle: ${JSON.stringify(title)}\n---\n\n${body.trim()}\n`;
